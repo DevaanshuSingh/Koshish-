@@ -7,7 +7,8 @@
     <title>Snake And Ladder</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Rectangle.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
     <link rel="stylesheet" href="backLogic.php">
 
     <script defer>
@@ -15,7 +16,6 @@
         //     e.preventDefault();
         // });
     </script>
-
 </head>
 <body>
     <div class="grid-container">
@@ -436,6 +436,8 @@
             <input id="showValue" type="text" readonly>
         </div>
         <button class="butt0n" onclick="numberValue()"><strong>CLICK</strong></button>
+        <a href="user_register.php">Register</a>
+
     </div>
     <div id="show">
         <div id="show-inner">
@@ -445,6 +447,7 @@
                         <th col="3">Player Id</th>
                         <th col="3">Player Name</th>
                         <th col="3">Player Pehchaan</th>
+                        <th col="3">Ip Address</th>
                     </tr>
                 </thead>
                 <tbody class="bg-success text-white">
@@ -455,10 +458,11 @@
                         $stmt = $pdo->query('select * from user_information');
                         $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         foreach ($records as $record) {
-                            $x = "<tr>";
+                            $x = "<tr>";//Names From/Of Database's Columns
                             $x .= "<td>" . $record['id'] . ".</td>";
                             $x .= "<td>" . $record['name'] . "</td>";
                             $x .= "<td><img src='{$record['profile']}' alt='Profile Picture' style='width: 100px; height: auto;'></td>";
+                            $x .= "<td>".$record['ip_address']."</td>";
                             echo '<br>' . $x; 
                         }
                         // while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -470,6 +474,9 @@
                     ?>
                 </tbody>
             </table>
+            <?php
+                // echo $_POST['client_ip'];
+            ?>
         </div>
     </div>
     <script src="script.js"></script>

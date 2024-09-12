@@ -6,6 +6,7 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $player_name = $_POST['player_name'];
+        $ip = $_POST['client_ip'];
 
         // file jhamela
         if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
@@ -45,13 +46,13 @@ try {
             exit;
         }
         // file jhamela
-        $stmt = $pdo->prepare("INSERT INTO user_information (name, profile) 
-                             VALUES (?,?)");
+        $stmt = $pdo->prepare("INSERT INTO user_information (name, profile,ip_address) 
+                             VALUES (?,?,?)");
 
-        if ($stmt->execute([$player_name,$imagePath])) {
-            echo "Student registered successfully!";
-            // echo '<a href="index.php">Go back</a>';
-           echo ' <meta http-equiv="refresh" content="0; url=index.php">';
+        if ($stmt->execute([$player_name,$imagePath,$ip])) {
+            // echo "Player registered successfully!";
+            // echo '<h1 style="height:20vh;"><a href="index.php">INDEX.PHP</a></h1>';
+            echo ' <meta http-equiv="refresh" content="0; url=index.php">';
         } else {
             echo "Error: Could not register student.";
         }

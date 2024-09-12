@@ -21,6 +21,7 @@ let currentPosp4 = 1;//Blue
 function changeThePosFunc(dice) {
     wholeGrid = document.getElementById(`grid_${currentPosp1}`);
     let playerDivPrev = wholeGrid.querySelector(`.p1`);
+    playerDivPrev.style.transition = 'background-color 1s ease';
     playerDivPrev.style.backgroundColor = 'rgba(0, 0, 0, 0)';
     
     nextposp1 = currentPosp1 + dice;
@@ -28,8 +29,10 @@ function changeThePosFunc(dice) {
     wholeGrid = document.getElementById(`grid_${nextposp1}`);
     // wholeGrid.style.backgroundColor = 'red';
     let playerDiv = wholeGrid.querySelector(`.p1`);
-    if (playerDiv)
+    if (playerDiv){
+        playerDiv.style.transition = 'background-color 1s ease';
         playerDiv.style.backgroundColor = 'red';
+    }
     else
         console.log(`.p1-${nextposp1} not found in grid_${nextposp1}`);
 
@@ -39,6 +42,17 @@ function changeThePosFunc(dice) {
     // if (nextposp1 > 100)
     //     alert(`You Won`);
 }
+
+
+
+
+while(true){
+
+}
+
+
+
+
 // duto ke add kore joto aache maane currentpos + dice= joto aaslo
 //                                           nextPos= currentPos + Dice;
 //                                          nextPos=  1+4;
