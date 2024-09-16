@@ -46,10 +46,9 @@ try {
             exit;
         }
         // file jhamela
-        $stmt = $pdo->prepare("INSERT INTO user_information (name, profile,ip_address) 
-                             VALUES (?,?,?)");
+        $stmt = $pdo->prepare("INSERT INTO user_information (name, profile,ip_address) VALUES (?,?,?)");
 
-        if ($stmt->execute([$player_name,$imagePath,$ip])) {
+        if ($stmt->execute([$player_name, $imagePath, $ip])) {
             // echo "Player registered successfully!";
             // echo '<h1 style="height:20vh;"><a href="index.php">INDEX.PHP</a></h1>';
             echo ' <meta http-equiv="refresh" content="0; url=index.php">';
@@ -60,4 +59,4 @@ try {
 } catch (PDOException $e) {
     echo 'Database error: ' . $e->getMessage();
 }
-?>
+?>;

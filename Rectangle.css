@@ -1,4 +1,3 @@
-
 /* Dont Change */
 * {
     margin: 0;
@@ -11,7 +10,7 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-thumb {
-    background-image: linear-gradient(to bottom,rgb(255, 0, 0),orange,yellow,green,blue,indigo,violet);
+    background-image: linear-gradient(to right, rgb(255, 0, 0), orange, yellow, green, blue, indigo, violet);
     border-radius: 50%;
 }
 
@@ -20,6 +19,7 @@ body {
     height: 100vh;
     background-color: rgb(228, 224, 224);
 }
+
 /* .grid-container{ old
     position: absolute;
     top: 3vh;
@@ -51,9 +51,8 @@ body {
     grid-template-rows: repeat(10, 1fr);
     height: 99.7vh;
     width: 72vw;
-    /* background-color: rgba(0, 0, 0, 0.692); */
-    background-image: linear-gradient(to bottom,rgba(255, 0, 0, 0.568),rgba(255, 166, 0, 0.603),rgba(255, 255, 0, 0.61),rgba(0, 128, 0, 0.527),rgba(0, 0, 255, 0.521),rgba(76, 0, 130, 0.534),rgba(238, 130, 238, 0.548));
-
+    /* background-color: rgba(0, 0, 0, 1); */
+    background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0.568), rgba(255, 166, 0, 0.603), rgba(255, 255, 0, 0.61), rgba(0, 128, 0, 0.527), rgba(0, 0, 255, 0.521), rgba(76, 0, 130, 0.534), rgba(238, 130, 238, 0.548));
 }
 
 .grid-item {
@@ -118,7 +117,7 @@ body {
 }
 
 /* here*/
- #grid_1 {
+#grid_1 {
     position: relative;
     display: flex;
     justify-content: center;
@@ -132,10 +131,12 @@ body {
     height: 9vh;
     width: 2vw;
 }
-.grit-item>.left-col{
+
+.grit-item>.left-col {
     left: 0vw;
 }
-.grit-item>.right-col{
+
+.grit-item>.right-col {
     right: 0vw;
 }
 
@@ -161,7 +162,6 @@ body {
     height: 4vh;
     width: 2vw;
     background-color: rgb(182, 226, 182);
-    border-bottom: 1px solid;
 }
 
 .left-col>.p1,
@@ -181,27 +181,31 @@ body {
     position: absolute;
     top: 0;
 }
+
 #grid_1>.left-col>.left-bottom {
     background-color: rgba(0, 128, 0, 0.726);
     text-align: center;
     position: absolute;
     bottom: 0;
 }
+
 #grid_1>.right-col>.right-top {
     background-color: rgba(255, 255, 0, 0.726);
     text-align: center;
     position: absolute;
     top: 0;
 }
+
 #grid_1>.right-col>.right-bottom {
     background-color: rgba(0, 0, 255, 0.726);
     text-align: center;
     position: absolute;
     bottom: 0;
-}  */
-    here upto */
+}
+
+/* here upto */
 /*****************************************************************/
-    /*koshish*/
+/*koshish*/
 /* .grid_item {
     position: relative;
     display: flex;
@@ -260,7 +264,7 @@ body {
     position: absolute;
     bottom: 0;
 }  */
-    /*koshish*/
+/*koshish*/
 
 .grid-item {
     position: relative;
@@ -298,4 +302,5 @@ body {
     box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.2),
         inset -4px -4px 8px rgba(255, 255, 255, 0.9);
 }
+
 /* Dont Change */
