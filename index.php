@@ -9,8 +9,9 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
                 integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
                 crossorigin="anonymous">
-        <link rel="stylesheet" href="Rectangle.css">
+        <!-- <link rel="stylesheet" href="./css/Rectangle.css"> -->
         <!-- <link rel="stylesheet" href="style.css"> -->
+        <link rel="stylesheet" href="./css/fix.css">
         <script>
                 // document.addEventListener('contextmenu', function (e) {
                 //     e.preventDefault();
@@ -1837,27 +1838,21 @@
                         <input id="showValue" type="text" readonly>
                 </div>
                 <?php require 'script.php';
-                $userWon = false;
-                $nowId = 1;
+                $nowId = 2;
                 ?>
                 <button class="butt0n" onclick="callTwoFuncs()"><strong>CLICK</strong></button>
                 <script>
                         function callTwoFuncs() {
                                 // callSecondFunc();
                                 addEventListener("click", function () {
-                                        // PHP code won't work inside JavaScript. The following PHP will only run on the server:
                                         <?php
-                                        switch ($nowId) {
-                                                case 1:
-                                                        $nowId = 2;
-                                                        break;
-                                                case 2:
-                                                        $nowId = 1;
-                                                        break;
-                                        }
+                                        $nowId = match ($nowId) {
+                                                // 1 => 2,
+                                                // 2 => 1,
+                                                default => $nowId,
+                                        };
                                         ?>
                                 });
-
                                 numberValue();
                         }
                 </script>
@@ -1866,7 +1861,7 @@
                 require 'connection_db.php';
                 try {
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
-                        $stmt->execute([$nowId]);
+                        $stmt->execute([$nowId]);//1
                         $nowIp = $stmt->fetchColumn();
                         echo "<h1>IP Is $nowIp</h1>";
                 } catch (PDOException $e) {
@@ -1927,6 +1922,5 @@
         </div>
         <!-- <script src="script.php"></script> -->
 </body>
-
 </html>
 <!-- Working -->

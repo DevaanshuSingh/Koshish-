@@ -38,7 +38,6 @@
         }
     </style>
 </head>
-
 <body>
     <form action="register.php" method="POST" enctype="multipart/form-data" class="p-4 border rounded">
         <div class="form-row d-flex container flex-wrap">

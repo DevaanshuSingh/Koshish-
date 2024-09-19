@@ -1,5 +1,4 @@
 <!-- In Js {-->
-
 <!-- <body>
     <input type="hidden" name value="">
 </body> -->
@@ -33,11 +32,11 @@
         }
         else
             console.log(`.p1-${nextposp1} not found in grid_${nextposp1}`);
-        currentPosp1 = nextposp1;
-        if (nextposp1 == 100)
-            alert(`You Won`);
-        else if (nextposp1 > 100)
-            alert(`You Won Above`);
+            currentPosp1 = nextposp1;
+            if (nextposp1 == 100)
+                alert(`You Won`);
+            else if (nextposp1 > 100)
+                alert(`You Won Above`);
     }
 </script>
 <!-- In Js }-->
