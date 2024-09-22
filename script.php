@@ -15,6 +15,7 @@
     let nextposp1;
     let currentPosp1 = 1;
     function changeThePosFunc(dice) {
+        // alert('inside Change');
         wholeGrid = document.getElementById(`grid_${ currentPosp1 }`);
         let playerDivPrev = wholeGrid.querySelector(`.p1`);
         playerDivPrev.style.transition = 'background-color 1s ease';

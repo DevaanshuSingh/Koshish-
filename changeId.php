@@ -1,48 +1,27 @@
 <?php
-// session_start(); // Start the session
-
-// // Get the POST data
-// $nowId = $_POST['inJs'] ?? null; // Use null coalescing to avoid errors if `inJs` is not sent
-
-// if ($nowId !== null) {
-//     // Ensure that the variable is cast to an integer
-//     $nowId = (int)$nowId;
-
-//     // Use the match expression to change the value
-//     $nowId = match($nowId) {
-//         1 => 2,
-//         2 => 1,
-//         default => $nowId,
-//     };
-
-//     // Store the new `nowId` in the session
-//     $_SESSION['cId'] = $nowId;
-
-//     // Output the new `nowId` value
-//     echo $nowId;
-// } else {
-//     echo "No input provided";
-// }
-
-
 session_start(); // Start the session
 
-// Get the POST data
-$nowId = $_POST['inJs'] ?? null; // Use null coalescing to avoid errors if `inJs` is not sent
+// Check if the POST data exists
+if (isset($_POST['send'])) {
+    // Get and cast the POST data to an integer
+    $nowId = (int) $_POST['send'];
 
-if ($nowId !== null) {
-    // Ensure that the variable is cast to an integer
-    $nowId = (int)$nowId;
+    // Log the received value (for debugging)
+    error_log("Received value: $nowId");
 
     // Use the match expression to change the value
     $nowId = match($nowId) {
         1 => 2,
         2 => 1,
-        default => $nowId,
+        // 3 => 4,
+        // 4 => 1,
     };
-
+    
     // Store the new `nowId` in the session
-    $_SESSION['cId'] = $nowId;
+    $_SESSION['got'] = $nowId;
+
+    // Log the updated session value (for debugging)
+    error_log("Updated session GOT: " . $_SESSION['got']);
 
     // Output the new `nowId` value
     echo $nowId;

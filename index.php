@@ -1,7 +1,7 @@
 <!-- Working -->
- <?php
-                 session_start(); // Always start the session at the top
- ?>
+<?php
+session_start(); // Always start the session at the top
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1840,117 +1840,88 @@
                         <input id="showValue" type="text" readonly>
                 </div>
                 <?php
-                /*FROM HERE */
-                // $nowId;
-                // session_start();
-                // // $nowId = $_SESSION['cId'] ?? 'Not set'; 
-                // ?>
-                <!-- // <button class="butt0n" onclick="callFunctions()"><strong>CLICK</strong></button> -->
-                <script>
-                        //         let inJs = 1;
-                        //         function callFunctions() {
-                        //                 const xhr = new XMLHttpRequest();
-                        //                 xhr.open('POST', `changeId.php`, true);
-                        //                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                        //                 xhr.onprogress = function () {
-                        //                         // alert(`onprogress`);
-                        //                 }
+                require "script.php";
 
-                        //                 xhr.onload = function () {
-                        //                         let ans = this.response;
-                        //                         alert(`response From Ajax Is: ${ans}`);
-                        //                 }
-                        //                 xhr.send(`inJs=${encodeURIComponent(inJs)}`);
-                        //                 numberValue();
-                        //         }
-                        // </script>
-                // <?php
-                // $nowId = $_SESSION['cId'];
-                // // echo $nowId;
-                // //Getting Ip {
-                // require 'connection_db.php';
-                // try {
-                //         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
-                //         $stmt->execute([$nowId]);
-                //         $nowIp = $stmt->fetchColumn();
-                //         echo "<h1>Now IP:\"$nowIp\"</h1>";
-                // } catch (PDOException $e) {
-                //         echo 'Database error: ' . $e->getMessage();
-                // }
-                // //Getting Ip }
-                // // Able/Disable Button {
-                // if ($_SERVER['REMOTE_ADDR'] != $nowIp) {
-                //         echo '<script type="text/javascript">
-                //         document.querySelector(".butt0n").style.cursor = "not-allowed";
-                //         document.querySelector(".butt0n").disabled = true;
-                //         </script>';
-                // } else {
-                //         echo '<script type="text/javascript">
-                //         document.querySelector(".butt0n").style.cursor = "pointer";
-                //         document.querySelector(".butt0n").disabled = false;
-                //         </script>';
-                // }
-                // //Able/Disable Button }
-                // /*To HERE */
-                ?>
-                <?php
-                require  `script.php`;               
                 // Initialize the session variable if it hasn't been set
-                if (!isset($_SESSION['cId'])) {
-                        $_SESSION['cId'] = null; // Or set it to a default value, e.g., 1
+                if (!isset($_SESSION['got'])) {
+                        $_SESSION['got'] = 1; // Set a default value
                 }
 
-                $nowId = $_SESSION['cId'] ?? null; // Use null coalescing to avoid undefined index errors
-                
+                $nowId = $_SESSION['got'];
+                echo "ID Came: $nowId";
                 ?>
 
                 <button class="butt0n" onclick="callFunctions()"><strong>CLICK</strong></button>
                 <script>
-                        let inJs = 1;
+                        let send = 2;
+                        let start = false;
+                        alert(`Sending: ${send}`);
                         function callFunctions() {
-                                const xhr = new XMLHttpRequest();
-                                xhr.open('POST', 'changeId.php', true);
-                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                                if (start == true) {
+                                        send++;
+                                        const xhr = new XMLHttpRequest();
+                                        xhr.open('POST', 'changeId.php', true);
+                                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-                                xhr.onload = function () {
-                                        let ans = this.response;
-                                        alert(`Response From Ajax Is: ${ans}`);
-                                };
+                                        xhr.onload = function () {
+                                                let ans = this.response;
+                                                // alert(`Response From Ajax Is: ${ans}`);
 
-                                xhr.send(`inJs=${encodeURIComponent(inJs)}`);
+                                                // Refresh the page to see the updated session value Had Not Saw This
+                                                // window.location.reload();//This Line Was Refreshing The Page, Was Not The AJAX Property That's Why Started Thinkin A New Idea That Make A New Column In DataBase now_term default wise that should be 1 and check from that fied that Who Is Next According To Id Measn Is Default Wise 1 Is First So After Clicking The Button Next Should Be 2 And After 3 And After 4 And After Again 1 These All Had To Do With Querries,
+                                        };
+
+                                        xhr.send(`send=${encodeURIComponent(send)}`);
+                                }
+
+                                else {
+                                        start == true;
+                                        const xhr = new XMLHttpRequest();
+                                        xhr.open('POST', 'changeId.php', true);
+                                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                                        xhr.onload = function () {
+                                                let ans = this.response;
+                                                // alert(`Response From Ajax Is: ${ans}`);
+
+                                                // Refresh the page to see the updated session value Had Not Saw This
+                                                // window.location.reload();//This Line Was Refreshing The Page, Was Not The AJAX Property That's Why Started Thinkin A New Idea That Make A New Column In DataBase now_term default wise that should be 1 and check from that fied that Who Is Next According To Id Measn Is Default Wise 1 Is First So After Clicking The Button Next Should Be 2 And After 3 And After 4 And After Again 1 These All Had To Do With Querries,
+                                        };
+
+                                        xhr.send(`send=${encodeURIComponent(send)}`);
+                                }
                                 numberValue();
                         }
+
+                        // Alert to show the initial session value
+                        // alert('<?php echo "Reciving: " . $_SESSION["got"]; ?>');
                 </script>
 
                 <?php
                 // Getting IP
+                $nowId = $_SESSION["got"];
                 require 'connection_db.php';
-
                 try {
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
-                        $stmt->execute([$nowId]);
+                        $stmt->execute([2]);
                         $nowIp = $stmt->fetchColumn();
-
                         echo "<h1>Now IP: \"$nowIp\"</h1>";
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
                 }
 
                 // Able/Disable Button
-                if ($nowIp && $_SERVER['REMOTE_ADDR'] !== $nowIp) {
+                if ($_SERVER['REMOTE_ADDR'] !== $nowIp) {
                         echo '<script type="text/javascript">
-    document.querySelector(".butt0n").style.cursor = "not-allowed";
-    document.querySelector(".butt0n").disabled = true;
-    </script>';
+            document.querySelector(".butt0n").style.cursor = "not-allowed";
+            document.querySelector(".butt0n").disabled = true;
+        </script>';
                 } else {
                         echo '<script type="text/javascript">
-    document.querySelector(".butt0n").style.cursor = "pointer";
-    document.querySelector(".butt0n").disabled = false;
-    </script>';
+            document.querySelector(".butt0n").style.cursor = "pointer";
+            document.querySelector(".butt0n").disabled = false;
+        </script>';
                 }
                 ?>
-
-
         </div>
         <div id="show">
                 <div id="show-inner">
