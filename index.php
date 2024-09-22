@@ -1,4 +1,7 @@
 <!-- Working -->
+ <?php
+                 session_start(); // Always start the session at the top
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,9 +12,9 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
                 integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
                 crossorigin="anonymous">
-        <!-- <link rel="stylesheet" href="./css/Rectangle.css"> -->
+        <link rel="stylesheet" href="./css/Rectangle.css">
         <!-- <link rel="stylesheet" href="style.css"> -->
-        <link rel="stylesheet" href="./css/fix.css">
+        <!-- <link rel="stylesheet" href="./css/fix.css"> -->
         <script>
                 // document.addEventListener('contextmenu', function (e) {
                 //     e.preventDefault();
@@ -21,7 +24,6 @@
 
 <body>
         <div class="grid-container">
-
                 <div class="grid-item" id="grid_100">100
                         <div class="d-flex-col left-col">
                                 <div class="left-top p1">
@@ -1837,51 +1839,118 @@
                 <div class="numbers">
                         <input id="showValue" type="text" readonly>
                 </div>
-                <?php require 'script.php';
-                $nowId = 2;
-                ?>
-                <button class="butt0n" onclick="callTwoFuncs()"><strong>CLICK</strong></button>
+                <?php
+                /*FROM HERE */
+                // $nowId;
+                // session_start();
+                // // $nowId = $_SESSION['cId'] ?? 'Not set'; 
+                // ?>
+                <!-- // <button class="butt0n" onclick="callFunctions()"><strong>CLICK</strong></button> -->
                 <script>
-                        function callTwoFuncs() {
-                                // callSecondFunc();
-                                addEventListener("click", function () {
-                                        <?php
-                                        $nowId = match ($nowId) {
-                                                // 1 => 2,
-                                                // 2 => 1,
-                                                default => $nowId,
-                                        };
-                                        ?>
-                                });
+                        //         let inJs = 1;
+                        //         function callFunctions() {
+                        //                 const xhr = new XMLHttpRequest();
+                        //                 xhr.open('POST', `changeId.php`, true);
+                        //                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                        //                 xhr.onprogress = function () {
+                        //                         // alert(`onprogress`);
+                        //                 }
+
+                        //                 xhr.onload = function () {
+                        //                         let ans = this.response;
+                        //                         alert(`response From Ajax Is: ${ans}`);
+                        //                 }
+                        //                 xhr.send(`inJs=${encodeURIComponent(inJs)}`);
+                        //                 numberValue();
+                        //         }
+                        // </script>
+                // <?php
+                // $nowId = $_SESSION['cId'];
+                // // echo $nowId;
+                // //Getting Ip {
+                // require 'connection_db.php';
+                // try {
+                //         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
+                //         $stmt->execute([$nowId]);
+                //         $nowIp = $stmt->fetchColumn();
+                //         echo "<h1>Now IP:\"$nowIp\"</h1>";
+                // } catch (PDOException $e) {
+                //         echo 'Database error: ' . $e->getMessage();
+                // }
+                // //Getting Ip }
+                // // Able/Disable Button {
+                // if ($_SERVER['REMOTE_ADDR'] != $nowIp) {
+                //         echo '<script type="text/javascript">
+                //         document.querySelector(".butt0n").style.cursor = "not-allowed";
+                //         document.querySelector(".butt0n").disabled = true;
+                //         </script>';
+                // } else {
+                //         echo '<script type="text/javascript">
+                //         document.querySelector(".butt0n").style.cursor = "pointer";
+                //         document.querySelector(".butt0n").disabled = false;
+                //         </script>';
+                // }
+                // //Able/Disable Button }
+                // /*To HERE */
+                ?>
+                <?php
+                require  `script.php`;               
+                // Initialize the session variable if it hasn't been set
+                if (!isset($_SESSION['cId'])) {
+                        $_SESSION['cId'] = null; // Or set it to a default value, e.g., 1
+                }
+
+                $nowId = $_SESSION['cId'] ?? null; // Use null coalescing to avoid undefined index errors
+                
+                ?>
+
+                <button class="butt0n" onclick="callFunctions()"><strong>CLICK</strong></button>
+                <script>
+                        let inJs = 1;
+                        function callFunctions() {
+                                const xhr = new XMLHttpRequest();
+                                xhr.open('POST', 'changeId.php', true);
+                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                                xhr.onload = function () {
+                                        let ans = this.response;
+                                        alert(`Response From Ajax Is: ${ans}`);
+                                };
+
+                                xhr.send(`inJs=${encodeURIComponent(inJs)}`);
                                 numberValue();
                         }
                 </script>
+
                 <?php
-                //Getting Ip {
+                // Getting IP
                 require 'connection_db.php';
+
                 try {
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
-                        $stmt->execute([$nowId]);//1
+                        $stmt->execute([$nowId]);
                         $nowIp = $stmt->fetchColumn();
-                        echo "<h1>IP Is $nowIp</h1>";
+
+                        echo "<h1>Now IP: \"$nowIp\"</h1>";
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
                 }
-                //Getting Ip }
-                //Able/Disable Button {
-                if ($_SERVER['REMOTE_ADDR'] != $nowIp) {
+
+                // Able/Disable Button
+                if ($nowIp && $_SERVER['REMOTE_ADDR'] !== $nowIp) {
                         echo '<script type="text/javascript">
-                        document.querySelector(".butt0n").style.cursor = "not-allowed";
-                        document.querySelector(".butt0n").disabled = true;
-                        </script>';
+    document.querySelector(".butt0n").style.cursor = "not-allowed";
+    document.querySelector(".butt0n").disabled = true;
+    </script>';
                 } else {
                         echo '<script type="text/javascript">
-                        document.querySelector(".butt0n").style.cursor = "pointer";
-                        document.querySelector(".butt0n").disabled = false;
-                        </script>';
+    document.querySelector(".butt0n").style.cursor = "pointer";
+    document.querySelector(".butt0n").disabled = false;
+    </script>';
                 }
-                //Able/Disable Button }
                 ?>
+
+
         </div>
         <div id="show">
                 <div id="show-inner">
@@ -1892,6 +1961,7 @@
                                                 <th col="3">Player Name</th>
                                                 <th col="3">Player Pehchaan</th>
                                                 <th col="3">Ip Address</th>
+                                                <th col="3">Remove</th>
                                         </tr>
                                 </thead>
                                 <tbody class="bg-success text-white">
@@ -1907,10 +1977,24 @@
                                                         $x .= "<td>" . $record['name'] . "</td>";
                                                         $x .= "<td><img src='{$record['profile']}' alt='Profile Picture' style='width: 100px; height: auto;'></td>";
                                                         $x .= "<td>" . $record['ip_address'] . "</td>";
+                                                        $x .= "<td><form><button style='background-color: red;' value='" . $record['id'] . "' name='del'>DELETE</button></form></td>";
                                                         echo '</tr><br>' . $x;
                                                 }
                                         } catch (PDOException $e) {
                                                 echo 'Database error: ' . $e->getMessage();
+                                        }
+                                        // $deleteFromId=$_GET['del'];
+                                        // $stmt = $pdo->prepare('TRUNCATE FROM user_information WHERE condition id=?;');
+                                        // $stmt->execute([$deleteFromId]);
+                                        if (isset($_GET['del'])) {
+                                                $deleteFromId = $_GET['del'];
+
+                                                // Prepare DELETE query to remove the specific record
+                                                $stmt = $pdo->prepare('DELETE FROM user_information WHERE id = ?');
+                                                $stmt->execute([$deleteFromId]);
+
+                                                // Redirect to prevent form resubmission on refresh
+                                                // header("Location: index.php"); // Replace 'your_page.php' with your actual page
                                         }
                                         ?>
                                 <tbody>
@@ -1922,5 +2006,38 @@
         </div>
         <!-- <script src="script.php"></script> -->
 </body>
+
 </html>
 <!-- Working -->
+
+<!-- 
+
+
+<script>
+                        let btnForAjax = document.getElementById('butt0n');
+                        btnForAjax.addEventListener('click', function () {
+                                const xhr = new XMLHttpRequest();
+
+                                xhr.open(`POST`, `changeId.php`, true);
+
+                                xhr.onprogress = function () {
+                                        console.log(`जारी है`);
+                                }
+                                xhr.onload = function () {
+                                        if (xhr.status === 200) {
+                                                let ans = this.response; // Get the response from changeId.php
+                                                alert('Received ID:', ans); // Use the value as needed
+                                                alert(ans); // Show the value to the user
+                                        } else {
+                                                console.error('Error fetching data:', xhr.statusText);
+                                        }
+                                };
+                                xhr.send(`?$nowId=1`);
+                        });
+                </script>
+                <?php
+                // if (isset($_POST['Id'])) {
+                //         $nowId = intval($_POST['Id']); // Store the received value in a PHP variable
+                //         // Do something with $nowId
+                // }
+                // $nowId++;

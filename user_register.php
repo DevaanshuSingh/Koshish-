@@ -14,15 +14,19 @@
         }
 
         .name_label {
-            background-color: rgb(28, 229, 229);
+            background-color: rgb(28, 229, 229, .8);
             width: 20vw;
-            border-top-right-radius: 100%;
+            /* border-top-right-radius: 100%; */
+            position: relative;
+            left: 1vh;
         }
 
         .picture_label {
-            background-color: rgb(28, 229, 229);
+            background-color: rgb(28, 229, 229, .8);
             width: 20vw;
-            border-top-right-radius: 100%;
+            /* border-top-right-radius: 100%; */
+            position: relative;
+            left: 1vh;
         }
 
         #picture {
@@ -32,9 +36,9 @@
         .btn {
             position: relative;
             top: 5vh;
-            transform: rotate(90deg);
-            border-top-left-radius: 70%;
-            border-bottom-left-radius: 70%;
+            /* transform: rotate(90deg); */
+            /* border-top-left-radius: 70%;
+            border-bottom-left-radius: 70%; */
         }
     </style>
 </head>

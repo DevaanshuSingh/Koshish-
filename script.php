@@ -1,37 +1,34 @@
 <!-- In Js {-->
-<!-- <body>
-    <input type="hidden" name value="">
-</body> -->
 <?php
 // $dice = "<script>Math.floor(Math.random() * 6) + 1;</script>";
 // echo "alert($dice)";                                         ,
 ?>
 <script>
+    /*Random Number Genertor In The Range Of 1 To 6*/
     function numberValue() {
-        /*Random Number Genertor*/
         var x = Math.floor(Math.random() * 6) + 1;
         document.getElementById('showValue').value = x;//4
-        // alert(x);
         changeThePosFunc(x);
     }
+    //p=Player:(p1=Player1);
     let wholeGrid;
     let nextposp1;
     let currentPosp1 = 1;
     function changeThePosFunc(dice) {
-        wholeGrid = document.getElementById(`grid_${currentPosp1}`);
+        wholeGrid = document.getElementById(`grid_${ currentPosp1 }`);
         let playerDivPrev = wholeGrid.querySelector(`.p1`);
         playerDivPrev.style.transition = 'background-color 1s ease';
         playerDivPrev.style.backgroundColor = 'rgba(0, 0, 0, 0)';
 
         nextposp1 = currentPosp1 + dice;
-        wholeGrid = document.getElementById(`grid_${nextposp1}`);
+        wholeGrid = document.getElementById(`grid_${ nextposp1 }`);
         let playerDiv = wholeGrid.querySelector(`.p1`);
         if (playerDiv) {
             playerDiv.style.transition = 'background-color 1s ease';
             playerDiv.style.backgroundColor = 'red';
         }
         else
-            console.log(`.p1-${nextposp1} not found in grid_${nextposp1}`);
+            console.log(`.p1 - ${ nextposp1 } not found in grid_${ nextposp1 }`);
             currentPosp1 = nextposp1;
             if (nextposp1 == 100)
                 alert(`You Won`);
@@ -40,23 +37,11 @@
     }
 </script>
 <!-- In Js }-->
+
 <!-- Try To Do This Js Work In PHP -->
-<!-- In PHP { -->
-<?php
-$dice;
-if (isset($_POST["btn"])) {
-    numberValue();
-}
-function numberValue()
-{
-    $dice = rand(1, 6);
-}
-?>
-<!-- In PHP } -->
-
-
-
-
+<!-- { -->
+<!-- Trying -->
+<!-- } -->
 
 <!-- // duto ke add kore joto aache maane currentpos + dice= joto aaslo
 //                                           nextPos= currentPos + Dice;
