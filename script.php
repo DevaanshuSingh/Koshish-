@@ -44,6 +44,20 @@
 <!-- Trying -->
 <!-- } -->
 
+
+<!-- <script>
+    // bcg_Section
+    let colorIs = document.getElementById("colorInput");
+let change = document.getElementById("change");
+
+colorIs.addEventListener("input",function(){
+    alert(7);
+    const color = colorIs.value;
+    change.textContent = color.toUpperCase();
+    document.body.style.backgroundColor=`${color} !important`;
+});
+</script> -->
+
 <!-- // duto ke add kore joto aache maane currentpos + dice= joto aaslo
 //                                           nextPos= currentPos + Dice;
 //                                          nextPos=  1+4;

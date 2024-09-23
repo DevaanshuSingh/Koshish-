@@ -1848,7 +1848,7 @@ session_start(); // Always start the session at the top
                 }
 
                 $nowId = $_SESSION['got'];
-                echo "ID Came: $nowId";
+                // echo "ID Came: $nowId";
                 ?>
 
                 <button class="butt0n" onclick="callFunctions()"><strong>CLICK</strong></button>
@@ -1904,7 +1904,7 @@ session_start(); // Always start the session at the top
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
                         $stmt->execute([2]);
                         $nowIp = $stmt->fetchColumn();
-                        echo "<h1>Now IP: \"$nowIp\"</h1>";
+                        // echo "<h1>Now IP: \"$nowIp\"</h1>";
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
                 }
@@ -1922,6 +1922,16 @@ session_start(); // Always start the session at the top
         </script>';
                 }
                 ?>
+                <?php 
+                require "script.php";
+                ?>
+
+                <div class="cont">
+                        <label for="colorInput">
+                                <span id="change"><strong>CHOOSE COLOR</strong></span>
+                        </label>
+                        <input type="color" id="colorInput"><br>
+                </div>
         </div>
         <div id="show">
                 <div id="show-inner">
@@ -1976,6 +1986,17 @@ session_start(); // Always start the session at the top
                 </div>
         </div>
         <!-- <script src="script.php"></script> -->
+         <script>
+    // bcg_Section
+    let colorIs = document.getElementById("colorInput");
+let change = document.getElementById("change");
+
+colorIs.addEventListener("input",function(){
+    const color = colorIs.value;
+    change.textContent = color.toUpperCase();
+    document.body.style.backgroundColor=`${color}`;
+});
+</script>
 </body>
 
 </html>
