@@ -3,7 +3,7 @@
 // $dice = "<script>Math.floor(Math.random() * 6) + 1;</script>";
 // echo "alert($dice)";                                         ,
 ?>
-<script>
+<!-- <script>
     /*Random Number Genertor In The Range Of 1 To 6*/
     function numberValue() {
         var x = Math.floor(Math.random() * 6) + 1;
@@ -36,8 +36,63 @@
             else if (nextposp1 > 100)
                 alert(`You Won Above`);
     }
-</script>
+</script> -->
 <!-- In Js }-->
+
+<!-- Trying To Add the feature not only select p1 or p2 instead of Select P${Id} this is versatile Which Is Needed -->
+
+<script>
+    /*Random Number Genertor In The Range Of 1 To 6*/
+    function numberValue() {
+        // alert(`Inside NumberValue Function`);
+        var x = Math.floor(Math.random() * 6) + 1;
+        document.getElementById('showValue').value = x;//4
+        changeThePosFunc(x);
+    }
+    //p=Player:(p1=Player1);
+    let wholeGrid;
+    let nextposp1;
+    let currentPosp1 = 1;
+    function changeThePosFunc(dice) {
+        // alert('inside Change');
+        wholeGrid = document.getElementById(`grid_${currentPosp1}`);
+        let playerDivPrev = wholeGrid.querySelector(`.p1`);
+        playerDivPrev.style.transition = 'background-color 1s ease';
+        playerDivPrev.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+
+        nextposp1 = currentPosp1 + dice;
+        wholeGrid = document.getElementById(`grid_${nextposp1}`);
+        let playerDiv = wholeGrid.querySelector(`.p1`);
+        if (playerDiv) {
+            playerDiv.style.transition = 'background-color 1s ease';
+            playerDiv.style.backgroundColor = 'red';
+        }
+        else
+            console.log(`.p1 - ${nextposp1} not found in grid_${nextposp1}`);
+        currentPosp1 = nextposp1;
+        if (nextposp1 == 100)
+            alert(`You Won`);
+        else if (nextposp1 > 100)
+            alert(`You Won Above`);
+    }
+    function truncateTable() {
+        // alert(`inside Truncate`);
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('GET', 'truncateT.php', true);
+
+        xhr.onprogress = function () {
+            // alert(`Onprogress`);
+        }
+        xhr.onload = function () {
+            // alert(`Loaded`);
+        }
+        xhr.send();
+    }
+</script>
+
+
+
 
 <!-- Try To Do This Js Work In PHP -->
 <!-- { -->

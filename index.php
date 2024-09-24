@@ -1841,74 +1841,42 @@ session_start(); // Always start the session at the top
                 </div>
                 <?php
                 require "script.php";
-
-                // Initialize the session variable if it hasn't been set
-                if (!isset($_SESSION['got'])) {
-                        $_SESSION['got'] = 1; // Set a default value
-                }
-
-                $nowId = $_SESSION['got'];
-                // echo "ID Came: $nowId";
-                ?>
-
-                <button class="butt0n" onclick="callFunctions()"><strong>CLICK</strong></button>
-                <script>
-                        let send = 2;
-                        let start = false;
-                        alert(`Sending: ${send}`);
-                        function callFunctions() {
-                                if (start == true) {
-                                        send++;
-                                        const xhr = new XMLHttpRequest();
-                                        xhr.open('POST', 'changeId.php', true);
-                                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-                                        xhr.onload = function () {
-                                                let ans = this.response;
-                                                // alert(`Response From Ajax Is: ${ans}`);
-
-                                                // Refresh the page to see the updated session value Had Not Saw This
-                                                // window.location.reload();//This Line Was Refreshing The Page, Was Not The AJAX Property That's Why Started Thinkin A New Idea That Make A New Column In DataBase now_term default wise that should be 1 and check from that fied that Who Is Next According To Id Measn Is Default Wise 1 Is First So After Clicking The Button Next Should Be 2 And After 3 And After 4 And After Again 1 These All Had To Do With Querries,
-                                        };
-
-                                        xhr.send(`send=${encodeURIComponent(send)}`);
-                                }
-
-                                else {
-                                        start == true;
-                                        const xhr = new XMLHttpRequest();
-                                        xhr.open('POST', 'changeId.php', true);
-                                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                                        xhr.onload = function () {
-                                                let ans = this.response;
-                                                // alert(`Response From Ajax Is: ${ans}`);
-
-                                                // Refresh the page to see the updated session value Had Not Saw This
-                                                // window.location.reload();//This Line Was Refreshing The Page, Was Not The AJAX Property That's Why Started Thinkin A New Idea That Make A New Column In DataBase now_term default wise that should be 1 and check from that fied that Who Is Next According To Id Measn Is Default Wise 1 Is First So After Clicking The Button Next Should Be 2 And After 3 And After 4 And After Again 1 These All Had To Do With Querries,
-                                        };
-
-                                        xhr.send(`send=${encodeURIComponent(send)}`);
-                                }
-                                numberValue();
-                        }
-
-                        // Alert to show the initial session value
-                        // alert('<?php echo "Reciving: " . $_SESSION["got"]; ?>');
-                </script>
-
-                <?php
-                // Getting IP
-                $nowId = $_SESSION["got"];
+                if (!isset($_SESSION["changed"])) {
+                        $_SESSION["changed"] = 1; // Initialize with a default value
+                    }
+                    $nowId = $_SESSION["changed"];
                 require 'connection_db.php';
                 try {
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
-                        $stmt->execute([2]);
+                        $stmt->execute([$nowId]);
                         $nowIp = $stmt->fetchColumn();
-                        // echo "<h1>Now IP: \"$nowIp\"</h1>";
+                        echo "<h1>Now IP($nowId): \"$nowIp\"</h1>";
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
                 }
-
+                ?>
+                <button class="butt0n" onclick="runLoop()"><strong>CLICK</strong></button>
+                <script>
+                        let nowId = 1;
+                        function runLoop() {
+                                alert(`nowId: ${nowId}`);
+                                const xhr = new XMLHttpRequest();
+                                xhr.open('POST', 'changeId.php', true);
+                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                                xhr.onload = function () {
+                                        if (xhr.status === 200) {
+                                                nowId = xhr.responseText;
+                                                alert(`New ID: ${nowId}`);
+                                        }
+                                };
+                                xhr.send('nowId=' + nowId);
+                                numberValue();
+                        }
+                </script>
+                <?php
+                // Getting IP
+                $nowId = $_SESSION["changed"];
+                //Here Was the try,catch block of fetching ip_address
                 // Able/Disable Button
                 if ($_SERVER['REMOTE_ADDR'] !== $nowIp) {
                         echo '<script type="text/javascript">
@@ -1922,7 +1890,7 @@ session_start(); // Always start the session at the top
         </script>';
                 }
                 ?>
-                <?php 
+                <?php
                 require "script.php";
                 ?>
 
@@ -1949,6 +1917,7 @@ session_start(); // Always start the session at the top
                                         <?php
                                         // Database connection
                                         require 'connection_db.php';
+                                        require 'script.php';
                                         try {
                                                 $stmt = $pdo->query('select * from user_information');
                                                 $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1958,7 +1927,7 @@ session_start(); // Always start the session at the top
                                                         $x .= "<td>" . $record['name'] . "</td>";
                                                         $x .= "<td><img src='{$record['profile']}' alt='Profile Picture' style='width: 100px; height: auto;'></td>";
                                                         $x .= "<td>" . $record['ip_address'] . "</td>";
-                                                        $x .= "<td><form><button style='background-color: red;' value='" . $record['id'] . "' name='del'>DELETE</button></form></td>";
+                                                        $x .= "<td><form><button onclick='truncateTable()' style='background-color: red; color: white'>TRUNCATE</button></form></td>";
                                                         echo '</tr><br>' . $x;
                                                 }
                                         } catch (PDOException $e) {
@@ -1985,27 +1954,22 @@ session_start(); // Always start the session at the top
                         ?>
                 </div>
         </div>
-        <!-- <script src="script.php"></script> -->
-         <script>
-    // bcg_Section
-    let colorIs = document.getElementById("colorInput");
-let change = document.getElementById("change");
+        <script>
+                // bcg_Section
+                let colorIs = document.getElementById("colorInput");
+                let change = document.getElementById("change");
 
-colorIs.addEventListener("input",function(){
-    const color = colorIs.value;
-    change.textContent = color.toUpperCase();
-    document.body.style.backgroundColor=`${color}`;
-});
-</script>
+                colorIs.addEventListener("input", function () {
+                        const color = colorIs.value;
+                        change.textContent = color.toUpperCase();
+                        document.body.style.backgroundColor = `${color}`;
+                });
+        </script>
 </body>
 
 </html>
 <!-- Working -->
-
-<!-- 
-
-
-<script>
+<!-- <script>
                         let btnForAjax = document.getElementById('butt0n');
                         btnForAjax.addEventListener('click', function () {
                                 const xhr = new XMLHttpRequest();
@@ -2033,3 +1997,4 @@ colorIs.addEventListener("input",function(){
                 //         // Do something with $nowId
                 // }
                 // $nowId++;
+                ?>

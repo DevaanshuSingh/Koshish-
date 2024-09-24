@@ -1,3 +1,7 @@
+<!-- Working -->
+<?php
+session_start(); // Always start the session at the top
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,20 +12,18 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
                 integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
                 crossorigin="anonymous">
-        <link rel="stylesheet" href="Rectangle.css">
+        <link rel="stylesheet" href="./css/Rectangle.css">
         <!-- <link rel="stylesheet" href="style.css"> -->
-        <!-- <link rel="stylesheet" href="backLogic.php"> -->
+        <!-- <link rel="stylesheet" href="./css/fix.css"> -->
         <script>
-
                 // document.addEventListener('contextmenu', function (e) {
                 //     e.preventDefault();
                 // });
-
         </script>
 </head>
+
 <body>
         <div class="grid-container">
-
                 <div class="grid-item" id="grid_100">100
                         <div class="d-flex-col left-col">
                                 <div class="left-top p1">
@@ -1837,59 +1839,94 @@
                 <div class="numbers">
                         <input id="showValue" type="text" readonly>
                 </div>
-                <?php 
-                require 'script.php';
-                ?>
-                <!-- in js -->
-                <button class="butt0n" onclick="numberValue()"><strong>CLICK</strong></button>
-                 <!-- in js -->
-
                 <?php
-                // $nowidIp = '192.168.1.3';//get ip from d.b  id=2 (DATA FETCH)******
-                //Trying For Getting  Ip Address Of Each Playeres{
-                // $userWon=false;
-                // $nowId=1;
-                        // require 'connection_db.php';
-                        //Getting Winning Position
-                        // try {
-                        //         $stmt = $pdo->query("select currentPos from performance");
-                        //         $CheckPosIfWon = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        //         foreach($CheckPosIfWon as $pos){
-                        //                 if($pos==100)
-                        //                         $userWon = true;
-                        //         }
-                        // } catch (PDOException $e) {
-                        //         echo 'Database error: ' . $e->getMessage();
-                        // }
-                        //Getting Winning Position
-                        //Getting Ip
-                        // try {
-                        //         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
-                                
-                        //         $stmt->execute([$nowId]);
-                                
-                        //         // Fetch the result as an associative array
-                        //         $nowIp = $stmt->fetch(PDO::FETCH_COLUMN);
-                                // echo "<h1>Ip Is $nowIp </h1>";
-                        // } catch (PDOException $e) {
-                        //         echo 'Database error: ' . $e->getMessage();
-                        // }                            
-                        //Getting Ip
-                //Trying For Getting  Ip Address Of Each Playeres}
-                // $nowIp='127.0.0.1';
-                        // if ($_SERVER['REMOTE_ADDR'] != $nowIp) {
-                        //         echo '<script type="text/javascript">
-                        //         document.querySelector(".butt0n").style.cursor = "not-allowed";
-                        //         document.querySelector(".butt0n").disabled = true;
-                        //         </script>';
-                        // } else {
-                        //         echo '<script type="text/javascript">
-                        //         document.querySelector(".butt0n").style.cursor = "pointer";
-                        //         document.querySelector(".butt0n").disabled = false;
-                        //         </script>';
-                        // }
+                require "script.php";
                 ?>
-                <!-- <a href="user_register.php">Register</a> -->
+                <script>
+                        let send = 2;
+                        start = false;
+                </script>
+
+                <button class="butt0n" onclick="callFunctions()"><strong>CLICK</strong></button>
+
+                <script>
+                        function callFunctions() {
+                                alert(`Inside CAllFunctions`);
+                                alert(`Sending: ${send}`);
+                                if (start == true) {
+                                        alert(`Inside If Condition`);
+                                        send++;
+                                        const xhr = new XMLHttpRequest();
+                                        xhr.open('POST', 'changeId.php', true);
+                                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                                        xhr.onload = function () {
+                                                let ans = this.response;
+                                                alert(`Response From Ajax Is: ${ans}`);
+
+                                                // Refresh the page to see the updated session value Had Not Saw This
+                                                // window.location.reload();//This Line Was Refreshing The Page, Was Not The AJAX Property That's Why Started Thinkin A New Idea That Make A New Column In DataBase now_term default wise that should be 1 and check from that fied that Who Is Next According To Id Measn Is Default Wise 1 Is First So After Clicking The Button Next Should Be 2 And After 3 And After 4 And After Again 1 These All Had To Do With Querries,
+                                        };
+
+                                        xhr.send(`send=${encodeURIComponent(send)}`);
+                                } else {
+                                        start == true;
+                                        alert(`Inside Else Condition`);
+                                        const xhr = new XMLHttpRequest();
+                                        xhr.open('POST', 'changeId.php', true);
+                                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                                        xhr.onload = function () {
+                                                let ans = this.response;
+                                                alert(`Response From Ajax Is: ${ans}`);
+
+                                                // Refresh the page to see the updated session value Had Not Saw This
+                                                // window.location.reload();//This Line Was Refreshing The Page, Was Not The AJAX Property That's Why Started Thinkin A New Idea That Make A New Column In DataBase now_term default wise that should be 1 and check from that fied that Who Is Next According To Id Measn Is Default Wise 1 Is First So After Clicking The Button Next Should Be 2 And After 3 And After 4 And After Again 1 These All Had To Do With Querries,
+                                        };
+
+                                        xhr.send(`send=${encodeURIComponent(send)}`);
+                                }
+                                numberValue();
+                        }
+
+                        // Alert to show the initial session value
+                        alert('<?php echo "Reciving: " . $_SESSION["got"]; ?>');
+                </script>
+                <?php
+                // Getting IP
+                $nowId = $_SESSION["got"];
+                require 'connection_db.php';
+                try {
+                        $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
+                        $stmt->execute([$nowId]);
+                        $nowIp = $stmt->fetchColumn();
+                        echo "<h1>Now IP: \"$nowIp\"</h1>";
+                } catch (PDOException $e) {
+                        echo 'Database error: ' . $e->getMessage();
+                }
+
+                // Able/Disable Button
+                if ($_SERVER['REMOTE_ADDR'] !== $nowIp) {
+                        echo '<script type="text/javascript">
+            document.querySelector(".butt0n").style.cursor = "not-allowed";
+            document.querySelector(".butt0n").disabled = true;
+        </script>';
+                } else {
+                        echo '<script type="text/javascript">
+            document.querySelector(".butt0n").style.cursor = "pointer";
+            document.querySelector(".butt0n").disabled = false;
+        </script>';
+                }
+                ?>
+                <?php
+                require "script.php";
+                ?>
+
+                <div class="cont">
+                        <label for="colorInput">
+                                <span id="change"><strong>CHOOSE COLOR</strong></span>
+                        </label>
+                        <input type="color" id="colorInput"><br>
+                </div>
         </div>
         <div id="show">
                 <div id="show-inner">
@@ -1900,86 +1937,136 @@
                                                 <th col="3">Player Name</th>
                                                 <th col="3">Player Pehchaan</th>
                                                 <th col="3">Ip Address</th>
+                                                <th col="3">Remove</th>
                                         </tr>
                                 </thead>
                                 <tbody class="bg-success text-white">
                                         <?php
                                         // Database connection
                                         require 'connection_db.php';
+                                        require 'script.php';
                                         try {
                                                 $stmt = $pdo->query('select * from user_information');
                                                 $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 foreach ($records as $record) {
-                                                        $x = "<tr>";//Names From/Of Database's Columns
+                                                        $x = "<tr>";
                                                         $x .= "<td>" . $record['id'] . ".</td>";
                                                         $x .= "<td>" . $record['name'] . "</td>";
                                                         $x .= "<td><img src='{$record['profile']}' alt='Profile Picture' style='width: 100px; height: auto;'></td>";
                                                         $x .= "<td>" . $record['ip_address'] . "</td>";
+                                                        $x .= "<td><form><button onclick='truncateTable()' style='background-color: red; color: white'>TRUNCATE</button></form></td>";
                                                         echo '</tr><br>' . $x;
                                                 }
-                                                // while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                                //    echo "<option value=\"{$row['id']}\">{$row['qualification_name']}</option>";
-                                                // }//here
                                         } catch (PDOException $e) {
                                                 echo 'Database error: ' . $e->getMessage();
+                                        }
+                                        // $deleteFromId=$_GET['del'];
+                                        // $stmt = $pdo->prepare('TRUNCATE FROM user_information WHERE condition id=?;');
+                                        // $stmt->execute([$deleteFromId]);
+                                        if (isset($_GET['del'])) {
+                                                $deleteFromId = $_GET['del'];
+
+                                                // Prepare DELETE query to remove the specific record
+                                                $stmt = $pdo->prepare('DELETE FROM user_information WHERE id = ?');
+                                                $stmt->execute([$deleteFromId]);
+
+                                                // Redirect to prevent form resubmission on refresh
+                                                // header("Location: index.php"); // Replace 'your_page.php' with your actual page
                                         }
                                         ?>
                                 <tbody>
                         </table>
                         <?php
-                        // echo $_POST['client_ip'];
-                        echo '<i>Ip_Address OF This Device Is <strong> '.$_SERVER['REMOTE_ADDR'].'</strong></i>';
+                        echo '<i>Ip_Address OF This Device Is <strong> ' . $_SERVER['REMOTE_ADDR'] . '</strong></i><br>';
                         ?>
                 </div>
         </div>
         <script>
+                // bcg_Section
+                let colorIs = document.getElementById("colorInput");
+                let change = document.getElementById("change");
 
-                <?php
-                // $nowidIp = '192.168.1.3';//get ip from d.b  id=2 (DATA FETCH)******
-                //Trying For Getting  Ip Address Of Each Playeres{
-                        $userWon=false;
-                        $nowId=1;
-                        require 'connection_db.php';
-                        require 'script.php';
-                        //Getting Winning Position
-                        // try {
-                        //         $stmt = $pdo->query("select currentPos from performance");
-                        //         $CheckPosIfWon = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        //         foreach($CheckPosIfWon as $pos){
-                        //                 if($pos==100)
-                        //                         $userWon = true;
-                        //         }
-                        // } catch (PDOException $e) {
-                        //         echo 'Database error: ' . $e->getMessage();
-                        // }
-
-                        //Getting Winning Position
-                        //Getting Ip
-                        try {
-
-                                $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
-                                $stmt->execute([$nowId]);
-                                $nowIp = $stmt->fetch(PDO::FETCH_COLUMN);
-                        } catch (PDOException $e) {
-                                echo 'Database error: ' . $e->getMessage();
-                        }
-
-                        //Getting Ip
-                // $nowIp='127.0.0.1';
-                if ($_SERVER['REMOTE_ADDR'] != '2') {
-                                echo '<script type="text/javascript">
-                                document.querySelector(".butt0n").style.cursor = "not-allowed";
-                                document.querySelector(".butt0n").disabled = true;
-                                </script>';
-                        } else {
-                                echo '<script type="text/javascript">
-                                document.querySelector(".butt0n").style.cursor = "pointer";
-                                document.querySelector(".butt0n").disabled = false;
-                                </script>';
-                        }
-                ?>
+                colorIs.addEventListener("input", function () {
+                        const color = colorIs.value;
+                        change.textContent = color.toUpperCase();
+                        document.body.style.backgroundColor = `${color}`;
+                });
         </script>
-        <!-- <script src="script.php"></script> -->
 </body>
 
 </html>
+<!-- Working -->
+<!-- <script>
+                        let btnForAjax = document.getElementById('butt0n');
+                        btnForAjax.addEventListener('click', function () {
+                                const xhr = new XMLHttpRequest();
+
+                                xhr.open(`POST`, `changeId.php`, true);
+
+                                xhr.onprogress = function () {
+                                        console.log(`जारी है`);
+                                }
+                                xhr.onload = function () {
+                                        if (xhr.status === 200) {
+                                                let ans = this.response; // Get the response from changeId.php
+                                                alert('Received ID:', ans); // Use the value as needed
+                                                alert(ans); // Show the value to the user
+                                        } else {
+                                                console.error('Error fetching data:', xhr.statusText);
+                                        }
+                                };
+                                xhr.send(`?$nowId=1`);
+                        });
+                </script>
+                <?php
+                // if (isset($_POST['Id'])) {
+                //         $nowId = intval($_POST['Id']); // Store the received value in a PHP variable
+                //         // Do something with $nowId
+                // }
+                // $nowId++;
+                ?>
+
+
+
+
+/*********************************************************CHANGEID>PHP***************************************************************/
+
+<?php
+session_start(); // Start the session
+
+// Check if the POST data exists
+if (isset($_POST['send'])) {
+    // Get and cast the POST data to an integer
+    $nowId = (int) $_POST['send'];
+
+    // Log the received value (for debugging)
+    ?>
+    <script>
+        alert("Received value: $nowId");
+    </script>
+    <?php
+
+    // Use the match expression to change the value
+    function circularPattern($nowId)
+    {
+        return ($nowId % 2) + 1;
+    }
+
+    $_SESSION['got'] = circularPattern($nowId);
+
+
+    // Store the new `nowId` in the session
+    // $_SESSION['got'] = $nowId;//17 Line
+
+    // Log the updated session value (for debugging)
+    ?>
+    <script>
+        alert("Updated session GOT: ".$_SESSION['got']);
+    </script>
+    <?php
+    // Output the new `nowId` value
+    echo $nowId;
+} else {
+    echo "No input provided";
+}
+?>
