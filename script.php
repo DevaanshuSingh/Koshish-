@@ -215,13 +215,48 @@
 </script>
 
 <script>
-    function numberValue(nowId) {
-        // alert(`Insede numberValue with Id: ${nowId}`); //OK
-        let dice = Math.floor(Math.random() * 6) + 1;
-        document.getElementById('showValue').value = dice;
-        changePos(nowId, dice);
+let pos = 1;
+function numberValue(nowId) {
+    let dice = Math.floor(Math.random() * 6) + 1; 
+    document.getElementById('showValue').value = dice;
+    alert(`dice: ${dice}`);
+    changePos(nowId,dice);
+}
+let Pos = 1;
+function changePos(nowId, dice){
+    let prevGrid = document.getElementById(`grid_${pos}`);
+    let prevPlayer = prevGrid.querySelector(`.p${nowId}`);
+
+    if (prevPlayer) {
+        prevPlayer.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+    }
+    pos += dice;
+    let newGrid = document.getElementById(`grid_${pos}`);
+    let newPlayer = newGrid.querySelector(`.p${nowId}`);
+    if (newPlayer) {
+        if (nowId == 1)
+            newPlayer.style.backgroundColor = 'red';
+        else if (nowId == 2)
+            newPlayer.style.backgroundColor = 'green';
+        else if (nowId == 3)
+            newPlayer.style.backgroundColor = 'yellow';
+        else if (nowId == 4)
+            newPlayer.style.backgroundColor = 'blue';
     }
 
+    const xhr = new XMLHttpRequest();
+    xhr.open(`POST`,`updatePosition.php`,true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Make sure to set the content type
+    xhr.onload = function(){
+        if (xhr.status === 200) {
+                alert(`Position Updated Of ID : ${nowId} Into ${updatedPos}`);
+            }
+        else
+            alert(`Have Not Updated The Position`);
+    }
+
+    xhr.send('nowId='+nowId+'&pos='+pos);
+}
     // let pos = 1;
     // function changePos(nowId, dice) {
     //     // alert(`Insede numberValue with Id: ${nowId} And Dice: ${dice}`); //OK
@@ -248,56 +283,77 @@
     //     // wholeGrid = document.getElementById(`grid_${nextpos}`);//For Next_Position
     //     // let playerDiv = wholeGrid.querySelector(`.p${nowId}`);
     // }
-    let pos = 1; // Current position of the player
 
-    function changePos(nowId, dice) {
-        // alert('inside Change');
-        wholeGrid = document.getElementById(`grid_${pos}`);
-        let playerDivPrev = wholeGrid.querySelector(`.p${nowId}`);
-        playerDivPrev.style.transition = 'background-color 1s ease';
-        playerDivPrev.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+// function changePos(nowId, dice) {
+//     let wholeGridPrev = document.getElementById(`grid_${pos}`);
+//     let playerDivPrev = wholeGridPrev.querySelector(`.p${nowId}`);
 
-        nxtpos = pos + dice;
-        wholeGrid = document.getElementById(`grid_${nxtpos}`);
-        let playerDiv = wholeGrid.querySelector(`.p${nowId}`);
-        if (playerDiv) {
-            playerDiv.style.transition = 'background-color 1s ease';
-            if (nowId == 1)
-                playerDiv.style.backgroundColor = 'red';
-            else if (nowId == 2)
-                playerDiv.style.backgroundColor = 'green';
+//     let nxtpos = pos + dice;
+//     let wholeGridNext = document.getElementById(`grid_${nxtpos}`);
+//     let playerDiv = wholeGridNext.querySelector(`.p${nowId}`);
 
-        }
-        pos = nxtpos;
-        if (nxtpos == 100 || nxtpos > 100)
-            alert(`player ${nowId} Won`);
+//     if (playerDiv) {
+//         playerDiv.style.transition = 'background-color 1s ease';
+//         playerDiv.style.backgroundColor = 'red';
+//     }
 
-        // pos += dice;
-        // let nextGrid = document.getElementById(`grid_${pos}`);
-        // if (!nextGrid) {
-        //     alert(`Grid not found for next position: grid_${pos}`);
-        //     return; // Exit if next grid is not found
-        // }
-        // let nextPlayerDiv = nextGrid.querySelector(`.p${nowId}`);
+//     if (playerDivPrev) {
+//         playerDivPrev.style.transition = 'background-color 1s ease';
+//         playerDivPrev.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+//     }
+//     pos = nxtpos;
+//     if (nxtpos == 100 || nxtpos > 100) {
+//         alert(`player ${nowId} Won`);
+//     }
+// }
 
-        // if (nextPlayerDiv) {
-        //     nextPlayerDiv.style.transition = `background-color 1s ease`;
-        //     nextPlayerDiv.style.backgroundColor = `red`;
-        //     if (nowId == 1)
-        //         playerDiv.style.backgroundColor = 'red';
-        //     else if (nowId == 2)
-        //         playerDiv.style.backgroundColor = 'green';
-        //     else if (nowId == 3)
-        //         playerDiv.style.backgroundColor = 'yellow';
-        //     else if (nowId == 4)
-        //         playerDiv.style.backgroundColor = 'blue';
-        // } else {
-        //     alert(`Player div not found for ID: ${nowId} in grid_${pos}`);
-        // }
+// function changePos(nowId,dice) {
+//         alert('inside Change');
+//         wholeGrid = document.getElementById(`grid_${ pos }`);
+//         let playerDivPrev = wholeGrid.querySelector(`.p1`);
+//         playerDivPrev.style.transition = 'background-color 1s ease';
+//         playerDivPrev.style.backgroundColor = 'rgba(0, 0, 0, 0)';
 
-        // playerDiv.style.transition = `background-color 1s ease`;
-        // playerDiv.style.backgroundColor = `rgba(0, 0, 0, 0)`;
+//         nxtpos = pos + dice;
+//         wholeGrid = document.getElementById(`grid_${ nxtpos }`);
+//         let playerDiv = wholeGrid.querySelector(`.p1`);
+//         if (playerDiv) {
+//             playerDiv.style.transition = 'background-color 1s ease';
+//             playerDiv.style.backgroundColor = 'red';
+//         }
+//         else
+//             console.log(`.p1 - ${ nxtpos } not found in grid_${ nxtpos }`);
+//             pos = nxtpos;
+//             if (nxtpos == 100)
+//                 alert(`You Won`);
+//             else if (nxtpos > 100)
+//                 alert(`You Won Above`);
+//     }
 
-    }
+            // pos += dice;
+            // let nextGrid = document.getElementById(`grid_${pos}`);
+            // if (!nextGrid) {
+            //     alert(`Grid not found for next position: grid_${pos}`);
+            //     return; // Exit if next grid is not found
+            // }
+            // let nextPlayerDiv = nextGrid.querySelector(`.p${nowId}`);
+    
+            // if (nextPlayerDiv) {
+            //     nextPlayerDiv.style.transition = `background-color 1s ease`;
+            //     nextPlayerDiv.style.backgroundColor = `red`;
+            //     if (nowId == 1)
+            //         playerDiv.style.backgroundColor = 'red';
+            //     else if (nowId == 2)
+            //         playerDiv.style.backgroundColor = 'green';
+            //     else if (nowId == 3)
+            //         playerDiv.style.backgroundColor = 'yellow';
+            //     else if (nowId == 4)
+            //         playerDiv.style.backgroundColor = 'blue';
+            // } else {
+            //     alert(`Player div not found for ID: ${nowId} in grid_${pos}`);
+            // }
+    
+            // playerDiv.style.transition = `background-color 1s ease`;
+            // playerDiv.style.backgroundColor = `rgba(0, 0, 0, 0)`;
 
 </script>

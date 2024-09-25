@@ -1895,16 +1895,14 @@ session_start(); // Always start the session at the top
                                         if (xhr.status == 200) {
                                                 nowId = xhr.responseText;
                                                 alert(`Reciveing Id: ${nowId}`);
+                                                numberValue(nowId);
                                         }
                                         else
                                                 alert(`Response From Server While Changing Id :`.xhr.response);
                                 };
                                 xhr.send(`nowId=`+nowId);
-                                //now Sending The Updated_Id To numberValue Function(In Script.php);
-                                numberValue(nowId);
                         }
                 </script>
-
                 <?php
                 // Getting IP
                 $nowId = $_SESSION["changed"];

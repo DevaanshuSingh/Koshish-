@@ -1,42 +1,16 @@
-<!-- $query = $pdo->prepare("UPDATE performance SET currentPos = ? WHERE id = ?");
-$query->execute([$currentPos, $idIs]); -->
 <?php
-//From here This Was Previous With Color Problem When Started The UpdatePos();;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-// session_start();
-// if (isset($_POST['nowId'])) { // Check if nowId is set
-//     $nowId = (int) $_POST['nowId'];
-//     $pos = (int) $_POST['currentPos'];
-// } else {
-//     $nowId = 0.0;
-//     $pos = 0.0;
-// }
-// try{
-//     $query = $pdo->prepare("UPDATE performance SET currentPos = ? WHERE id = ?");
-//     $query->execute([$pos, $nowId]);
-
-//     if ($query->execute([$pos, $nowId]) ) {
-//         echo ' <meta http-equiv="refresh" content="0; url=index.php">';
-//     } else {
-//         echo "Error: Could not register student.";
-//     }
-// }catch (PDOException $e) {
-//     echo 'Database error: ' . $e->getMessage();
-// }
-//to Here This Was Previous With Color Problem When Started The UpdatePos();;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-//Retrying
-//Retrying
-
-
-
-
-
-
-
-
-
-
-
+//Retrying{
+//update position in db;
+require "connection_db.php";
+try {
+    $nowId = $_POST['nowId'];
+    $pos = $_POST['pos'];
+    $stmt = $pdo->prepare("UPDATE performance SET currentPos = ? WHERE id = ?");
+    $stmt->execute([$pos, $nowId]);
+} catch (PDOException $e) {
+    echo 'Database error: ' . $e->getMessage();
+}
+//Retrying}
 
 
 //MayBe It Needs JS:
