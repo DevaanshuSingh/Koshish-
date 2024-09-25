@@ -1,6 +1,6 @@
 <!-- Working -->
 <?php
-session_start(); // Always start the session at the top
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -1860,7 +1860,7 @@ session_start(); // Always start the session at the top
                 ?>
                 <button class="butt0n" onclick="manageFunctions()"><strong>CLICK</strong></button>
                 <script>
-                        let nowId=1;
+                        let nowId = 1;
                         function manageFunctions() {
                                 alert(`Sending Id: ${nowId}`);
                                 const xhr = new XMLHttpRequest();
@@ -1875,7 +1875,7 @@ session_start(); // Always start the session at the top
                                         else
                                                 alert(`Response From Server While Changing Id :`.xhr.response);
                                 };
-                                xhr.send(`nowId=`+nowId);
+                                xhr.send(`nowId=` + nowId);
                         }
                 </script>
                 <?php

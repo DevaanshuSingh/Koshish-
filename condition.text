@@ -1,6 +1,7 @@
 Ajax: {Ok};
 Now{
 "on click which player will move?"
+{Onclick p${nowId} will move}
 
 => while regestring, the divs( p1,p2,p3,p4 ) will assign their IP Address According to Id:
 
@@ -17,4 +18,9 @@ grid_5=p4
 }
 
 
-{here here now only have to set positions in DB; which secures the position even after refreshing the page,}
+{here here now only have to set positions in DB; which secures the position even after refreshing the page,}{
+    working for single Player have to make it versatile 
+}
+
+changeId.php = Ok
+updatePosition.php = Ok
