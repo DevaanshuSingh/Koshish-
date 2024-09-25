@@ -13,6 +13,7 @@ session_start(); // Always start the session at the top
                 integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
                 crossorigin="anonymous">
         <link rel="stylesheet" href="./css/Rectangle.css">
+        <!-- <link rel="stylesheet" href="./css/checkSecond.css"> -->
         <!-- <link rel="stylesheet" href="style.css"> -->
         <!-- <link rel="stylesheet" href="./css/fix.css"> -->
         <script>
@@ -1841,10 +1842,12 @@ session_start(); // Always start the session at the top
                 </div>
                 <?php
                 require "script.php";
+                //For CHANGIG_ID
                 if (!isset($_SESSION["changed"])) {
-                        $_SESSION["changed"] = 1; // Initialize with a default value
-                    }
-                    $nowId = $_SESSION["changed"];
+                        $_SESSION["changed"] = 1; // Initializing with a default value
+                }
+                $nowId = $_SESSION["changed"];
+
                 require 'connection_db.php';
                 try {
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
@@ -1855,29 +1858,58 @@ session_start(); // Always start the session at the top
                         echo 'Database error: ' . $e->getMessage();
                 }
                 ?>
-                <button class="butt0n" onclick="runLoop()"><strong>CLICK</strong></button>
-                <script>
+                <button class="butt0n" onclick="manageFunctions()"><strong>CLICK</strong></button>
+                <!-- This Was Previous With Color Problem When Started The UpdatePos() <script>
+
                         let nowId = 1;
-                        function runLoop() {
-                                alert(`nowId: ${nowId}`);
+                        function manageFunctions() {
+                                alert(`Initial nowId: ${nowId}`);
+                                const xhr = new XMLHttpRequest();
+                                xhr.open('POST', 'changeId.php', true);
+                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                                xhr.onload = function () {
+                                        if (xhr.status === 200) {
+                                                nowId = xhr.responseText; // Update nowId with server response
+                                                alert(`New ID: ${nowId}`);
+
+                                                // Now call numberValue with the updated nowId
+                                                alert(`Before FUN_CALLING`);
+                                                numberValue(nowId);  // Call numberValue now that nowId is updated
+                                                alert(`After FUN_CALLING`);
+                                        }
+                                };
+                                // Send the request to the server
+                                xhr.send('nowId=' + nowId);
+                        }
+                </script> -->
+                <!-- Retrying -->
+                <script>
+                        let nowId=1;
+                        function manageFunctions() {
+                                alert(`Sending Id: ${nowId}`);
                                 const xhr = new XMLHttpRequest();
                                 xhr.open('POST', 'changeId.php', true);
                                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                                 xhr.onload = function () {
-                                        if (xhr.status === 200) {
+                                        if (xhr.status == 200) {
                                                 nowId = xhr.responseText;
-                                                alert(`New ID: ${nowId}`);
+                                                alert(`Reciveing Id: ${nowId}`);
                                         }
+                                        else
+                                                alert(`Response From Server While Changing Id :`.xhr.response);
                                 };
-                                xhr.send('nowId=' + nowId);
-                                numberValue();
+                                xhr.send(`nowId=`+nowId);
+                                //now Sending The Updated_Id To numberValue Function(In Script.php);
+                                numberValue(nowId);
                         }
                 </script>
+
                 <?php
                 // Getting IP
                 $nowId = $_SESSION["changed"];
                 //Here Was the try,catch block of fetching ip_address
-                // Able/Disable Button
+                // Able/Disable Button                               
                 if ($_SERVER['REMOTE_ADDR'] !== $nowIp) {
                         echo '<script type="text/javascript">
             document.querySelector(".butt0n").style.cursor = "not-allowed";
@@ -1933,13 +1965,8 @@ session_start(); // Always start the session at the top
                                         } catch (PDOException $e) {
                                                 echo 'Database error: ' . $e->getMessage();
                                         }
-                                        // $deleteFromId=$_GET['del'];
-                                        // $stmt = $pdo->prepare('TRUNCATE FROM user_information WHERE condition id=?;');
-                                        // $stmt->execute([$deleteFromId]);
                                         if (isset($_GET['del'])) {
                                                 $deleteFromId = $_GET['del'];
-
-                                                // Prepare DELETE query to remove the specific record
                                                 $stmt = $pdo->prepare('DELETE FROM user_information WHERE id = ?');
                                                 $stmt->execute([$deleteFromId]);
 
@@ -1968,33 +1995,3 @@ session_start(); // Always start the session at the top
 </body>
 
 </html>
-<!-- Working -->
-<!-- <script>
-                        let btnForAjax = document.getElementById('butt0n');
-                        btnForAjax.addEventListener('click', function () {
-                                const xhr = new XMLHttpRequest();
-
-                                xhr.open(`POST`, `changeId.php`, true);
-
-                                xhr.onprogress = function () {
-                                        console.log(`जारी है`);
-                                }
-                                xhr.onload = function () {
-                                        if (xhr.status === 200) {
-                                                let ans = this.response; // Get the response from changeId.php
-                                                alert('Received ID:', ans); // Use the value as needed
-                                                alert(ans); // Show the value to the user
-                                        } else {
-                                                console.error('Error fetching data:', xhr.statusText);
-                                        }
-                                };
-                                xhr.send(`?$nowId=1`);
-                        });
-                </script>
-                <?php
-                // if (isset($_POST['Id'])) {
-                //         $nowId = intval($_POST['Id']); // Store the received value in a PHP variable
-                //         // Do something with $nowId
-                // }
-                // $nowId++;
-                ?>

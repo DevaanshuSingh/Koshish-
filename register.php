@@ -55,6 +55,15 @@ try {
         } else {
             echo "Error: Could not register student.";
         }
+        /* in performane */
+        $stmt = $pdo->prepare("INSERT INTO performance (name,currentPos) VALUES (?,?)");
+
+        if ($stmt->execute([$player_name,1])) {
+            echo ' <meta http-equiv="refresh" content="0; url=index.php">';
+        } else {
+            echo "Error: Could not register student.";
+        }
+
     }
 } catch (PDOException $e) {
     echo 'Database error: ' . $e->getMessage();
