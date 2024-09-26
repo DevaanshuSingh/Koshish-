@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db = 'project_ludo';
+$db = 'koshish';
 $user = 'root';
 $pass = '{06141122}';
 $charset = 'utf8mb4';
@@ -17,6 +17,7 @@ try {
 } catch (\PDOException $e) {
     throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
+
 ?>
 
 

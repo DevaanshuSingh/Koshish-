@@ -1,5 +1,8 @@
 <!-- Working -->
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start(); // Always start the session at the top
 ?>
 <!DOCTYPE html>
@@ -8,7 +11,7 @@ session_start(); // Always start the session at the top
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Snake And Ladder</title>
+        <title>KOSHSIH</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
                 integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
                 crossorigin="anonymous">
@@ -22,7 +25,6 @@ session_start(); // Always start the session at the top
                 // });
         </script>
 </head>
-
 <body>
         <div class="grid-container">
                 <div class="grid-item" id="grid_100">100
@@ -1846,36 +1848,39 @@ session_start(); // Always start the session at the top
                 if (!isset($_SESSION["changed"])) {
                         $_SESSION["changed"] = 1; // Initializing with a default value
                 }
-                $nowId = $_SESSION["changed"];
-
+                $nowId=$_SESSION["changed"];
                 require 'connection_db.php';
                 try {
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
                         $stmt->execute([$nowId]);
-                        $nowIp = $stmt->fetchColumn();
-                        echo "<h1>Now IP($nowId): \"$nowIp\"</h1>";
+                        $nowIp = $stmt->fetchColumn(0);
+                        if ($nowIp) {
+                                echo "<h1>Now IP ($nowId): \"$nowIp\"</h1>";
+                        } else {
+                                // echo "<h1>No IP found for ID ($nowId)</h1>";
+                        }
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
                 }
                 ?>
-                <button class="butt0n" onclick="manageFunctions()"><strong>CLICK</strong></button>
+                <button class="butt0n" onclick="manageFunctions()"><strong>Click</strong></button>
                 <script>
-                        let nowId=1;
+                        let nowId = 1;
                         function manageFunctions() {
-                                alert(`Sending Id: ${nowId}`);
+                                // alert(`Sending Id: ${nowId}`);
                                 const xhr = new XMLHttpRequest();
                                 xhr.open('POST', 'changeId.php', true);
                                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                                 xhr.onload = function () {
                                         if (xhr.status == 200) {
                                                 nowId = xhr.responseText;
-                                                alert(`Reciveing Id: ${nowId}`);
+                                                // alert(`Reciveing Id: ${nowId}`);
                                                 numberValue(nowId);
                                         }
                                         else
                                                 alert(`Response From Server While Changing Id :`.xhr.response);
                                 };
-                                xhr.send(`nowId=`+nowId);
+                                xhr.send(`nowId=` + nowId);//Changing Id
                         }
                 </script>
                 <?php
@@ -1933,7 +1938,7 @@ session_start(); // Always start the session at the top
                                                         $x .= "<td><img src='{$record['profile']}' alt='Profile Picture' style='width: 100px; height: auto;'></td>";
                                                         $x .= "<td>" . $record['ip_address'] . "</td>";
                                                         $x .= "<td><form><button onclick='truncateTable()' style='background-color: red; color: white'>TRUNCATE</button></form></td>";
-                                                        echo '</tr><br>' . $x;
+                                                        echo `</tr><br> $x`;
                                                 }
                                         } catch (PDOException $e) {
                                                 echo 'Database error: ' . $e->getMessage();

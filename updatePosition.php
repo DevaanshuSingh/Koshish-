@@ -1,6 +1,4 @@
 <?php
-//Retrying{
-//update position in db;
 require "connection_db.php";
 try {
     $nowId = $_POST['nowId'];
@@ -11,8 +9,6 @@ try {
     echo 'Database error: ' . $e->getMessage();
 }
 //Retrying}
-
-
 //MayBe It Needs JS:
 //For CHANGIG_ID
 // if (!isset($_SESSION["changed"])) {
@@ -31,4 +27,5 @@ try {
 //             }
 //             xhr.send('updatePos=' + nowId);
 //     }
+
 ?>
