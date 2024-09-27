@@ -16,6 +16,7 @@ session_start(); // Always start the session at the top
                 integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
                 crossorigin="anonymous">
         <link rel="stylesheet" href="./css/Rectangle.css">
+        <script src="script.php?ver=<?php echo time(); ?>"></script>
         <!-- <link rel="stylesheet" href="./css/checkSecond.css"> -->
         <!-- <link rel="stylesheet" href="style.css"> -->
         <!-- <link rel="stylesheet" href="./css/fix.css"> -->
@@ -25,6 +26,7 @@ session_start(); // Always start the session at the top
                 // });
         </script>
 </head>
+
 <body>
         <div class="grid-container">
                 <div class="grid-item" id="grid_100">100
@@ -1848,7 +1850,7 @@ session_start(); // Always start the session at the top
                 if (!isset($_SESSION["changed"])) {
                         $_SESSION["changed"] = 1; // Initializing with a default value
                 }
-                $nowId=$_SESSION["changed"];
+                $nowId = $_SESSION["changed"];
                 require 'connection_db.php';
                 try {
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
@@ -1857,7 +1859,7 @@ session_start(); // Always start the session at the top
                         if ($nowIp) {
                                 echo "<h1>Now IP ($nowId): \"$nowIp\"</h1>";
                         } else {
-                                // echo "<h1>No IP found for ID ($nowId)</h1>";
+                                echo "<h1>No IP found for ID ($nowId)</h1>";
                         }
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
@@ -1867,14 +1869,14 @@ session_start(); // Always start the session at the top
                 <script>
                         let nowId = 1;
                         function manageFunctions() {
-                                // alert(`Sending Id: ${nowId}`);
+                                alert(`Sending Id: ${nowId}`);
                                 const xhr = new XMLHttpRequest();
                                 xhr.open('POST', 'changeId.php', true);
                                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                                 xhr.onload = function () {
                                         if (xhr.status == 200) {
                                                 nowId = xhr.responseText;
-                                                // alert(`Reciveing Id: ${nowId}`);
+                                                alert(`Reciveing Id: ${nowId}`);
                                                 numberValue(nowId);
                                         }
                                         else
@@ -1882,6 +1884,108 @@ session_start(); // Always start the session at the top
                                 };
                                 xhr.send(`nowId=` + nowId);//Changing Id
                         }
+
+                        // Came From Script.php
+                        function numberValue(nowId) {
+                                // alert(`Inside numberValue Function With ID:${nowId}`);
+                                var dice = Math.floor(Math.random() * 6) + 1;
+                                document.getElementById('showValue').value = dice;//4
+                                // changeThePosFunc(nowId, dice);
+                                // alert(`Position Changed`);
+                                getPosFromDb(nowId);
+                        }
+
+                        let posFromDb;
+                        function showNow(nowId, posFromDb) {
+                                alert(`inside showNow With: ${posFromDb} of id ${nowId}`);
+                                let wholeGrid = document.getElementById(`grid_${posFromDb}`);
+                                // Check if the grid cell exists
+                                if (!wholeGrid) {
+                                        alert(`Grid position grid_${posFromDb} not found!`);
+                                        return;
+                                }
+
+                                // Find the player div inside the grid
+                                let playerDiv = wholeGrid.querySelector(`.p${nowId}`);
+
+                                // Check if the player div exists
+                                if (playerDiv) {
+                                        playerDiv.style.transition = 'background-color 1s ease';
+                                        if (nowId == 1) {
+                                                playerDiv.style.backgroundColor = 'red';
+                                        } else if (nowId == 2) {
+                                                playerDiv.style.backgroundColor = 'green';
+                                        } else if (nowId == 3) {
+                                                playerDiv.style.backgroundColor = 'yellow';
+                                        } else if (nowId == 4) {
+                                                playerDiv.style.backgroundColor = 'blue';
+                                        }
+                                } else {
+                                        alert(`Player div for .p${nowId} not found in grid_${posFromDb}`);
+                                }
+                        }
+                        function getPosFromDb(nowId) {
+                                // alert(`Inside getPosFromDb`);
+                                const xhr = new XMLHttpRequest();
+                                xhr.open(`POST`, `fetch_Position.php`, true);
+
+                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                                xhr.onload = function () {
+                                        if (xhr.status == 200) {
+                                                posFromDb = xhr.responseText;
+                                                // alert(`Mid getPosFromDb`);
+                                                alert(`Succesfully Came From fetch_Position.php File with the position: ${posFromDb}`);
+                                                showNow(nowId, posFromDb);
+                                        } else {
+                                                alert(`alert1 Is: ${xhr.responseText}`);
+                                        }
+                                }
+                                xhr.send('idIs=' + nowId);//This Will Come With Position But Of Whose?-> ID of each Player
+                        }
+
+                        //Show  Players In Their Positions Even After Refreshing The Page Positions;
+
+
+                        //Came From Script.php
+                        let wholeGrid;
+                        let nxtPos;
+                        // let pos = 1;//Get Position From Database (There was 1 Default Wise);
+                        let pos = 1;//Get Position From Database (There was 1 Default Wise);
+                        //from Here
+                        function changeThePosFunc(nowId, dice) {
+                                // alert('inside changeThePosFunc');
+                                wholeGrid = document.getElementById(`grid_${pos}`);
+                                let playerDivPrev = wholeGrid.querySelector(`.p${nowId}`);
+                                // alert('Mid changeThePosFunc');
+                                playerDivPrev.style.transition = 'background-color 1s ease';
+                                playerDivPrev.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+
+                                nxtPos = pos + dice;
+                                wholeGrid = document.getElementById(`grid_${nxtPos}`);
+                                let playerDiv = wholeGrid.querySelector(`.p${nowId}`);
+                                if (playerDiv) {
+
+                                        playerDiv.style.transition = 'background-color 1s ease';
+                                        if (nowId == 1)
+                                                playerDiv.style.backgroundColor = 'red';
+                                        if (nowId == 2)
+                                                playerDiv.style.backgroundColor = 'green';
+                                        if (nowId == 3)
+                                                playerDiv.style.backgroundColor = 'yellow';
+                                        if (nowId == 4)
+                                                playerDiv.style.backgroundColor = 'blue';
+                                }
+                                else
+                                        alert(`.p1 - ${nxtPos} not found in grid_${nxtPos}`);
+                                pos = nxtPos;
+                                // if (nxtPos =< 100)
+                                //         alert(`Player ${nowId} Won`);
+                                // alert('last changeThePosFunc');
+
+                                posFix(nowId, nxtPos);
+                        }
+                        //to Here
+
                 </script>
                 <?php
                 // Getting IP
@@ -1916,49 +2020,52 @@ session_start(); // Always start the session at the top
                         <table class="table table-dark table-striped">
                                 <thead>
                                         <tr>
-                                                <th col="3">Player Id</th>
-                                                <th col="3">Player Name</th>
-                                                <th col="3">Player Pehchaan</th>
-                                                <th col="3">Ip Address</th>
-                                                <th col="3">Remove</th>
+                                                <th>Player Id</th>
+                                                <th>Player Name</th>
+                                                <th>Player Pehchaan</th>
+                                                <th>Ip Address</th>
+                                                <th>Remove</th>
                                         </tr>
                                 </thead>
                                 <tbody class="bg-success text-white">
                                         <?php
                                         // Database connection
                                         require 'connection_db.php';
-                                        require 'script.php';
                                         try {
-                                                $stmt = $pdo->query('select * from user_information');
+                                                $stmt = $pdo->query('SELECT * FROM user_information');
                                                 $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
                                                 foreach ($records as $record) {
                                                         $x = "<tr>";
                                                         $x .= "<td>" . $record['id'] . ".</td>";
                                                         $x .= "<td>" . $record['name'] . "</td>";
-                                                        $x .= "<td><img src='{$record['profile']}' alt='Profile Picture' style='width: 100px; height: auto;'></td>";
+                                                        $x .= "<td><img src='" . $record['profile'] . "' alt='Profile Picture' style='width: 100px; height: auto;'></td>";
                                                         $x .= "<td>" . $record['ip_address'] . "</td>";
-                                                        $x .= "<td><form><button onclick='truncateTable()' style='background-color: red; color: white'>TRUNCATE</button></form></td>";
-                                                        echo `</tr><br> $x`;
+                                                        $x .= "<td><button type='submit' name='del' value='" . $record['id'] . "' onclick='truncateTable()' style='background-color: red; color: white'>TRUNCATE</button></td>";
+                                                        $x .= "</tr>";
+                                                        echo $x;
                                                 }
                                         } catch (PDOException $e) {
                                                 echo 'Database error: ' . $e->getMessage();
                                         }
+
+                                        // Deletion logic
                                         if (isset($_GET['del'])) {
                                                 $deleteFromId = $_GET['del'];
                                                 $stmt = $pdo->prepare('DELETE FROM user_information WHERE id = ?');
                                                 $stmt->execute([$deleteFromId]);
-
                                                 // Redirect to prevent form resubmission on refresh
-                                                // header("Location: index.php"); // Replace 'your_page.php' with your actual page
+                                                header("Location: index.php");
                                         }
                                         ?>
-                                <tbody>
+                                </tbody>
                         </table>
-                        <?php
-                        echo '<i>Ip_Address OF This Device Is <strong> ' . $_SERVER['REMOTE_ADDR'] . '</strong></i><br>';
-                        ?>
                 </div>
+                <?php
+                echo '<i>Ip_Address OF This Device Is <strong> ' . $_SERVER['REMOTE_ADDR'] . '</strong></i><br>';
+                ?>
         </div>
+
         <script>
                 // bcg_Section
                 let colorIs = document.getElementById("colorInput");
