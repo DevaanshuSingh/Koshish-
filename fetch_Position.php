@@ -2,7 +2,7 @@
 session_start();
 require "connection_db.php";
 
-$nowId = $_POST['idIs'];
+$nowId = $_POST['idForGetPos'];
 try {
     // Prepare the statement with a placeholder
     $stmt = $pdo->prepare("SELECT currentPos FROM performance WHERE id = ?");

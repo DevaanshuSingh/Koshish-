@@ -1865,91 +1865,73 @@ session_start(); // Always start the session at the top
                         echo 'Database error: ' . $e->getMessage();
                 }
                 ?>
-                <button class="butt0n" onclick="manageFunctions()"><strong>Click</strong></button>
+                <button class="butt0n" onclick="numberValue()"><strong>Click</strong></button>
+
                 <script>
-                        let nowId = 1;
-                        function manageFunctions() {
-                                alert(`Sending Id: ${nowId}`);
+                        //here is trying to Show Players In Their Positions Even After Refreshing The Page by Getting Their Positions From Database;{
+                        window.onload = function () {
+                                let nowId = 2;
+                                // let playerId = getId();
                                 const xhr = new XMLHttpRequest();
                                 xhr.open('POST', 'changeId.php', true);
                                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                                 xhr.onload = function () {
                                         if (xhr.status == 200) {
                                                 nowId = xhr.responseText;
-                                                alert(`Reciveing Id: ${nowId}`);
-                                                numberValue(nowId);
+                                                // alert(`Reciveing Id: ${nowId}`);
+                                                // numberValue(nowId);
+                                                fetch_pos(nowId);
+                                        }
+                                        else
+                                                alert(`Response From Server While Changing Id :`.xhr.response);
+                                };
+                                xhr.send(`nowId=` + nowId);
+                                
+                        }
+
+                        //here is trying to Show Players In Their Positions Even After Refreshing The Page by Getting Their Positions From Database;}
+                        let nowId = 2;//This Shold Be The Last Number Of Player OR Total Numbers Of Players
+                        function getId() {
+                                // alert(`Sending Id: ${nowId}`);
+                                const xhr = new XMLHttpRequest();
+                                xhr.open('POST', 'changeId.php', true);
+                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                                xhr.onload = function () {
+                                        if (xhr.status == 200) {
+                                                nowId = xhr.responseText;
+                                                // alert(`Reciveing Id: ${nowId}`);
+                                                // numberValue(nowId);
                                         }
                                         else
                                                 alert(`Response From Server While Changing Id :`.xhr.response);
                                 };
                                 xhr.send(`nowId=` + nowId);//Changing Id
                         }
-
-                        // Came From Script.php
-                        function numberValue(nowId) {
-                                // alert(`Inside numberValue Function With ID:${nowId}`);
-                                var dice = Math.floor(Math.random() * 6) + 1;
-                                document.getElementById('showValue').value = dice;//4
-                                // changeThePosFunc(nowId, dice);
-                                // alert(`Position Changed`);
-                                getPosFromDb(nowId);
-                        }
-
-                        let posFromDb;
-                        function showNow(nowId, posFromDb) {
-                                alert(`inside showNow With: ${posFromDb} of id ${nowId}`);
-                                let wholeGrid = document.getElementById(`grid_${posFromDb}`);
-                                // Check if the grid cell exists
-                                if (!wholeGrid) {
-                                        alert(`Grid position grid_${posFromDb} not found!`);
-                                        return;
-                                }
-
-                                // Find the player div inside the grid
-                                let playerDiv = wholeGrid.querySelector(`.p${nowId}`);
-
-                                // Check if the player div exists
-                                if (playerDiv) {
-                                        playerDiv.style.transition = 'background-color 1s ease';
-                                        if (nowId == 1) {
-                                                playerDiv.style.backgroundColor = 'red';
-                                        } else if (nowId == 2) {
-                                                playerDiv.style.backgroundColor = 'green';
-                                        } else if (nowId == 3) {
-                                                playerDiv.style.backgroundColor = 'yellow';
-                                        } else if (nowId == 4) {
-                                                playerDiv.style.backgroundColor = 'blue';
-                                        }
-                                } else {
-                                        alert(`Player div for .p${nowId} not found in grid_${posFromDb}`);
-                                }
-                        }
-                        function getPosFromDb(nowId) {
-                                // alert(`Inside getPosFromDb`);
+                        function fetch_pos(nowId) {
                                 const xhr = new XMLHttpRequest();
-                                xhr.open(`POST`, `fetch_Position.php`, true);
-
+                                xhr.open('POST', 'fetch_position.php', true);
                                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                                 xhr.onload = function () {
                                         if (xhr.status == 200) {
-                                                posFromDb = xhr.responseText;
-                                                // alert(`Mid getPosFromDb`);
-                                                alert(`Succesfully Came From fetch_Position.php File with the position: ${posFromDb}`);
-                                                showNow(nowId, posFromDb);
+                                                alert(`Pos Is ${xhr.responseText} of Id ${nowId}`)
                                         } else {
-                                                alert(`alert1 Is: ${xhr.responseText}`);
+                                                console.error(`Error: ${xhr.status}`); // Handle error response
                                         }
-                                }
-                                xhr.send('idIs=' + nowId);//This Will Come With Position But Of Whose?-> ID of each Player
+                                };
+                                xhr.send('idForGetPos=' + nowId);
                         }
 
-                        //Show  Players In Their Positions Even After Refreshing The Page Positions;
 
 
-                        //Came From Script.php
+                        // Came From Script.php
+                        function numberValue(nowId) {
+                                var dice = Math.floor(Math.random() * 6) + 1;
+                                document.getElementById('showValue').value = dice;//4
+                                // changeThePosFunc(nowId, dice);
+                        }
+
                         let wholeGrid;
                         let nxtPos;
-                        // let pos = 1;//Get Position From Database (There was 1 Default Wise);
                         let pos = 1;//Get Position From Database (There was 1 Default Wise);
                         //from Here
                         function changeThePosFunc(nowId, dice) {
@@ -1964,7 +1946,6 @@ session_start(); // Always start the session at the top
                                 wholeGrid = document.getElementById(`grid_${nxtPos}`);
                                 let playerDiv = wholeGrid.querySelector(`.p${nowId}`);
                                 if (playerDiv) {
-
                                         playerDiv.style.transition = 'background-color 1s ease';
                                         if (nowId == 1)
                                                 playerDiv.style.backgroundColor = 'red';
@@ -2061,11 +2042,12 @@ session_start(); // Always start the session at the top
                                 </tbody>
                         </table>
                 </div>
+
                 <?php
                 echo '<i>Ip_Address OF This Device Is <strong> ' . $_SERVER['REMOTE_ADDR'] . '</strong></i><br>';
                 ?>
-        </div>
 
+        </div>
         <script>
                 // bcg_Section
                 let colorIs = document.getElementById("colorInput");
