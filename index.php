@@ -1,9 +1,6 @@
 <!-- Working -->
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-session_start(); // Always start the session at the top
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,15 +13,6 @@ session_start(); // Always start the session at the top
                 integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
                 crossorigin="anonymous">
         <link rel="stylesheet" href="./css/Rectangle.css">
-        <script src="script.php?ver=<?php echo time(); ?>"></script>
-        <!-- <link rel="stylesheet" href="./css/checkSecond.css"> -->
-        <!-- <link rel="stylesheet" href="style.css"> -->
-        <!-- <link rel="stylesheet" href="./css/fix.css"> -->
-        <script>
-                // document.addEventListener('contextmenu', function (e) {
-                //     e.preventDefault();
-                // });
-        </script>
 </head>
 
 <body>
@@ -1844,9 +1832,10 @@ session_start(); // Always start the session at the top
                 <div class="numbers">
                         <input id="showValue" type="text" readonly>
                 </div>
+                <button class="butt0n" onclick="manageFunctions()"><strong>Cli<span id="ck">ck</span></strong></button>
+
                 <?php
                 require "script.php";
-                //For CHANGIG_ID
                 if (!isset($_SESSION["changed"])) {
                         $_SESSION["changed"] = 1; // Initializing with a default value
                 }
@@ -1865,113 +1854,15 @@ session_start(); // Always start the session at the top
                         echo 'Database error: ' . $e->getMessage();
                 }
                 ?>
-                <button class="butt0n" onclick="numberValue()"><strong>Click</strong></button>
-
                 <script>
-                        //here is trying to Show Players In Their Positions Even After Refreshing The Page by Getting Their Positions From Database;{
-                        window.onload = function () {
-                                let nowId = 2;
-                                // let playerId = getId();
-                                const xhr = new XMLHttpRequest();
-                                xhr.open('POST', 'changeId.php', true);
-                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                                xhr.onload = function () {
-                                        if (xhr.status == 200) {
-                                                nowId = xhr.responseText;
-                                                // alert(`Reciveing Id: ${nowId}`);
-                                                // numberValue(nowId);
-                                                fetch_pos(nowId);
-                                        }
-                                        else
-                                                alert(`Response From Server While Changing Id :`.xhr.response);
-                                };
-                                xhr.send(`nowId=` + nowId);
-                                
+                        let nowId = 2;
+                        function manageFunctions() {
+                                getId();
+                                diceValue();
                         }
-
-                        //here is trying to Show Players In Their Positions Even After Refreshing The Page by Getting Their Positions From Database;}
-                        let nowId = 2;//This Shold Be The Last Number Of Player OR Total Numbers Of Players
-                        function getId() {
-                                // alert(`Sending Id: ${nowId}`);
-                                const xhr = new XMLHttpRequest();
-                                xhr.open('POST', 'changeId.php', true);
-                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                                xhr.onload = function () {
-                                        if (xhr.status == 200) {
-                                                nowId = xhr.responseText;
-                                                // alert(`Reciveing Id: ${nowId}`);
-                                                // numberValue(nowId);
-                                        }
-                                        else
-                                                alert(`Response From Server While Changing Id :`.xhr.response);
-                                };
-                                xhr.send(`nowId=` + nowId);//Changing Id
-                        }
-                        function fetch_pos(nowId) {
-                                const xhr = new XMLHttpRequest();
-                                xhr.open('POST', 'fetch_position.php', true);
-                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                                xhr.onload = function () {
-                                        if (xhr.status == 200) {
-                                                alert(`Pos Is ${xhr.responseText} of Id ${nowId}`)
-                                        } else {
-                                                console.error(`Error: ${xhr.status}`); // Handle error response
-                                        }
-                                };
-                                xhr.send('idForGetPos=' + nowId);
-                        }
-
-
-
-                        // Came From Script.php
-                        function numberValue(nowId) {
-                                var dice = Math.floor(Math.random() * 6) + 1;
-                                document.getElementById('showValue').value = dice;//4
-                                // changeThePosFunc(nowId, dice);
-                        }
-
-                        let wholeGrid;
-                        let nxtPos;
-                        let pos = 1;//Get Position From Database (There was 1 Default Wise);
-                        //from Here
-                        function changeThePosFunc(nowId, dice) {
-                                // alert('inside changeThePosFunc');
-                                wholeGrid = document.getElementById(`grid_${pos}`);
-                                let playerDivPrev = wholeGrid.querySelector(`.p${nowId}`);
-                                // alert('Mid changeThePosFunc');
-                                playerDivPrev.style.transition = 'background-color 1s ease';
-                                playerDivPrev.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-
-                                nxtPos = pos + dice;
-                                wholeGrid = document.getElementById(`grid_${nxtPos}`);
-                                let playerDiv = wholeGrid.querySelector(`.p${nowId}`);
-                                if (playerDiv) {
-                                        playerDiv.style.transition = 'background-color 1s ease';
-                                        if (nowId == 1)
-                                                playerDiv.style.backgroundColor = 'red';
-                                        if (nowId == 2)
-                                                playerDiv.style.backgroundColor = 'green';
-                                        if (nowId == 3)
-                                                playerDiv.style.backgroundColor = 'yellow';
-                                        if (nowId == 4)
-                                                playerDiv.style.backgroundColor = 'blue';
-                                }
-                                else
-                                        alert(`.p1 - ${nxtPos} not found in grid_${nxtPos}`);
-                                pos = nxtPos;
-                                // if (nxtPos =< 100)
-                                //         alert(`Player ${nowId} Won`);
-                                // alert('last changeThePosFunc');
-
-                                posFix(nowId, nxtPos);
-                        }
-                        //to Here
-
                 </script>
                 <?php
-                // Getting IP
-                $nowId = $_SESSION["changed"];
-                //Here Was the try,catch block of fetching ip_address
+                $nowId = $_SESSION["changed"];// Getting IP
                 // Able/Disable Button                               
                 if ($_SERVER['REMOTE_ADDR'] !== $nowIp) {
                         echo '<script type="text/javascript">
@@ -2018,11 +1909,11 @@ session_start(); // Always start the session at the top
 
                                                 foreach ($records as $record) {
                                                         $x = "<tr>";
-                                                        $x .= "<td>" . $record['id'] . ".</td>";
-                                                        $x .= "<td>" . $record['name'] . "</td>";
-                                                        $x .= "<td><img src='" . $record['profile'] . "' alt='Profile Picture' style='width: 100px; height: auto;'></td>";
-                                                        $x .= "<td>" . $record['ip_address'] . "</td>";
-                                                        $x .= "<td><button type='submit' name='del' value='" . $record['id'] . "' onclick='truncateTable()' style='background-color: red; color: white'>TRUNCATE</button></td>";
+                                                        $x .= "<div class='adjust' ><td>" . $record['id'] . ".</td></div>";
+                                                        $x .= "<div class='adjust' ><td>" . $record['name'] . "</td></div>";
+                                                        $x .= "<div class='adjust-image' ><td><img src='" . $record['profile'] . "' alt='Profile Picture' style='width: 100px; height: auto;'></td></div>";
+                                                        $x .= "<div class='adjust' ><td>" . $record['ip_address'] . "</td></div>";
+                                                        $x .= "<div class='adjust' ><td><button type='submit' name='del' value='" . $record['id'] . "' onclick='truncateTable()' style='background-color: red; color: white'>TRUNCATE</button></td></div>";
                                                         $x .= "</tr>";
                                                         echo $x;
                                                 }
@@ -2044,7 +1935,7 @@ session_start(); // Always start the session at the top
                 </div>
 
                 <?php
-                echo '<i>Ip_Address OF This Device Is <strong> ' . $_SERVER['REMOTE_ADDR'] . '</strong></i><br>';
+                // echo '<i>Ip_Address OF This Device Is <strong> ' . $_SERVER['REMOTE_ADDR'] . '</strong></i><br>';
                 ?>
 
         </div>
@@ -2062,3 +1953,34 @@ session_start(); // Always start the session at the top
 </body>
 
 </html>
+
+<!-- try for flowchart -->
+<script>
+        // window.onload = function () {
+        //         // Loop through the values 1 to 4 and send an AJAX request for each
+        //         for (let i = 1; i <= 4; i++) {
+        //                 // Call the function to send the AJAX request for each 'nowId'
+        //                 sendAjaxRequest(i);
+        //         }
+        // };
+
+        // // Function to send the AJAX request
+        // function sendAjaxRequest(nowId) {
+        //         const xhr = new XMLHttpRequest();
+        //         xhr.open('POST', 'fetch_position.php', true);
+        //         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        //         xhr.onload = function () {
+        //                 if (xhr.status == 200) {
+        //                         const posIs = xhr.responseText;
+        //                         console.log(`Response for nowId ${nowId}:`, posIs); // Handle success response
+        //                 } else {
+        //                         console.error(`Error for nowId ${nowId}: ${xhr.status}`); // Handle error response
+        //                 }
+        //         };
+
+        //         // Send the AJAX request with the current 'nowId'
+        //         xhr.send('nowId=' + nowId);
+        // }
+
+</script>
