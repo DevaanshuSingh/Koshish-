@@ -1,3 +1,6 @@
+<?php
+// session_start();
+?>
 <!-- In Js { -->
 <!-- Trying To Add the feature not only select p1 or p2 instead of Select P${Id} this is versatile Which Is Needed -->
 <script>
@@ -6,6 +9,7 @@
     let send_as_id = 1;
 
     window.onload = async function () {
+        choosedBcg();
         for (let i = 0; i < pos_array.length; i++) {
             fetch_pos_ans = await fetch_pos(send_as_id);  // Wait for the response
             pos_array[i] = fetch_pos_ans;
@@ -13,6 +17,26 @@
             send_as_id++;
         }
         // alert(`Array Of Positions ${pos_array}`);
+    }
+
+    let bcgDb = null;
+    bcgDb = xhr.responseText;
+    document.body.style.backgroundColor = bcgDb;
+
+    function choosedBcg() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'fetch_bcg.php', true);  // Replace 'your_endpoint_here' with the actual URL
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                alert('Got Bcg');
+                bcgDb=xhr.response;
+                // document.body.style.backgroundColor = bcgDb;  // Use the response from the server as the background color
+                alert(`bcg is${bcgDb}`);
+            }
+        };
+
+        // Send the request
+        xhr.send();
     }
 
     function fetch_pos(nowId) {
@@ -76,6 +100,7 @@
         // changeThePosFunc(nowId, dice);
     }
 
+    let pos = 1;//Get Position From Database (There is 1 Default Wise);
     function posFix(nowId, nxtPos) {
         // alert(`Inside posFix Function`);
         const xhr = new XMLHttpRequest();
@@ -93,7 +118,6 @@
 
     let wholeGrid;
     let nxtPos;
-    let pos = 1;//Get Position From Database (There was 1 Default Wise);
     function changeThePosFunc(nowId, dice) {
         alert("inside change");
         wholeGrid = document.getElementById(`grid_${pos}`);
@@ -134,6 +158,21 @@
             // alert(`Loaded`);
         }
         xhr.send();
+    }
+
+    function updateBcg(bcg_Color) {
+        // alert(`bcg Is ${bcg_Color}`);
+        const xhr = new XMLHttpRequest();
+        xhr.open(`POST`, `updateBcg.php`, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                alert(`updated Bcg Successfully`);
+            }
+            else
+                alert(`Not Updated BCG`);
+        }
+        xhr.send(`bcg_Color` + bcg_Color);
     }
 
 </script>

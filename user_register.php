@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +12,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/Rectangle.css">
 </head>
+
 <body>
     <form action="register.php" method="POST" enctype="multipart/form-data" class="p-4 border rounded">
         <div class="form-row d-flex container flex-wrap">
@@ -26,9 +30,8 @@
             </div>
             <input type="hidden" name="client_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
             <?php
-                // $client_ip = $_SERVER['REMOTE_ADDR'];
-                // echo  "<p>" . $client_ip . "</p>";
-                ?>
+            $_SESSION['ipIs'] = $_SERVER['REMOTE_ADDR'];
+            ?>
         </div>
     </form>
 </body>

@@ -1859,6 +1859,7 @@ session_start();
                         function manageFunctions() {
                                 getId();
                                 diceValue();
+                                // location.reload();
                         }
                 </script>
                 <?php
@@ -1879,7 +1880,6 @@ session_start();
                 <?php
                 require "script.php";
                 ?>
-
                 <div class="cont">
                         <label for="colorInput">
                                 <span id="change"><strong>CHOOSE COLOR</strong></span>
@@ -1945,16 +1945,17 @@ session_start();
                 let change = document.getElementById("change");
 
                 colorIs.addEventListener("input", function () {
-                        const color = colorIs.value;
-                        change.textContent = color.toUpperCase();
-                        document.body.style.backgroundColor = `${color}`;
+                        const bcg_Color = colorIs.value;
+                        updateBcg(bcg_Color);
+                        change.textContent = bcg_Color.toUpperCase();
+                        document.body.style.backgroundColor = `${bcg_Color}`;
                 });
         </script>
 </body>
 
 </html>
 
-<!-- try for flowchart -->
+<!-- According To Flowchart -->
 <script>
         // window.onload = function () {
         //         // Loop through the values 1 to 4 and send an AJAX request for each
