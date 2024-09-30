@@ -30,7 +30,6 @@ session_start();
             </div>
             <input type="hidden" name="client_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
             <?php
-            $_SESSION['ipIs'] = $_SERVER['REMOTE_ADDR'];
             ?>
         </div>
     </form>

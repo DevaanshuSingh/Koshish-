@@ -1896,6 +1896,7 @@ session_start();
                                                 <th>Player Name</th>
                                                 <th>Player Pehchaan</th>
                                                 <th>Ip Address</th>
+                                                <th>BCG</th>
                                                 <th>Remove</th>
                                         </tr>
                                 </thead>
@@ -1913,6 +1914,7 @@ session_start();
                                                         $x .= "<div class='adjust' ><td>" . $record['name'] . "</td></div>";
                                                         $x .= "<div class='adjust-image' ><td><img src='" . $record['profile'] . "' alt='Profile Picture' style='width: 100px; height: auto;'></td></div>";
                                                         $x .= "<div class='adjust' ><td>" . $record['ip_address'] . "</td></div>";
+                                                        $x .= "<div class='adjust' ><td>" . $record['background_color'] . "</td></div>";
                                                         $x .= "<div class='adjust' ><td><button type='submit' name='del' value='" . $record['id'] . "' onclick='truncateTable()' style='background-color: red; color: white'>TRUNCATE</button></td></div>";
                                                         $x .= "</tr>";
                                                         echo $x;

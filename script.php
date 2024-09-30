@@ -1,5 +1,5 @@
 <?php
-// session_start();
+    // session_start();
 ?>
 <!-- In Js { -->
 <!-- Trying To Add the feature not only select p1 or p2 instead of Select P${Id} this is versatile Which Is Needed -->
@@ -19,19 +19,34 @@
         // alert(`Array Of Positions ${pos_array}`);
     }
 
+
+    function updateBcg(bcg_Color) {
+        // alert(`bcg Is ${bcg_Color}`);
+        // alert(`Type Of BCg Is ${typeof(bcg_Color)}`);
+        const xhr = new XMLHttpRequest();
+        xhr.open(`POST`, `updateBcg.php`, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                // alert(`updated Bcg Successfully and RESPONSE is: ${xhr.responseText}`);
+            }
+            else
+                alert(`Not Updated BCG`);
+        }
+        xhr.send(`bcg_Color=` + bcg_Color);
+    }
+
     let bcgDb = null;
-    bcgDb = xhr.responseText;
-    document.body.style.backgroundColor = bcgDb;
 
     function choosedBcg() {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'fetch_bcg.php', true);  // Replace 'your_endpoint_here' with the actual URL
+        xhr.open('GET', 'fetch_bcg.php', true);  // Replace 'your_endpoint_here' with the actual URL
         xhr.onload = function () {
             if (xhr.status === 200) {
-                alert('Got Bcg');
-                bcgDb=xhr.response;
+                bcgDb = xhr.responseText;
+                document.body.style.backgroundColor = bcgDb;
                 // document.body.style.backgroundColor = bcgDb;  // Use the response from the server as the background color
-                alert(`bcg is${bcgDb}`);
+                // alert(`bcg is: ${bcgDb}`);
             }
         };
 
@@ -158,21 +173,6 @@
             // alert(`Loaded`);
         }
         xhr.send();
-    }
-
-    function updateBcg(bcg_Color) {
-        // alert(`bcg Is ${bcg_Color}`);
-        const xhr = new XMLHttpRequest();
-        xhr.open(`POST`, `updateBcg.php`, true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status == 200) {
-                alert(`updated Bcg Successfully`);
-            }
-            else
-                alert(`Not Updated BCG`);
-        }
-        xhr.send(`bcg_Color` + bcg_Color);
     }
 
 </script>
