@@ -100,7 +100,7 @@
             if (xhr.status == 200) {
                 nowId = xhr.responseText;
                 alert(`Reciving Id: ${nowId}`);
-                // diceValue(nowId);
+                diceValue(nowId);
             }
             else
                 alert(`Response From Server While Changing Id :`.xhr.response);
@@ -112,27 +112,28 @@
         // Came From Script.php
         var dice = Math.floor(Math.random() * 6) + 1;
         document.getElementById('showValue').value = dice;//4
-        // changeThePosFunc(nowId, dice);
-    }
-
-    let pos = 1;//Get Position From Database (There is 1 Default Wise);
-    function posFix(nowId, nxtPos) {
-        // alert(`Inside posFix Function`);
-        const xhr = new XMLHttpRequest();
-        xhr.open(`POST`, `updatePosition.php`, true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Make sure to set the content type
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                alert(`Position Updated Of ID : ${nowId} Into ${updatedPos}`);
-            }
-            else
-                alert(`Have Not Updated The Position`);
-        }
-        xhr.send('nowId=' + nowId + '&pos=' + pos);
+        posFix(nowId, dice+fetch_pos_ans);
     }
 
     let wholeGrid;
     let nxtPos;
+    let pos = nxtPos;//Get Position From Database (There is 1 Default Wise);
+    function posFix(nowId, nxtPos) {
+        // alert(`Inside posFix Function`);
+        const xhr = new XMLHttpRequest();
+        xhr.open(`POST`, `updatePosition.php`, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                alert(`Position Updated Of ID : ${nowId} Into ${updatedPos}`);
+                changeThePosFunc(nowId, dice);
+            }
+            else
+                alert(`Have Not Updated The Position`);
+        }
+        xhr.send('nowId=' + nowId + '&pos=' + nxtPos);
+    }
+
     function changeThePosFunc(nowId, dice) {
         alert("inside change");
         wholeGrid = document.getElementById(`grid_${pos}`);
@@ -157,7 +158,6 @@
         else
             alert(`.p1 - ${nxtPos} not found in grid_${nxtPos}`);
         pos = nxtPos;
-        posFix(nowId, nxtPos);
     }
 
     function truncateTable() {
@@ -173,6 +173,7 @@
             // alert(`Loaded`);
         }
         xhr.send();
+        location.reload();
     }
 
 </script>

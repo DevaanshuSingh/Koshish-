@@ -1832,7 +1832,7 @@ session_start();
                 <div class="numbers">
                         <input id="showValue" type="text" readonly>
                 </div>
-                <button class="butt0n" onclick="manageFunctions()"><strong>Cli<span id="ck">ck</span></strong></button>
+                <button class="butt0n" onclick="manageFunctions()"><strong>DI<span id="ce">CE</span></strong></button>
 
                 <?php
                 require "script.php";
@@ -1845,11 +1845,11 @@ session_start();
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
                         $stmt->execute([$nowId]);
                         $nowIp = $stmt->fetchColumn(0);
-                        if ($nowIp) {
-                                echo "<h1>Now IP ($nowId): \"$nowIp\"</h1>";
-                        } else {
-                                echo "<h1>No IP found for ID ($nowId)</h1>";
-                        }
+                        // if ($nowIp) {
+                        //         echo "<h1>Now IP ($nowId): \"$nowIp\"</h1>";
+                        // } else {
+                        //         echo "<h1>No IP found for ID ($nowId)</h1>";
+                        // }
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
                 }
@@ -1858,7 +1858,6 @@ session_start();
                         let nowId = 2;
                         function manageFunctions() {
                                 getId();
-                                diceValue();
                                 // location.reload();
                         }
                 </script>
@@ -1876,8 +1875,6 @@ session_start();
             document.querySelector(".butt0n").disabled = false;
         </script>';
                 }
-                ?>
-                <?php
                 require "script.php";
                 ?>
                 <div class="cont">
@@ -1956,34 +1953,3 @@ session_start();
 </body>
 
 </html>
-
-<!-- According To Flowchart -->
-<script>
-        // window.onload = function () {
-        //         // Loop through the values 1 to 4 and send an AJAX request for each
-        //         for (let i = 1; i <= 4; i++) {
-        //                 // Call the function to send the AJAX request for each 'nowId'
-        //                 sendAjaxRequest(i);
-        //         }
-        // };
-
-        // // Function to send the AJAX request
-        // function sendAjaxRequest(nowId) {
-        //         const xhr = new XMLHttpRequest();
-        //         xhr.open('POST', 'fetch_position.php', true);
-        //         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        //         xhr.onload = function () {
-        //                 if (xhr.status == 200) {
-        //                         const posIs = xhr.responseText;
-        //                         console.log(`Response for nowId ${nowId}:`, posIs); // Handle success response
-        //                 } else {
-        //                         console.error(`Error for nowId ${nowId}: ${xhr.status}`); // Handle error response
-        //                 }
-        //         };
-
-        //         // Send the AJAX request with the current 'nowId'
-        //         xhr.send('nowId=' + nowId);
-        // }
-
-</script>

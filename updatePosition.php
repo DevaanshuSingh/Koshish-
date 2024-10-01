@@ -8,6 +8,12 @@ try {
 } catch (PDOException $e) {
     echo 'Database error: ' . $e->getMessage();
 }
+?>
+<!-- <script>
+    window.location.href = 'index.php';
+    index.php.reload();
+</script> -->
+<?php
 //Retrying}
 //MayBe It Needs JS:
 //For CHANGIG_ID
