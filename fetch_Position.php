@@ -24,5 +24,5 @@ try {
 }
 
 echo $posIs;
-// $_SESSION['posIs'] = $posIs;
+$_SESSION['posIs'] = $posIs;
 ?>

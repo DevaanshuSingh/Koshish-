@@ -205,7 +205,7 @@
     function fetch(i) {
         let store_pos;
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'fetch_position.php', false);
+        xhr.open('POST', 'fetch_Position.php', false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         // alert(`After setRequestHeader`);
         xhr.onload = function () {
@@ -219,6 +219,7 @@
             }
         };
         xhr.send('idForGetPos=' + i);
+        return parseInt(store_pos, 10);  // Return the position as an integer (base 10)
     }
 
     function show(i, store_pos) {
@@ -241,7 +242,7 @@
             alert(`.p1 - ${nxtPos} not found in grid_${nxtPos}`);
     }
 
-    nowId = 4;
+    nowId = startFrom();//Now only this always should be the total numbers of plaers and after each turn/Onclick It should be that id 
     function getId() {
         alert(`Sending Id: ${nowId}`);
         const xhr = new XMLHttpRequest();
@@ -259,27 +260,63 @@
         xhr.send(`nowId=` + nowId);//Changing Id
     }
 
+    function startFrom(){
+        const xhr = new XMLHttpRequest();
+        xhr.open(`GET`,`startFrom.php`,true);
+        xhr.onload = function(){
+            if(xhr.status==200){
+                startId=xhr.responseText;
+                // alert(`start Type ${typeof xhr.responseText}`);
+            }
+        }
+        xhr.send();
+        return parseInt(startId, 10);  // Return the position as an integer (base 10);
+    }
+
     function diceValue(nowId) {
         var dice = Math.floor(Math.random() * 6) + 1;
         document.getElementById('showValue').value = dice;
         alert(`${nowId}: ${dice}`);
-        posFix(nowId, dice);
+        let currentPos = fetch(nowId);  // Get the current position from the database
+        let newPos = dice + currentPos;  // Add the dice value to the fetched position
+        posFix(nowId, newPos);  // Call posFix with the new calculated position
     }
 
-    function posFix() {
-        alert(`Inside posFix Function`);
+    function posFix(nowId, pos_prev_now) {
+        //have to add previous position and now dice value to set a new positon so older position have to fetch and add with dice;
+        alert(`pos_prev_now: ${pos_prev_now}`);
         const xhr = new XMLHttpRequest();
         xhr.open(`POST`, `updatePosition.php`, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
-            if (xhr.status === 200) {
-                alert(`Position Updated Of ID : ${nowId} Into ${updatedPos}`);
-                changeThePosFunc(nowId, dice);
+            if (xhr.status == 200) {
+                pos = parseInt(xhr.response,10);
+                alert(`Position Updated Of ID : ${nowId} Into ${pos}`);
+                show(nowId, pos_prev_now);
+                location.reload();
+                // changeThePosFunc(nowId, dice);
             }
             else
                 alert(`Have Not Updated The Position`);
         }
-        xhr.send('nowId=' + nowId + '&pos=' + pos);
+        xhr.send('nowId=' + nowId + '&pos=' + pos_prev_now);
+    }
+
+
+    function truncateTable() {
+        // alert(`inside Truncate`);
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('GET', 'truncateT.php', true);
+
+        xhr.onprogress = function () {
+            // alert(`Onprogress`);
+        }
+        xhr.onload = function () {
+            // alert(`Loaded`);
+        }
+        xhr.send();
+        location.reload();
     }
 
 </script>
