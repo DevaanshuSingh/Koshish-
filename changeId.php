@@ -26,7 +26,7 @@ if (isset($_POST['nowId'])) { // Check if nowId is set
             break;
         }
         if ($received == 2) {
-            $received = 1;
+            $received = 3;
             break;
         }
         if ($received == 3) {

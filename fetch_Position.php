@@ -12,13 +12,12 @@ try {
     
     // Fetch the current position from the first column
     $posIs = $stmt->fetchColumn();
-    
     // Check if a position was found for the given ID
-    // if ($posIs !== false) {
-    //     echo "<h1>Current Position for ID ($nowId): \"$posIs\"</h1>";
-    // } else {
-    //     echo "<h1>No Position found for ID ($nowId)</h1>";
-    // }
+    if ($posIs !== false) {
+        // echo "<h1>Current Position for ID ($nowId): \"$posIs\"</h1>";
+    } else {
+        // echo "<h1>No Position found for ID ($nowId)</h1>";
+    }
 } catch (PDOException $e) {
     // Handle any database errors
     echo 'Database error: ' . $e->getMessage();

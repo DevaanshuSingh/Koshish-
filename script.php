@@ -1,8 +1,8 @@
 <?php
-    // session_start();
+// session_start();
 ?>
 <!-- In Js { -->
-<!-- Trying To Add the feature not only select p1 or p2 instead of Select P${Id} this is versatile Which Is Needed -->
+<!-- Trying To Add the feature not only select p1 or p2 instead of Select P${Id} this is versatile Which Is Needed
 <script>
     let fetch_pos_ans;
     let pos_array = new Array(4);
@@ -174,6 +174,112 @@
         }
         xhr.send();
         location.reload();
+    }
+
+</script> -->
+
+<script>
+    function getTotal() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'total.php', false); // Set third parameter to false for synchronous
+
+        if (xhr.status == 200) {
+            alert(`Response type: ${typeof xhr.responseText}`);
+            return parseInt(xhr.responseText); // Return the total as an integer
+        } else {
+            alert(`else part`);
+            return 0; // Return 0 if there's an error
+        }
+        xhr.send(); // Send the request
+    }
+
+    //onload What Have TO Do
+    window.onload = function () {
+        // let total = fetch(); //Try To Fetch The Count Of Ids And Store In total Variable;
+        let total = 4;
+        for (let i = 1; i <= total; i++) {
+            fetch(i);
+        }
+    }
+
+    function fetch(i) {
+        let store_pos;
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'fetch_position.php', false);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // alert(`After setRequestHeader`);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // showOnload(nowId, xhr.responseText);
+                store_pos = xhr.responseText;
+                // alert(`${store_pos} is response`);
+                show(i, store_pos);
+            } else {
+                alert(`Not Fetched Data`);
+            }
+        };
+        xhr.send('idForGetPos=' + i);
+    }
+
+    function show(i, store_pos) {
+        // alert(`${i} : ${store_pos}`);
+        // alert("inside change");
+        wholeGrid = document.getElementById(`grid_${store_pos}`);
+        let playerDiv = wholeGrid.querySelector(`.p${i}`);
+        if (playerDiv) {
+            playerDiv.style.transition = 'background-color .1s ease';
+            if (i == 1)
+                playerDiv.style.backgroundColor = 'red';
+            if (i == 2)
+                playerDiv.style.backgroundColor = 'green';
+            if (i == 3)
+                playerDiv.style.backgroundColor = 'yellow';
+            if (i == 4)
+                playerDiv.style.backgroundColor = 'blue';
+        }
+        else
+            alert(`.p1 - ${nxtPos} not found in grid_${nxtPos}`);
+    }
+
+    nowId = 4;
+    function getId() {
+        alert(`Sending Id: ${nowId}`);
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'changeId.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                nowId = xhr.responseText;
+                alert(`Reciving Id: ${nowId}`);
+                diceValue(nowId);
+            }
+            else
+                alert(`Response From Server While Changing Id :`.xhr.response);
+        };
+        xhr.send(`nowId=` + nowId);//Changing Id
+    }
+
+    function diceValue(nowId) {
+        var dice = Math.floor(Math.random() * 6) + 1;
+        document.getElementById('showValue').value = dice;
+        alert(`${nowId}: ${dice}`);
+        posFix(nowId, dice);
+    }
+
+    function posFix() {
+        alert(`Inside posFix Function`);
+        const xhr = new XMLHttpRequest();
+        xhr.open(`POST`, `updatePosition.php`, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                alert(`Position Updated Of ID : ${nowId} Into ${updatedPos}`);
+                changeThePosFunc(nowId, dice);
+            }
+            else
+                alert(`Have Not Updated The Position`);
+        }
+        xhr.send('nowId=' + nowId + '&pos=' + pos);
     }
 
 </script>

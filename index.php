@@ -1845,11 +1845,11 @@ session_start();
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
                         $stmt->execute([$nowId]);
                         $nowIp = $stmt->fetchColumn(0);
-                        // if ($nowIp) {
-                        //         echo "<h1>Now IP ($nowId): \"$nowIp\"</h1>";
-                        // } else {
-                        //         echo "<h1>No IP found for ID ($nowId)</h1>";
-                        // }
+                        if ($nowIp) {
+                                echo "<h1>Now IP ($nowId): \"$nowIp\"</h1>";
+                        } else {
+                                echo "<h1>No IP found for ID ($nowId)</h1>";
+                        }
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
                 }
