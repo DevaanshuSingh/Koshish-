@@ -1855,10 +1855,11 @@ session_start();
                 }
                 ?>
                 <script>
-                        let nowId = 2;
+                        // let nowId = startFrom();
                         function manageFunctions() {
-                                getId();
-                                // location.reload();
+                                let nowId = startFrom();
+                                getId(nowId);
+                                location.reload();
                         }
                 </script>
                 <?php

@@ -1,28 +1,32 @@
-<?php
-// session_start();
-?>
-<!-- In Js { -->
-<!-- Trying To Add the feature not only select p1 or p2 instead of Select P${Id} this is versatile Which Is Needed
 <script>
-    let fetch_pos_ans;
-    let pos_array = new Array(4);
-    let send_as_id = 1;
 
-    window.onload = async function () {
+    //onload What Have TO Do
+    window.onload = function () {
         choosedBcg();
-        for (let i = 0; i < pos_array.length; i++) {
-            fetch_pos_ans = await fetch_pos(send_as_id);  // Wait for the response
-            pos_array[i] = fetch_pos_ans;
-            // alert(`id ${send_as_id}`);  // Show alert with the fetched value
-            send_as_id++;
+        // let total = fetch(); //Try To Fetch The Count Of Ids And Store In total Variable;
+        let total = 4;
+        for (let i = 1; i <= total; i++) {
+            fetch(i);
         }
-        // alert(`Array Of Positions ${pos_array}`);
     }
 
+    // This Should Be Solve
+    function getTotal() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'total.php', false);
 
+        if (xhr.status == 200) {
+            alert(`Response type: ${typeof xhr.responseText}`);
+            return parseInt(xhr.responseText); // Return the total as an integer
+        } else {
+            alert(`else part`);
+            return 0; // Return 0 if there's an error
+        }
+        xhr.send(); // Send the request
+    }
+
+    //Bcg Section
     function updateBcg(bcg_Color) {
-        // alert(`bcg Is ${bcg_Color}`);
-        // alert(`Type Of BCg Is ${typeof(bcg_Color)}`);
         const xhr = new XMLHttpRequest();
         xhr.open(`POST`, `updateBcg.php`, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -37,182 +41,27 @@
     }
 
     let bcgDb = null;
-
     function choosedBcg() {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'fetch_bcg.php', true);  // Replace 'your_endpoint_here' with the actual URL
+        xhr.open('GET', 'fetch_bcg.php', true);
         xhr.onload = function () {
             if (xhr.status === 200) {
                 bcgDb = xhr.responseText;
                 document.body.style.backgroundColor = bcgDb;
-                // document.body.style.backgroundColor = bcgDb;  // Use the response from the server as the background color
-                // alert(`bcg is: ${bcgDb}`);
             }
-        };
-
-        // Send the request
+        }
         xhr.send();
     }
-
-    function fetch_pos(nowId) {
-        // alert(`Now Id ${nowId}`);
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'fetch_position.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    showOnload(nowId, xhr.responseText);
-                    resolve(xhr.responseText);  // Resolve the promise with the response
-                    // alert(`Inside fetch_pos -> Id: ${nowId}\n Pos: ${xhr.responseText}`);  // Show alert inside fetch_pos
-                } else {
-                    reject(`Error: ${xhr.status}`);  // Reject the promise if an error occurs
-                }
-            };
-            xhr.send('idForGetPos=' + nowId);
-        });
-    }/*GPT */
-
-    function showOnload(nowId, pos) {
-        // Get the whole grid and the specific player div
-        let wholeGrid = document.getElementById(`grid_${pos}`);
-        let playerDiv = wholeGrid.querySelector(`.p${nowId}`);
-
-        if (playerDiv) {
-            // playerDiv.style.transition: "background-color 1s ease";
-            if (nowId == 1)
-                playerDiv.style.backgroundColor = 'red';
-            else if (nowId == 2)
-                playerDiv.style.backgroundColor = 'green';
-            else if (nowId == 3)
-                playerDiv.style.backgroundColor = 'yellow';
-            else if (nowId == 4)
-                playerDiv.style.backgroundColor = 'blue';
-        }
-    }
-
-    function getId() {
-        alert(`Sending Id: ${nowId}`);
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'changeId.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status == 200) {
-                nowId = xhr.responseText;
-                alert(`Reciving Id: ${nowId}`);
-                diceValue(nowId);
-            }
-            else
-                alert(`Response From Server While Changing Id :`.xhr.response);
-        };
-        xhr.send(`nowId=` + nowId);//Changing Id
-    }
-
-    function diceValue(nowId) {
-        // Came From Script.php
-        var dice = Math.floor(Math.random() * 6) + 1;
-        document.getElementById('showValue').value = dice;//4
-        posFix(nowId, dice+fetch_pos_ans);
-    }
-
-    let wholeGrid;
-    let nxtPos;
-    let pos = nxtPos;//Get Position From Database (There is 1 Default Wise);
-    function posFix(nowId, nxtPos) {
-        // alert(`Inside posFix Function`);
-        const xhr = new XMLHttpRequest();
-        xhr.open(`POST`, `updatePosition.php`, true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                alert(`Position Updated Of ID : ${nowId} Into ${updatedPos}`);
-                changeThePosFunc(nowId, dice);
-            }
-            else
-                alert(`Have Not Updated The Position`);
-        }
-        xhr.send('nowId=' + nowId + '&pos=' + nxtPos);
-    }
-
-    function changeThePosFunc(nowId, dice) {
-        alert("inside change");
-        wholeGrid = document.getElementById(`grid_${pos}`);
-        let playerDivPrev = wholeGrid.querySelector(`.p${nowId}`);
-        playerDivPrev.style.transition = 'background-color 1s ease';
-        playerDivPrev.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-
-        nxtPos = pos + dice;
-        wholeGrid = document.getElementById(`grid_${nxtPos}`);
-        let playerDiv = wholeGrid.querySelector(`.p${nowId}`);
-        if (playerDiv) {
-            playerDiv.style.transition = 'background-color 1s ease';
-            if (nowId == 1)
-                playerDiv.style.backgroundColor = 'red';
-            if (nowId == 2)
-                playerDiv.style.backgroundColor = 'green';
-            if (nowId == 3)
-                playerDiv.style.backgroundColor = 'yellow';
-            if (nowId == 4)
-                playerDiv.style.backgroundColor = 'blue';
-        }
-        else
-            alert(`.p1 - ${nxtPos} not found in grid_${nxtPos}`);
-        pos = nxtPos;
-    }
-
-    function truncateTable() {
-        // alert(`inside Truncate`);
-        const xhr = new XMLHttpRequest();
-
-        xhr.open('GET', 'truncateT.php', true);
-
-        xhr.onprogress = function () {
-            // alert(`Onprogress`);
-        }
-        xhr.onload = function () {
-            // alert(`Loaded`);
-        }
-        xhr.send();
-        location.reload();
-    }
-
-</script> -->
-
-<script>
-    function getTotal() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'total.php', false); // Set third parameter to false for synchronous
-
-        if (xhr.status == 200) {
-            alert(`Response type: ${typeof xhr.responseText}`);
-            return parseInt(xhr.responseText); // Return the total as an integer
-        } else {
-            alert(`else part`);
-            return 0; // Return 0 if there's an error
-        }
-        xhr.send(); // Send the request
-    }
-
-    //onload What Have TO Do
-    window.onload = function () {
-        // let total = fetch(); //Try To Fetch The Count Of Ids And Store In total Variable;
-        let total = 4;
-        for (let i = 1; i <= total; i++) {
-            fetch(i);
-        }
-    }
+    //Bcg Section
 
     function fetch(i) {
         let store_pos;
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'fetch_Position.php', false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        // alert(`After setRequestHeader`);
         xhr.onload = function () {
             if (xhr.status === 200) {
-                // showOnload(nowId, xhr.responseText);
                 store_pos = xhr.responseText;
-                // alert(`${store_pos} is response`);
                 show(i, store_pos);
             } else {
                 alert(`Not Fetched Data`);
@@ -223,12 +72,10 @@
     }
 
     function show(i, store_pos) {
-        // alert(`${i} : ${store_pos}`);
-        // alert("inside change");
-        wholeGrid = document.getElementById(`grid_${store_pos}`);
+        let wholeGrid = document.getElementById(`grid_${store_pos}`);
         let playerDiv = wholeGrid.querySelector(`.p${i}`);
         if (playerDiv) {
-            playerDiv.style.transition = 'background-color .1s ease';
+            // playerDiv.style.transition = 'background-color .1s ease';
             if (i == 1)
                 playerDiv.style.backgroundColor = 'red';
             if (i == 2)
@@ -238,20 +85,24 @@
             if (i == 4)
                 playerDiv.style.backgroundColor = 'blue';
         }
+
         else
             alert(`.p1 - ${nxtPos} not found in grid_${nxtPos}`);
+        if (store_pos == 100) {
+            alert(`Player ${i}Has Won The Game`);
+            openDialogueBox();
+        }
     }
 
-    nowId = startFrom();//Now only this always should be the total numbers of plaers and after each turn/Onclick It should be that id 
-    function getId() {
-        alert(`Sending Id: ${nowId}`);
+    function getId(nowId) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'changeId.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             if (xhr.status == 200) {
                 nowId = xhr.responseText;
-                alert(`Reciving Id: ${nowId}`);
+                parseInt(nowId);
+                updateTurn(xhr.responseText);
                 diceValue(nowId);
             }
             else
@@ -260,13 +111,13 @@
         xhr.send(`nowId=` + nowId);//Changing Id
     }
 
-    function startFrom(){
+    function startFrom() {
+        let startId;
         const xhr = new XMLHttpRequest();
-        xhr.open(`GET`,`startFrom.php`,true);
-        xhr.onload = function(){
-            if(xhr.status==200){
-                startId=xhr.responseText;
-                // alert(`start Type ${typeof xhr.responseText}`);
+        xhr.open('GET', 'startFrom.php?id=1', false);
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                startId = parseInt(xhr.responseText);
             }
         }
         xhr.send();
@@ -276,32 +127,42 @@
     function diceValue(nowId) {
         var dice = Math.floor(Math.random() * 6) + 1;
         document.getElementById('showValue').value = dice;
-        alert(`${nowId}: ${dice}`);
-        let currentPos = fetch(nowId);  // Get the current position from the database
-        let newPos = dice + currentPos;  // Add the dice value to the fetched position
-        posFix(nowId, newPos);  // Call posFix with the new calculated position
+        let currentPos = fetch(nowId);
+        let newPos = dice + currentPos;
+        posFix(nowId, newPos);
+    }
+
+    let nowId = startFrom();
+    function updateTurn(nowId) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(`POST`, `updateTurn.php`, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                // alert(`Updated nowTurn`);
+            }
+            else
+                alert(`Have Not Updated nowTurn`);
+        }
+        xhr.send("now_turn=" + nowId);
     }
 
     function posFix(nowId, pos_prev_now) {
         //have to add previous position and now dice value to set a new positon so older position have to fetch and add with dice;
-        alert(`pos_prev_now: ${pos_prev_now}`);
         const xhr = new XMLHttpRequest();
         xhr.open(`POST`, `updatePosition.php`, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             if (xhr.status == 200) {
-                pos = parseInt(xhr.response,10);
-                alert(`Position Updated Of ID : ${nowId} Into ${pos}`);
+                pos = parseInt(xhr.response, 10);
                 show(nowId, pos_prev_now);
-                location.reload();
-                // changeThePosFunc(nowId, dice);
+                // location.reload();
             }
             else
                 alert(`Have Not Updated The Position`);
         }
         xhr.send('nowId=' + nowId + '&pos=' + pos_prev_now);
     }
-
 
     function truncateTable() {
         // alert(`inside Truncate`);
@@ -313,10 +174,10 @@
             // alert(`Onprogress`);
         }
         xhr.onload = function () {
+            location.reload();
             // alert(`Loaded`);
         }
         xhr.send();
-        location.reload();
     }
 
 </script>
