@@ -3,6 +3,7 @@
     //onload What Have TO Do
     window.onload = function () {
         choosedBcg();
+        showDice();
         // let total = fetch(); //Try To Fetch The Count Of Ids And Store In total Variable;
         let total = 4;
         for (let i = 1; i <= total; i++) {
@@ -71,6 +72,21 @@
         return parseInt(store_pos, 10);  // Return the position as an integer (base 10)
     }
 
+    function showDice(){
+        const xhr = new XMLHttpRequest();
+        xhr.open(`GET`, `showDice.php`, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                alert(`${xhr.response}is dice`);
+                document.getElementById('showValue').value = xhr.response;
+            }
+            else
+                alert(`Did't Got dice`);
+        }
+        xhr.send();
+    }
+    
     function show(i, store_pos) {
         let wholeGrid = document.getElementById(`grid_${store_pos}`);
         let playerDiv = wholeGrid.querySelector(`.p${i}`);
@@ -89,7 +105,7 @@
         else
             alert(`.p1 - ${nxtPos} not found in grid_${nxtPos}`);
         if (store_pos == 100) {
-            alert(`Player ${i}Has Won The Game`);
+            // alert(`Player ${i}Has Won The Game`);
             openDialogueBox(i);
         }
     }
@@ -129,7 +145,24 @@
         document.getElementById('showValue').value = dice;
         let currentPos = fetch(nowId);
         let newPos = dice + currentPos;
+        if(newPos>100)
+            return;
+        updateDice(dice);
         posFix(nowId, newPos);
+    }
+    
+    function updateDice(dice){
+        const xhr = new XMLHttpRequest();
+        xhr.open(`POST`, `updateDice.php`, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                alert(`Updated Dice`);
+            }
+            else
+                alert(`Have Not Updated dice`);
+        }
+        xhr.send("dice=" + dice);
     }
 
     let nowId = startFrom();
@@ -166,7 +199,7 @@
 
         
     function openDialogueBox(nowId) {
-        alert(`Sent ${nowId}`);
+        // alert(`Sent ${nowId}`);
         let winnerContainer = document.querySelector('.winner-container');
         let winner = document.querySelector('.player-info');
         let img = document.getElementById('winnerImage');
@@ -177,7 +210,7 @@
             if (xhr.status == 200) {
                 let imageUrl = xhr.responseText;
                 img.src = imageUrl;
-                alert(`Got Winner's Image Successfully`);
+                // alert(`Got Winner's Image Successfully`);
                 img.style.width = "100%";
                 img.style.height = "100%";
                 img.style.objectFit = "cover"; 
@@ -202,7 +235,7 @@
         xhr.onload = function () {
             if (xhr.status == 200) {
                 name = xhr.responseText;
-                alert('name Is '+name);
+                // alert('name Is '+name);
                 let idSpan = document.getElementById("idSpan");
                 let winnerId = document.getElementById("winnerId");
                 let winnerName = document.getElementById("winnerName");
@@ -221,7 +254,6 @@
         winnerContainer.style.display = "none";
     }
     
-
     function truncateTable() {
         // alert(`inside Truncate`);
         const xhr = new XMLHttpRequest();
