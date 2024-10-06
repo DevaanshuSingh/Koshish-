@@ -16,6 +16,35 @@ session_start();
 </head>
 
 <body>
+        <?php
+        require "script.php";
+        ?>
+        <div class="winner-container">
+                <span onclick="closeWinnerSection()">
+                        <h4>x</h4>
+                </span>
+                <div class="winner">
+                        <div class="player-info">
+                                <img src="" alt="Winner's Image" id="winnerImage">
+                        </div>
+                        <footer>
+                                <div class="won">PLAYER <span id="idSpan"></span> WON THE GAME</div>
+                                <table class="table table-dark align-middle table-striped table-bordered">
+                                        <thead>
+
+                                                <td> ID</td>
+                                                <td> NAME</td>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td id="winnerId"></td>
+                                                        <td id="winnerName"></td>
+                                                </tr>
+                                        </tbody>
+                                </table>
+                        </footer>
+                </div>
+        </div>
         <div class="grid-container">
                 <div class="grid-item" id="grid_100">100
                         <div class="d-flex-col left-col">
@@ -1835,21 +1864,20 @@ session_start();
                 <button class="butt0n" onclick="manageFunctions()"><strong>DI<span id="ce">CE</span></strong></button>
 
                 <?php
-                require "script.php";
+                require 'connection_db.php';
                 if (!isset($_SESSION["changed"])) {
                         $_SESSION["changed"] = 1; // Initializing with a default value
                 }
                 $nowId = $_SESSION["changed"];
-                require 'connection_db.php';
                 try {
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
                         $stmt->execute([$nowId]);
                         $nowIp = $stmt->fetchColumn(0);
-                        if ($nowIp) {
-                                echo "<h1>Now IP ($nowId): \"$nowIp\"</h1>";
-                        } else {
-                                echo "<h1>No IP found for ID ($nowId)</h1>";
-                        }
+                        // if ($nowIp) {
+                        //         echo "<h1>Now IP ($nowId): \"$nowIp\"</h1>";
+                        // } else {
+                        //         echo "<h1>No IP found for ID ($nowId)</h1>";
+                        // }
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
                 }

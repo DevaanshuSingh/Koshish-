@@ -1,16 +1,16 @@
 <script>
 
-    //onload What Have TO Do
+    //onload What Have To Do
     window.onload = function () {
         choosedBcg();
+        showDice();
         // let total = fetch(); //Try To Fetch The Count Of Ids And Store In total Variable;
-        let total = 4;
+        let total = 2;
         for (let i = 1; i <= total; i++) {
-            fetch(i);
+            fetchPos(i);
         }
     }
 
-    // This Should Be Solve
     function getTotal() {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'total.php', false);
@@ -54,7 +54,7 @@
     }
     //Bcg Section
 
-    function fetch(i) {
+    function fetchPos(i) {
         let store_pos;
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'fetch_Position.php', false);
@@ -90,8 +90,59 @@
             alert(`.p1 - ${nxtPos} not found in grid_${nxtPos}`);
         if (store_pos == 100) {
             alert(`Player ${i}Has Won The Game`);
-            openDialogueBox(i);
+            openDialogueBox(nowId);
         }
+    }
+
+    function openDialogueBox(nowId) {
+        let winnerContainer = document.querySelector('.winner-container');
+        winnerContainer.style.display = "flex";
+        let winner = document.querySelector('.player-info');
+        winner.style.display = "flex";
+        let img = document.getElementById('winnerImage'); 
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "getWinnerImage.php", true);
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                let imageUrl = xhr.responseText;
+                img.src = imageUrl;
+                alert(`Got Winner's Image Successfully`);
+                img.style.width = "100%";
+                img.style.height = "100%";
+                img.style.objectFit = "cover"; 
+                winner.style.display = "flex";
+            } else {
+                alert(`Failed to get the image. Status: ${xhr.status}`);
+            }
+        };
+        xhr.onerror = function () {
+            alert('An error occurred while fetching the image.');
+        };
+        const formData = new FormData();
+        formData.append('nowId', nowId);
+        xhr.send(formData);
+        getWinnerData(nowId);
+    }
+
+    function getWinnerData(nowId){
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'winnerData.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                name = xhr.responseText;
+                alert('name Is '+name);
+                let playerId = document.getElementById("playerId");
+                let winnerId = document.getElementById("winnerId");
+                let winnerName = document.getElementById("winnerName");
+                winnerId.innerText = nowId;
+                playerId.innerText = nowId;
+                winnerName.innerText = name;
+            }
+            else
+                alert(`Response From Server While Changing Id :`.xhr.response);
+        };
+        xhr.send(`nowId=` + nowId);//Changing Id
     }
 
     function getId(nowId) {
@@ -114,7 +165,7 @@
     function startFrom() {
         let startId;
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'startFrom.php?id=1', false);
+        xhr.open('GET', 'startFrom.php', false);
         xhr.onload = function () {
             if (xhr.status == 200) {
                 startId = parseInt(xhr.responseText);
@@ -124,12 +175,85 @@
         return parseInt(startId, 10);  // Return the position as an integer (base 10);
     }
 
+    function getStartValue(nowId) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(`POST`, `getStart.php`, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onloads = function () {
+            if (xhr.satus == 200)
+                alert(`All Ok`);
+            else
+                alert(`Not Done`);
+        }
+        xhr.send("nowId=" + nowId);
+    }
+
+    let check;
     function diceValue(nowId) {
         var dice = Math.floor(Math.random() * 6) + 1;
-        document.getElementById('showValue').value = dice;
+        // alert(`dice id ${dice}`);
+        updateDice(dice);
+        showDice();
         let currentPos = fetch(nowId);
         let newPos = dice + currentPos;
+        if (newPos > 100) {
+            alert(`Limit`);
+            return;
+        }
+        // if(check==0)
+        //     if(checkStart(dice))
+        //         return;
+
+        // checkoverFlow();
+        // Before Fixing The Position Have To Check That Is The Player Going Forward After 1
         posFix(nowId, newPos);
+    }
+
+    //check if player has entry number (1) to start the game,
+    // function checkStart(dice){ 
+    //     if(dice==1){
+    //         check = 1;
+    //         set start = 1 in db
+    //         return true;
+    //     }
+    //     else
+    //         alert(`Not Allowed`);
+
+    // }
+
+    function updateDice(dice) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "updateDice.php", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200)
+                alert(`Updated Dice Successfully & Response Is ${xhr.responseText}`);
+            else
+                alert(`Have Not Updated Dice Successfully`);
+        }
+
+        xhr.onerror = function () {
+            alert('An error occurred during the request.');
+        };
+
+        xhr.send("dice=" + encodeURIComponent(dice));
+        // alert(`sending ${dice}`);
+    }
+
+    function showDice() {
+        //Fetch Dice Value And Have To Show In Input Box Onload When Will Update;
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "getDice.php", true);
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                diceIs = xhr.responseText;
+                // alert(`Dice From DB: ${diceIs}`);
+                document.getElementById('showValue').value = diceIs;
+            }
+            else
+                alert(`Response Is ${diceIs}`)
+        }
+        xhr.send();
     }
 
     let nowId = startFrom();
@@ -164,64 +288,6 @@
         xhr.send('nowId=' + nowId + '&pos=' + pos_prev_now);
     }
 
-        
-    function openDialogueBox(nowId) {
-        alert(`Sent ${nowId}`);
-        let winnerContainer = document.querySelector('.winner-container');
-        let winner = document.querySelector('.player-info');
-        let img = document.getElementById('winnerImage');
-        winnerContainer.style.display = "flex";
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "getWinnerImage.php", true);
-        xhr.onload = function () {
-            if (xhr.status == 200) {
-                let imageUrl = xhr.responseText;
-                img.src = imageUrl;
-                alert(`Got Winner's Image Successfully`);
-                img.style.width = "100%";
-                img.style.height = "100%";
-                img.style.objectFit = "cover"; 
-                winner.style.display = "flex";
-            } else {
-                alert(`Failed to get the image. Status: ${xhr.status}`);
-            }
-        };
-        xhr.onerror = function () {
-            alert('An error occurred while fetching the image.');
-        };
-        const formData = new FormData();
-        formData.append('nowId', nowId);
-        xhr.send(formData);
-        getWinnerData(nowId);
-    }
-
-    function getWinnerData(nowId){
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'winnerData.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status == 200) {
-                name = xhr.responseText;
-                alert('name Is '+name);
-                let idSpan = document.getElementById("idSpan");
-                let winnerId = document.getElementById("winnerId");
-                let winnerName = document.getElementById("winnerName");
-                idSpan.innerHTML = nowId;
-                winnerId.innerHTML = nowId;
-                winnerName.innerHTML = name;
-            }
-            else
-                alert(`Response From Server While Changing Id :`.xhr.response);
-        };
-        xhr.send(`nowId=` + nowId);//Changing Id
-    }
-
-    function closeWinnerSection(){
-        let winnerContainer = document.querySelector('.winner-container');
-        winnerContainer.style.display = "none";
-    }
-    
-
     function truncateTable() {
         // alert(`inside Truncate`);
         const xhr = new XMLHttpRequest();
@@ -236,6 +302,11 @@
             // alert(`Loaded`);
         }
         xhr.send();
+    }
+
+    function closeWinnerSection() {
+        let winnerContainer = document.querySelector('.winner-container');
+        winnerContainer.style.display = "none";
     }
 
 </script>
