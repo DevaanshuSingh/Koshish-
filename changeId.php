@@ -39,7 +39,7 @@ if (isset($_POST['nowId'])) { // Check if nowId is set
         }
     }
     $_SESSION['changed'] = $received;
-    echo $received; // Return the incremented value
+    echo $received;
 } else {
     ?>
     <script>
@@ -47,18 +47,3 @@ if (isset($_POST['nowId'])) { // Check if nowId is set
     </script>
     <?php
 }
-// try {
-//     $stmt = $pdo->prepare("INSERT INTO user_information");
-//     $stmt->execute([$nowId]);
-// } catch (PDOException $e) {
-//     echo 'Database error: ' . $e->getMessage();
-// }
-
-// try to do this{
-//     index: request for ID to getId Function 
-//     In Script Will Recive Using AJAx Will Request To CHANGEID.PHP
-//     And Then Have To Send This Current Ids IP In DB
-//     And Then Have To Fetch Id From Db To Give Index.php
-//     From Where The First Request Was Sent,
-// }
-?>

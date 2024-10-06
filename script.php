@@ -72,13 +72,13 @@
         return parseInt(store_pos, 10);  // Return the position as an integer (base 10)
     }
 
-    function showDice(){
+    function showDice() {
         const xhr = new XMLHttpRequest();
         xhr.open(`GET`, `showDice.php`, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             if (xhr.status == 200) {
-                alert(`${xhr.response}is dice`);
+                // alert(`${xhr.response}is dice`);
                 document.getElementById('showValue').value = xhr.response;
             }
             else
@@ -86,7 +86,7 @@
         }
         xhr.send();
     }
-    
+
     function show(i, store_pos) {
         let wholeGrid = document.getElementById(`grid_${store_pos}`);
         let playerDiv = wholeGrid.querySelector(`.p${i}`);
@@ -118,7 +118,7 @@
             if (xhr.status == 200) {
                 nowId = xhr.responseText;
                 parseInt(nowId);
-                updateTurn(xhr.responseText);
+                updateTurn(nowId);
                 diceValue(nowId);
             }
             else
@@ -145,13 +145,23 @@
         document.getElementById('showValue').value = dice;
         let currentPos = fetch(nowId);
         let newPos = dice + currentPos;
-        if(newPos>100)
+        
+        if(nowId==1)
+            alert(`Red : ${newPos} With ${dice}`);
+        if(nowId==2)
+            alert(`Green : ${newPos} With ${dice}`);
+        if(nowId==3)
+            alert(`Yellow : ${newPos} With ${dice}`);
+        if(nowId==4)
+            alert(`Blue : ${newPos} With ${dice}`);
+        if (newPos > 100)
             return;
         updateDice(dice);
         posFix(nowId, newPos);
     }
     
-    function updateDice(dice){
+
+    function updateDice(dice) {
         const xhr = new XMLHttpRequest();
         xhr.open(`POST`, `updateDice.php`, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -179,7 +189,7 @@
         }
         xhr.send("now_turn=" + nowId);
     }
-
+    
     function posFix(nowId, pos_prev_now) {
         //have to add previous position and now dice value to set a new positon so older position have to fetch and add with dice;
         const xhr = new XMLHttpRequest();
@@ -197,7 +207,7 @@
         xhr.send('nowId=' + nowId + '&pos=' + pos_prev_now);
     }
 
-        
+
     function openDialogueBox(nowId) {
         // alert(`Sent ${nowId}`);
         let winnerContainer = document.querySelector('.winner-container');
@@ -213,7 +223,7 @@
                 // alert(`Got Winner's Image Successfully`);
                 img.style.width = "100%";
                 img.style.height = "100%";
-                img.style.objectFit = "cover"; 
+                img.style.objectFit = "cover";
                 winner.style.display = "flex";
             } else {
                 alert(`Failed to get the image. Status: ${xhr.status}`);
@@ -228,7 +238,7 @@
         getWinnerData(nowId);
     }
 
-    function getWinnerData(nowId){
+    function getWinnerData(nowId) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'winnerData.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -249,11 +259,11 @@
         xhr.send(`nowId=` + nowId);//Changing Id
     }
 
-    function closeWinnerSection(){
+    function closeWinnerSection() {
         let winnerContainer = document.querySelector('.winner-container');
         winnerContainer.style.display = "none";
     }
-    
+
     function truncateTable() {
         // alert(`inside Truncate`);
         const xhr = new XMLHttpRequest();
