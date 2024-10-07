@@ -1,15 +1,5 @@
 <script>
 
-    //onload What Have TO Do
-    window.onload = function () {
-        choosedBcg();
-        showDice();
-        // let total = fetch(); //Try To Fetch The Count Of Ids And Store In total Variable;
-        let total = 4;
-        for (let i = 1; i <= total; i++) {
-            fetch(i);
-        }
-    }
 
     // This Should Be Solve
     function getTotal() {
@@ -26,7 +16,18 @@
         xhr.send(); // Send the request
     }
 
-    //Bcg Section
+    //onload What Have TO Do
+    window.onload = function () {
+        choosedBcg();
+        showDice();
+        // let total = fetchPos(); //Try To Fetch The Count Of Ids And Store In total Variable;
+        let total = 4;
+        for (let i = 1; i <= total; i++) {
+            fetchPos(i);
+        }
+    }
+
+    //{Bcg Section
     function updateBcg(bcg_Color) {
         const xhr = new XMLHttpRequest();
         xhr.open(`POST`, `updateBcg.php`, true);
@@ -53,9 +54,9 @@
         }
         xhr.send();
     }
-    //Bcg Section
+    //Bcg Section} 
 
-    function fetch(i) {
+    function fetchPos(i) {
         let store_pos;
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'fetch_Position.php', false);
@@ -118,13 +119,84 @@
             if (xhr.status == 200) {
                 nowId = xhr.responseText;
                 parseInt(nowId);
-                updateTurn(nowId);
+                updateTurn(xhr.responseText);
                 diceValue(nowId);
             }
             else
                 alert(`Response From Server While Changing Id :`.xhr.response);
         };
         xhr.send(`nowId=` + nowId);//Changing Id
+    }
+
+    function diceValue(nowId) {
+        var dice = Math.floor(Math.random() * 6) + 1;
+        document.getElementById('showValue').value = dice;
+        let currentPos = fetchPos(nowId);
+        let newPos = dice + currentPos;
+        if (newPos) {
+            // if (nowId == 1)
+            //     alert(`Red : ${newPos} With ${dice}`);
+            // if (nowId == 2)
+            //     alert(`Green : ${newPos} With ${dice}`);
+            // if (nowId == 3)
+            //     alert(`Yellow : ${newPos} With ${dice}`);
+            // if (nowId == 4)
+            //     alert(`Blue : ${newPos} With ${dice}`);
+        }
+        if (newPos > 100)
+            return;
+        if (dice == 1)
+            updateStart(nowId);
+        
+        updateDice(nowId, dice);
+        let start_T_F = getCheckStart(nowId);
+        if (start_T_F) {
+            posFix(nowId, newPos);
+        } else {
+            alert(`Player ${nowId} Is Not Allowed Because Got: ${dice} Not 1`);
+            return;
+        }
+    }
+
+    function getCheckStart(nowId) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `checkStart.php?nowId=${nowId}`, false); // Synchronous request, params in URL
+    
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    xhr.send();  // No need to pass anything in send() for GET
+
+    if (xhr.status === 200) {
+        // Process the response and convert it to a boolean
+        const response = xhr.responseText.trim().toLowerCase(); 
+        if (response === "true") {
+            return true;
+        } else if (response === "false") {
+            return false;
+        } else {
+            alert('Unexpected response: ' + response);
+            return false;
+        }
+    } else {
+        alert('Error fetching start check');
+        return false;
+    }
+}
+
+
+    function updateStart(nowId) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(`POST`, `updateStart.php`, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                alert(`updateStart() Ok`);
+                return xhr.response;
+            }
+            else
+                alert(`updateStart() Error`);
+        }
+        xhr.send("nowId=" + nowId);
     }
 
     function startFrom() {
@@ -140,28 +212,7 @@
         return parseInt(startId, 10);  // Return the position as an integer (base 10);
     }
 
-    function diceValue(nowId) {
-        var dice = Math.floor(Math.random() * 6) + 1;
-        document.getElementById('showValue').value = dice;
-        let currentPos = fetch(nowId);
-        let newPos = dice + currentPos;
-        
-        if(nowId==1)
-            alert(`Red : ${newPos} With ${dice}`);
-        if(nowId==2)
-            alert(`Green : ${newPos} With ${dice}`);
-        if(nowId==3)
-            alert(`Yellow : ${newPos} With ${dice}`);
-        if(nowId==4)
-            alert(`Blue : ${newPos} With ${dice}`);
-        if (newPos > 100)
-            return;
-        updateDice(dice);
-        posFix(nowId, newPos);
-    }
-    
-
-    function updateDice(dice) {
+    function updateDice(nowId, dice) {
         const xhr = new XMLHttpRequest();
         xhr.open(`POST`, `updateDice.php`, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -172,7 +223,7 @@
             else
                 alert(`Have Not Updated dice`);
         }
-        xhr.send("dice=" + dice);
+        xhr.send("nowId=" + nowId + "&dice=" + dice);
     }
 
     let nowId = startFrom();
@@ -189,7 +240,7 @@
         }
         xhr.send("now_turn=" + nowId);
     }
-    
+
     function posFix(nowId, pos_prev_now) {
         //have to add previous position and now dice value to set a new positon so older position have to fetch and add with dice;
         const xhr = new XMLHttpRequest();
@@ -206,7 +257,6 @@
         }
         xhr.send('nowId=' + nowId + '&pos=' + pos_prev_now);
     }
-
 
     function openDialogueBox(nowId) {
         // alert(`Sent ${nowId}`);

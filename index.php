@@ -1861,6 +1861,7 @@ session_start();
                 <div class="numbers">
                         <input id="showValue" type="text" readonly>
                 </div>
+                <?php require 'script.php'; ?>
                 <button class="butt0n" onclick="manageFunctions()"><strong>DI<span id="ce">CE</span></strong></button>
 
                 <?php
@@ -1873,11 +1874,11 @@ session_start();
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
                         $stmt->execute([$nowId]);
                         $nowIp = $stmt->fetchColumn(0);
-                        // if ($nowIp) {
-                        //         echo "<h1>Now IP ($nowId): \"$nowIp\"</h1>";
-                        // } else {
-                        //         echo "<h1>No IP found for ID ($nowId)</h1>";
-                        // }
+                        if ($nowIp) {
+                                echo "<h1>Now IP ($nowId): \"$nowIp\"</h1>";
+                        } else {
+                                echo "<h1>No IP found for ID ($nowId)</h1>";
+                        }
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
                 }
@@ -1897,6 +1898,7 @@ session_start();
                         echo '<script type="text/javascript">
             document.querySelector(".butt0n").style.cursor = "not-allowed";
             document.querySelector(".butt0n").disabled = true;
+            document.querySelector(".butt0n").color = red;
         </script>';
                 } else {
                         echo '<script type="text/javascript">

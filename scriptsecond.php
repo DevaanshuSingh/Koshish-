@@ -204,7 +204,7 @@
         //     if(checkStart(dice))
         //         return;
 
-        // checkoverFlow();
+        // checkOverFlow();
         // Before Fixing The Position Have To Check That Is The Player Going Forward After 1
         posFix(nowId, newPos);
     }
