@@ -1,6 +1,5 @@
 <script>
 
-
     // This Should Be Solve
     function getTotal() {
         const xhr = new XMLHttpRequest();
@@ -113,6 +112,7 @@
 
     function getId(nowId) {
         const xhr = new XMLHttpRequest();
+        // xhr.open('POST', '.fetch/changeId.php', true);
         xhr.open('POST', 'changeId.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
@@ -147,7 +147,7 @@
             return;
         if (dice == 1)
             updateStart(nowId);
-        
+
         updateDice(nowId, dice);
         let start_T_F = getCheckStart(nowId);
         if (start_T_F) {
@@ -182,7 +182,6 @@
         return false;
     }
 }
-
 
     function updateStart(nowId) {
         const xhr = new XMLHttpRequest();

@@ -1,33 +1,6 @@
 /* Dont Change */
 @import url('https://fonts.googleapis.com/css2?family=Sofadi+One&display=swap');
 
-/*Register Page*/
-form {
-    background-color: rgba(136, 111, 135, 0.831);
-    height: 80vh;
-    width: 100vw;
-}
-
-.picture_label,
-.name_label {
-    position: relative;
-    top: 0;
-    border-radius: 0;
-    box-shadow: 0vh 0vh 0vh 0vh rgba(31, 30, 30, 0.5);
-    /* background-color: #0000; */
-    height: 2vh;
-    color: red;
-}
-
-.btn {
-    position: relative;
-    top: 0;
-    border-radius: 0;
-    height: auto;
-    top: 5vh;
-}
-
-/*Register Page*/
 * {
     margin: 0;
     padding: 0;

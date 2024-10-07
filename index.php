@@ -1875,9 +1875,9 @@ session_start();
                         $stmt->execute([$nowId]);
                         $nowIp = $stmt->fetchColumn(0);
                         if ($nowIp) {
-                                echo "<h1>Now IP ($nowId): \"$nowIp\"</h1>";
+                                echo "<h1>IP ($nowId): \"$nowIp\"</h1>";
                         } else {
-                                echo "<h1>No IP found for ID ($nowId)</h1>";
+                                echo "<h1>No IP ID ($nowId)</h1>";
                         }
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
