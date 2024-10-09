@@ -7,6 +7,7 @@ try {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $player_name = $_POST['player_name'];
         $ip = $_POST['client_ip'];
+        $mode=$_POST['mode'];
 
         // file jhamela
         if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
@@ -46,16 +47,19 @@ try {
             exit;
         }
         // file jhamela
-        $stmt = $pdo->prepare("INSERT INTO user_information (name, profile,ip_address) VALUES (?,?,?)");
 
-        if ($stmt->execute([$player_name, $imagePath, $ip])) {
+        // in user_information Table 
+        $stmt = $pdo->prepare("INSERT INTO user_information (name, profile,ip_address,mode) VALUES (?,?,?,?)");
+
+        if ($stmt->execute([$player_name, $imagePath, $ip,$mode])) {
             // echo "Player registered successfully!";
             // echo '<h1 style="height:20vh;"><a href="index.php">INDEX.PHP</a></h1>';
             echo ' <meta http-equiv="refresh" content="0; url=index.php">';
         } else {
             echo "Error: Could not register student.";
         }
-        /* in performane */
+        
+        /* in performance Table*/
         $stmt = $pdo->prepare("INSERT INTO performance (name,currentPos) VALUES (?,?)");
 
         if ($stmt->execute([$player_name,1])) {
@@ -63,7 +67,6 @@ try {
         } else {
             echo "Error: Could not register student.";
         }
-
     }
 } catch (PDOException $e) {
     echo 'Database error: ' . $e->getMessage();

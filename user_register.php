@@ -57,7 +57,7 @@
             </p>
             <div id="form-section">
                 <div class="inner">
-                    <div id="info"><u>Please Register As A Player:</u></div>
+                    <div id="info"><i>Register Yourself As A Player:</i></div>
                     <form action="register.php" method="POST" enctype="multipart/form-data" class="form">
                         <div class="d-flex form-row container flex-wrap">
                             <div class="modes-form">
@@ -82,9 +82,7 @@
                                         capture="environment" required>
                                 </div>
                                 <div class="form-group play-btn">
-                                    <!-- <div id="animate"><div id="anime-left"></div> <button type="submit" class="button"> PLAY</button></div> -->
-                                        <div class="lft-anime"></div>
-                                        <button type="submit" class="button btn-success"> PLAY</button>
+                                    <button type="submit" class="button btn-success"><span> PLAY</span></button>
                                 </div>
                                 <input type="hidden" name="client_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
                             </div>
@@ -107,37 +105,49 @@
                 mode.style.display = "flex";
             }
             function closeAbout() {
-                let modes = document.querySelectorAll('.know-about'); // Get all elements with class 'know-about'
+                let modes = document.querySelectorAll('.know-about');
                 modes.forEach(function (mode) {
-                    mode.style.display = "none"; // Hide each mode individually
+                    mode.style.display = "none";
                 });
+            }
+            window.onload = function () {
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", "checkToShowMode.php", true);
+                xhr.onload = function () {
+                    if (forFirst <= 4) {
+                        let forFirst = xhr.response;
+                        // alert(`${forFirst} Players Have Registered`);
+                        if (forFirst < 1) {
+                            modes = document.querySelector('.modes-form');
+                            // modes.style.display="flex";
+                        }
+                        else {
+                            modes = document.querySelector('.modes-form');
+                            container = document.querySelector('.container');
+                            playBtn = document.querySelector('.play-btn');
+                            // modes.style.backgroundColor= "red";
+                            modes.style.display = "none";
+                            container.style.justifyContent = "center";
+                            container.style.alignItems = "center";
+                            // playBtn.style.backgroundColor="red";
+                            playBtn.style.height = "5vmin";
+                            playBtn.style.width = "30%";
+                        }
+                    } else {
+                        alert(`More Than 4`);
+                        modes = document.querySelector('.modes-form');
+                        container = document.querySelector('.container');
+                        playBtn = document.querySelector('.play-btn');
+                        // modes.style.display = "none";
+                        container.style.justifyContent = "center";
+                        container.style.alignItems = "center";
+                        playBtn.style.height = "5vmin";
+                        playBtn.style.width = "30%";
+                    }
+                }
+                xhr.send();
             }
         </script>
     </body>
 
     </html>
-
-    <!-- 
-    <form action="register.php" method="POST" enctype="multipart/form-data" class="border rounded">
-        <div class="form-row d-flex container flex-wrap">
-            <div class="form-group name">
-                <label class="name_label" for="player_name">User Name</label>
-                <input type="text" class="form-control" id="player_name" name="player_name" required>
-            </div>
-            <div class="form-group profile">
-                <label class="picture_label" for="picture">Profile Picture</label>
-                <input type="file" class="form-control" id="picture" name="image" accept="image/*" capture="environment"
-                    required>
-            </div>
-            <div class="form-group register">
-                <button type="submit" class="btn btn-success">Register</button>
-            </div>
-            <input type="hidden" name="client_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
-        </div>
-    </form> 
-    -->
-    <!-- Want To Play In-
-
-    - EASY MODE
-    - HARD MODE
-    - SURPRISE MODE -->

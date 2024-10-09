@@ -17,13 +17,61 @@
 
     //onload What Have TO Do
     window.onload = function () {
-        choosedBcg();
-        showDice();
+        GetPlayerCount();
+        // welcome();
+        // choosedBcg();
+        // showDice();
+        // updateMode();
         // let total = fetchPos(); //Try To Fetch The Count Of Ids And Store In total Variable;
         let total = 4;
         for (let i = 1; i <= total; i++) {
             fetchPos(i);
         }
+    }
+
+    function welcome() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "checkToShowMode.php", true);
+        xhr.onload = function () {
+            let forFirst = xhr.response;
+            alert(`${mode} Mode Has Turned On`);
+        }
+        xhr.send();
+    }
+
+    function getSelectedMode() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "getSelectedMode.php", true);
+        xhr.onload = function () {
+            updateMode
+            let forFirst = xhr.response;
+            alert(`Mode: ${mode}`);
+        }
+        xhr.send();
+    }
+
+    function GetPlayerCount() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "checkToShowModeSection.php", true);
+        xhr.onload = function () {
+            let forFirst = xhr.response;
+            $_SESSION['playersRegistered'] = forFirst;
+            alert(`${forFirst} Players Have Registered`);
+            updateMode(forFirst);
+        }
+        xhr.send();
+    }
+
+    function updateMode(forFirst){
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "checkToShowModeSection.php", true);
+        xhr.onload = function () {
+            if(xhr.status==200)
+                alert(`200`);
+            else
+                alert(`!200`);
+        }
+        xhr.send();
     }
 
     //{Bcg Section
@@ -159,29 +207,29 @@
     }
 
     function getCheckStart(nowId) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', `checkStart.php?nowId=${nowId}`, false); // Synchronous request, params in URL
-    
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    
-    xhr.send();  // No need to pass anything in send() for GET
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `checkStart.php?nowId=${nowId}`, false); // Synchronous request, params in URL
 
-    if (xhr.status === 200) {
-        // Process the response and convert it to a boolean
-        const response = xhr.responseText.trim().toLowerCase(); 
-        if (response === "true") {
-            return true;
-        } else if (response === "false") {
-            return false;
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.send();  // No need to pass anything in send() for GET
+
+        if (xhr.status === 200) {
+            // Process the response and convert it to a boolean
+            const response = xhr.responseText.trim().toLowerCase();
+            if (response === "true") {
+                return true;
+            } else if (response === "false") {
+                return false;
+            } else {
+                alert('Unexpected response: ' + response);
+                return false;
+            }
         } else {
-            alert('Unexpected response: ' + response);
+            alert('Error fetching start check');
             return false;
         }
-    } else {
-        alert('Error fetching start check');
-        return false;
     }
-}
 
     function updateStart(nowId) {
         const xhr = new XMLHttpRequest();
