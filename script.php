@@ -15,64 +15,66 @@
         xhr.send(); // Send the request
     }
 
-    //onload What Have TO Do
     window.onload = function () {
-        GetPlayerCount();
-        // welcome();
-        // choosedBcg();
-        // showDice();
-        // updateMode();
-        // let total = fetchPos(); //Try To Fetch The Count Of Ids And Store In total Variable;
+        
+        choosedBcg();
+        // Check local storage to see if welcome has been called
+        if (!localStorage.getItem('hasWelcomed')) {
+            welcome();
+            localStorage.setItem('hasWelcomed', 'true'); // Store in local storage
+        }
+
+        // Other functions...
         let total = 4;
         for (let i = 1; i <= total; i++) {
             fetchPos(i);
         }
-    }
-
+    };
     function welcome() {
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", "checkToShowMode.php", true);
-        xhr.onload = function () {
-            let forFirst = xhr.response;
-            alert(`${mode} Mode Has Turned On`);
-        }
-        xhr.send();
-    }
-
-    function getSelectedMode() {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "getSelectedMode.php", true);
         xhr.onload = function () {
-            updateMode
-            let forFirst = xhr.response;
-            alert(`Mode: ${mode}`);
+            let mode = xhr.response.toUpperCase();
+
+            showMode(mode);
         }
         xhr.send();
+    }
+    function showMode(mode) {
+        const showMode = document.querySelector('.show-mode');
+        const modeName = document.querySelector('.show-mode h2 span');
+        showMode.style.transition = "opacity 3s ease";
+        modeName.innerHTML = mode;
+
+        switch (mode) {
+            case 'EASY':
+                modeName.style.color = "BLUE";
+                break;
+            case 'HARD':
+                modeName.style.color = "RED";
+                break;
+            case 'SURPRISE':
+                modeName.style.color = "GREEN";
+                break;
+        }
+        showMode.style.opacity = 0;
+        showMode.style.visibility = 'visible';
+        showMode.style.display = "flex";
+
+        setTimeout(function () {
+            showMode.style.opacity = 1;
+        }, 10);
+
+        setTimeout(function () {
+            showMode.style.opacity = 0;
+        }, 10000);
+
+        setTimeout(function () {
+            showMode.style.visibility = 'hidden';
+        }, 13000);
     }
 
-    function GetPlayerCount() {
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", "checkToShowModeSection.php", true);
-        xhr.onload = function () {
-            let forFirst = xhr.response;
-            $_SESSION['playersRegistered'] = forFirst;
-            alert(`${forFirst} Players Have Registered`);
-            updateMode(forFirst);
-        }
-        xhr.send();
-    }
 
-    function updateMode(forFirst){
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", "checkToShowModeSection.php", true);
-        xhr.onload = function () {
-            if(xhr.status==200)
-                alert(`200`);
-            else
-                alert(`!200`);
-        }
-        xhr.send();
-    }
 
     //{Bcg Section
     function updateBcg(bcg_Color) {
@@ -155,6 +157,7 @@
         if (store_pos == 100) {
             // alert(`Player ${i}Has Won The Game`);
             openDialogueBox(i);
+            localStorage.clear();
         }
     }
 

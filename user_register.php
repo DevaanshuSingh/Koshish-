@@ -63,11 +63,13 @@
                             <div class="modes-form">
                                 Want To Play In-<br>
                                 <input type="radio" name="mode" value="easy" id="easy">
-                                <label for="easy" id="easy-mode">EASY MODE</label><br>
+                                <label for="easy" id="easy-mode">EASY MODE </label><br>
                                 <input type="radio" name="mode" value="hard" id="hard">
                                 <label for="hard" id="hard-mode">HARD MODE</label><br>
                                 <input type="radio" name="mode" value="surprise" id="surprise">
                                 <label for="surprise" id="surprise-mode">SURPRISE MODE</label><br>
+                                <div id="power"><i>As You Are Registring First So You Are Eligible To Choose The Mode Of
+                                        The Game,For All Players!</i></div>
                             </div>
                             <div class="d-flex-column inside-form">
                                 <div class="form-group column-8 name">
@@ -87,6 +89,8 @@
                                 <input type="hidden" name="client_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
                             </div>
                         </div>
+                        <footer class="ftr"><i>We Are Using Your Current Temporary IP-Address For Your Better
+                                Experience, Don't Be Worried This Will Not Harm You.</i></footer>
                     </form>
                 </div>
             </div>
@@ -112,36 +116,31 @@
             }
             window.onload = function () {
                 const xhr = new XMLHttpRequest();
-                xhr.open("GET", "checkToShowMode.php", true);
+                xhr.open("GET", "checkToShowModeSection.php", true);
                 xhr.onload = function () {
-                    if (forFirst <= 4) {
-                        let forFirst = xhr.response;
-                        // alert(`${forFirst} Players Have Registered`);
-                        if (forFirst < 1) {
-                            modes = document.querySelector('.modes-form');
-                            // modes.style.display="flex";
-                        }
-                        else {
-                            modes = document.querySelector('.modes-form');
-                            container = document.querySelector('.container');
-                            playBtn = document.querySelector('.play-btn');
-                            // modes.style.backgroundColor= "red";
-                            modes.style.display = "none";
-                            container.style.justifyContent = "center";
-                            container.style.alignItems = "center";
-                            // playBtn.style.backgroundColor="red";
-                            playBtn.style.height = "5vmin";
-                            playBtn.style.width = "30%";
-                        }
-                    } else {
-                        alert(`More Than 4`);
+                    alert(`ids = ${xhr.response}`);
+                    let forFirst = xhr.response;
+                    if (0 == (forFirst < 1)) {
                         modes = document.querySelector('.modes-form');
                         container = document.querySelector('.container');
                         playBtn = document.querySelector('.play-btn');
+
+                        let footer = document.querySelector('.ftr'); // Selecting the footer
+                        // footer.innerHTML = "redimportant"; // Setting the inner HTML of the footer
+                        footer.style.display = "flex"; // Correctly setting the display style
+                        footer.style.justifyContent = "center"; // Centering the content horizontally
+                        footer.style.alignItems = "center"; // Centering the content vertically
+                        footer.style.color = "red"; // Changing the footer text color to red
+                        footer.style.position = "fixed"; // Setting the position to fixed
+                        footer.style.bottom = "0"; // Aligning the footer to the bottom of the viewport
+                        footer.style.width = "100%"; // Making sure the footer takes the full width of the viewport
+
+                        alert(`Not First`);
                         // modes.style.display = "none";
-                        container.style.justifyContent = "center";
-                        container.style.alignItems = "center";
-                        playBtn.style.height = "5vmin";
+                        modes.innerHTML = "<strong id='notFirst'>!! Someone Has Choosed The Game Mode As A First Player.<br>Please Next Time Be First To Choose The Game Mode For All Fours !!</strong>";
+                        // container.style.justifyContent = "center";
+                        // container.style.alignItems = "center";
+                        playBtn.style.height = "10vmin";
                         playBtn.style.width = "30%";
                     }
                 }

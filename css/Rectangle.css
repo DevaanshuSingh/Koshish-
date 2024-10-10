@@ -28,6 +28,26 @@ body {
     background-color: whitesmoke;
     position: relative;
 }
+.show-mode{
+    width: 50vw; /* Width of the trapezoid is 50% of the viewport width */
+    height: 0; /* Height is controlled by the border */
+    border-top: 8vh solid rgba(0, 0, 0, 0.822); /* Bottom side is 10% of the viewport height */
+    border-left: 5vw solid transparent; /* Left slant using transparent border */
+    border-right: 5vw solid transparent; /* Right slant using transparent border */
+    position: fixed;
+    color: white;
+    top: 0;
+    left: 25vw; /* Centers the trapezoid horizontally */
+    /* background-color: gold; */
+    z-index: 5;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    display: none;
+    /* &>h2>span{
+        color: green;
+    } */
+}
 
 .grid-container {
     position: absolute;

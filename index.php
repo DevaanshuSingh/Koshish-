@@ -19,6 +19,7 @@ session_start();
         <?php
         require "script.php";
         ?>
+        <div class="show-mode"><h2><span></span> Mode Enabled</h2></div>
         <div class="winner-container">
                 <span onclick="closeWinnerSection()">
                         <h4>x</h4>
@@ -1982,4 +1983,5 @@ session_start();
                 });
         </script>
 </body>
+
 </html>
