@@ -124,22 +124,20 @@
                         modes = document.querySelector('.modes-form');
                         container = document.querySelector('.container');
                         playBtn = document.querySelector('.play-btn');
+                        let footer = document.querySelector('.ftr');
 
-                        let footer = document.querySelector('.ftr'); // Selecting the footer
-                        // footer.innerHTML = "redimportant"; // Setting the inner HTML of the footer
-                        footer.style.display = "flex"; // Correctly setting the display style
-                        footer.style.justifyContent = "center"; // Centering the content horizontally
-                        footer.style.alignItems = "center"; // Centering the content vertically
-                        footer.style.color = "red"; // Changing the footer text color to red
-                        footer.style.position = "fixed"; // Setting the position to fixed
-                        footer.style.bottom = "0"; // Aligning the footer to the bottom of the viewport
-                        footer.style.width = "100%"; // Making sure the footer takes the full width of the viewport
-
+                        footer.style.display = "flex";
+                        footer.style.justifyContent = "center";
+                        footer.style.alignItems = "center";
+                        footer.style.color = "red";
+                        footer.style.position = "fixed";
+                        footer.style.bottom = "0";
+                        footer.style.width = "100%";
                         alert(`Not First`);
                         // modes.style.display = "none";
                         modes.innerHTML = "<strong id='notFirst'>!! Someone Has Choosed The Game Mode As A First Player.<br>Please Next Time Be First To Choose The Game Mode For All Fours !!</strong>";
-                        // container.style.justifyContent = "center";
-                        // container.style.alignItems = "center";
+                        modes.style.justifyContent = "center";
+                        modes.style.alignItems = "center";
                         playBtn.style.height = "10vmin";
                         playBtn.style.width = "30%";
                     }

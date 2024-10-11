@@ -6,7 +6,7 @@
         xhr.open('GET', 'total.php', false);
 
         if (xhr.status == 200) {
-            alert(`Response type: ${typeof xhr.responseText}`);
+            // alert(`Response type: ${typeof xhr.responseText}`);
             return parseInt(xhr.responseText); // Return the total as an integer
         } else {
             alert(`else part`);
@@ -28,7 +28,7 @@
 
     window.onload = function () {
         id = startFrom();
-        alert(`now_turn: ${id}`);
+        // alert(`now_turn: ${id}`);
         showDice(id);
         choosedBcg();
         // Check local storage to see if welcome has been called
@@ -43,7 +43,6 @@
             fetchPos(i);
         }
     };
-
 
     function startFrom() {
         let startId;
@@ -66,6 +65,7 @@
             if (xhr.status == 200) {
                 nowId = xhr.responseText;
                 parseInt(nowId);
+                alert(`--> diceValue(id:${nowId})`);
                 diceValue(nowId);
                 updateTurn(xhr.responseText);
             }
@@ -80,7 +80,6 @@
         document.getElementById('showValue').value = dice;
         let currentPos = fetchPos(nowId);
         let newPos = dice + currentPos;
-        updateDice(nowId, dice);//first check this
         if (newPos) {
             // if (nowId == 1)
             //     alert(`Red : ${newPos} With ${dice}`);
@@ -91,65 +90,58 @@
             // if (nowId == 4)
             //     alert(`Blue : ${newPos} With ${dice}`);
         }
-        if (newPos > 100)
+        updateDice(nowId, dice);//first check this
+        alert(`Dice Is ${dice}`);
+        if (newPos > 100) {
+            alert(`Completed The journey`);
             return;
-        if (dice == 1)
+        }
+        if (dice == 1) {
+            alert(`Start Journey (Updating)`);
             updateStart(nowId);//second check this
+            alert(`Updated`);
+        }
+            // else {
+            //     alert(`Cause of dice ${dice}, is not updated`);
+            // }
 
-        let start_T_F = getCheckStart(nowId);// third check this
-        if (start_T_F) {
+        let start_T_F = getCheckStart(nowId);
+        alert(`start_T_F : ${start_T_F}`);
+        if (start_T_F == 1 || start_T_F) {
+            alert(`Acceed 1`);
             posFix(nowId, newPos);// fourth check this
-        } else {
+        } else if(start_T_F==0){
+            alert(`Denied 0`);
             alert(`Player ${nowId} Is Not Allowed Because Got: ${dice} Not 1`);
             return;
         }
+        else
+            alert(`Nothing`);
     }
 
-    // function updateDice(nowId, dice) {
-    //     const xhr = new XMLHttpRequest();
-    //     xhr.open('POST', 'updateDice.php', true);
-    //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    //     xhr.onload = function () {
-    //         alert(`inside onload updatedice(): ${dice}`);
-    //         if (xhr.status === 200) {
-    //             alert(`While updating dice: ${xhr.response}`);
-    //         } else {
-    //             alert('Have not updated dice');
-    //         }
-    //     };
-    //     xhr.send("nowId" + nowId + "&dice=" + dice);
-    // }
     function updateDice(nowId, dice) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'updateDice.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    xhr.onload = function () {
-        alert(`inside onload updatedice(): ${dice}`); // This should alert if onload is triggered
-        alert(`XHR status: ${xhr.status}`); // Check the status code
-        if (xhr.status === 200) {
-            alert(`While updating dice: ${xhr.response}`);
-        } else {
-            alert('Have not updated dice');
-        }
-    };
-
-    // Log the data before sending
-    alert(`Sending data: nowId=${nowId}, dice=${dice}`);
-    
-    // Correctly format the data being sent
-    xhr.send("nowId=" + nowId + "&dice=" + dice);
-}
-
-
-
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'updateDice.php', false);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            // alert(`inside onload updatedice(): ${dice}`);
+            // alert(`XHR status: ${xhr.status}`);
+            if (xhr.status === 200) {
+                alert(`While updating dice: ${xhr.response}`); 
+            } else {
+                alert('Have not updated dice');
+            }
+        };
+        // alert(`Sending data: nowId=${nowId}, dice=${dice}`);
+        xhr.send("nowId=" + nowId + "&dice=" + dice);
+    }
     function showDice(nowId) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'showDice.php', false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         // alert(`showDice's nowId Is ${nowId}`);
         xhr.onload = function () {
-            alert(`${xhr.response} is dice of ${nowId}`);
+            // alert(`${xhr.response} is dice of ${nowId}`);
             if (xhr.status == 200) {
                 document.getElementById('showValue').value = xhr.response;
             }
@@ -158,11 +150,6 @@
         }
         xhr.send("nowId=" + nowId);
     }
-
-
-
-
-
     function showMode(mode) {
         const showMode = document.querySelector('.show-mode');
         const modeName = document.querySelector('.show-mode h2 span');
@@ -196,7 +183,6 @@
             showMode.style.visibility = 'hidden';
         }, 13000);
     }
-
     //{Bcg Section
     function updateBcg(bcg_Color) {
         const xhr = new XMLHttpRequest();
@@ -211,7 +197,6 @@
         }
         xhr.send(`bcg_Color=` + bcg_Color);
     }
-
     let bcgDb = null;
     function choosedBcg() {
         const xhr = new XMLHttpRequest();
@@ -225,7 +210,6 @@
         xhr.send();
     }
     //Bcg Section} 
-
     function fetchPos(i) {
         let store_pos;
         const xhr = new XMLHttpRequest();
@@ -242,7 +226,6 @@
         xhr.send('idForGetPos=' + i);
         return parseInt(store_pos, 10);  // Return the position as an integer (base 10)
     }
-
     function show(i, store_pos) {
         let wholeGrid = document.getElementById(`grid_${store_pos}`);
         let playerDiv = wholeGrid.querySelector(`.p${i}`);
@@ -268,20 +251,19 @@
     }
 
     function getCheckStart(nowId) {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `checkStart.php?nowId=${nowId}`, false); // Synchronous request, params in URL
-
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        xhr.send();  // No need to pass anything in send() for GET
-
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'checkStart.php', false);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function () {
         if (xhr.status === 200) {
             // Process the response and convert it to a boolean
-            const response = xhr.responseText.trim().toLowerCase();
+            const response = parseInt(xhr.responseText).trim().toLowerCase();
             if (response === "true") {
-                return true;
+                alert(`Got response ${response} returning true from getCheckStart() to type: ${typeof response}`);
+                return 1;
             } else if (response === "false") {
-                return false;
+                alert(`Got response ${response} returning false from getCheckStart() to type: ${typeof response}`);
+                return 0;
             } else {
                 alert('Unexpected response: ' + response);
                 return false;
@@ -290,7 +272,10 @@
             alert('Error fetching start check');
             return false;
         }
-    }
+    };
+    alert("after onload() getCheckStart;");
+    xhr.send("nowId=" + nowId);
+}
 
     function updateStart(nowId) {
         const xhr = new XMLHttpRequest();
@@ -298,7 +283,7 @@
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             if (xhr.status == 200) {
-                alert(`updateStart() Ok`);
+                // alert(`updateStart() Ok`);
                 return xhr.response;
             }
             else
