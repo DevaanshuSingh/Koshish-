@@ -50,7 +50,7 @@ try {
 
         // in user_information Table 
         $stmt = $pdo->prepare("INSERT INTO user_information (name, profile,ip_address,mode) VALUES (?,?,?,?)");
-
+        
         if ($stmt->execute([$player_name, $imagePath, $ip,$mode])) {
             // echo "Player registered successfully!";
             // echo '<h1 style="height:20vh;"><a href="index.php">INDEX.PHP</a></h1>';

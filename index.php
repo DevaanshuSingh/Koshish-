@@ -19,7 +19,9 @@ session_start();
         <?php
         require "script.php";
         ?>
-        <div class="show-mode"><h2><span></span> Mode Enabled</h2></div>
+        <div class="show-mode">
+                <h2><span></span> Mode Enabled</h2>
+        </div>
         <div class="winner-container">
                 <span onclick="closeWinnerSection()">
                         <h4>x</h4>
@@ -1859,6 +1861,12 @@ session_start();
                 </div>
         </div>
         <div class="d-flex-row dice-section">
+                <div class="timer-section">
+                        <div class="timer">
+                                <span class="min">0</span> : <span class="sec">0</span>
+                        </div>
+                        <footer>Have To Complete Game Within Limit.</footer>
+                </div>
                 <div class="numbers">
                         <input id="showValue" type="text" readonly>
                 </div>
@@ -1875,11 +1883,11 @@ session_start();
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
                         $stmt->execute([$nowId]);
                         $nowIp = $stmt->fetchColumn(0);
-                        if ($nowIp) {
-                                echo "<h1>IP ($nowId): \"$nowIp\"</h1>";
-                        } else {
-                                echo "<h1>No IP ID ($nowId)</h1>";
-                        }
+                        // if ($nowIp) {
+                        //         echo "<h1>IP ($nowId): \"$nowIp\"</h1>";
+                        // } else {
+                        //         echo "<h1>No IP ID ($nowId)</h1>";
+                        // }
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
                 }

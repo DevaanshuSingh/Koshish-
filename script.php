@@ -1,6 +1,5 @@
 <script>
 
-    // This Should Be Solve
     function getTotal() {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'total.php', false);
@@ -15,18 +14,47 @@
         xhr.send(); // Send the request
     }
 
+    let modeIs;
     function welcome() {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "getSelectedMode.php", true);
         xhr.onload = function () {
             let mode = xhr.response.toUpperCase();
-
             showMode(mode);
         }
         xhr.send();
     }
 
+    function timer() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "getSelectedMode.php", true);
+        xhr.onload = function () {
+            let mode = xhr.response.toUpperCase();
+            if (mode == "HARD") {
+                let timer = document.querySelector(".timer");
+                let numbers = document.querySelector(".numbers");
+                let button = document.querySelector(".butt0n");
+                let diceSection = document.querySelector(".dice-section");
+                diceSection.style.top = "0";
+                diceSection.style.height = "100vh";
+                timer.style.display = "flex";
+                numbers.style.bottom = "-5vh";
+                startTimer();
+            } else {
+                alert(`xhr.responseText of mode is: ${mode}`);
+            }
+        }
+        xhr.send();
+    }
+
+    function startTimer(){
+        alert("ok");
+
+    }
     window.onload = function () {
+        // wait until all players have come on the screen
+        timer();
+        // wait until all players have come on the screen
         id = startFrom();
         // alert(`now_turn: ${id}`);
         showDice(id);
@@ -58,7 +86,7 @@
     }
 
     function getId(nowId) {
-        alert("getId()");
+        // alert("getId()");
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'changeId.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -66,7 +94,7 @@
             if (xhr.status == 200) {
                 nowId = xhr.responseText;
                 parseInt(nowId);
-                alert("calling diceVal()");
+                // alert("calling diceVal()");
                 diceValue(nowId);
                 updateTurn(xhr.responseText);
             }
@@ -118,46 +146,30 @@
     //     else
     //         alert(`Nothing`);
     // }
+
     function diceValue(nowId) {
-        alert("diceVal()");
+        // alert("diceVal()");
         var dice = Math.floor(Math.random() * 6) + 1;
         document.getElementById('showValue').value = dice;
         let currentPos = fetchPos(nowId);
         let newPos = dice + currentPos;
         updateDice(nowId, dice);
-        if(nowId==1)
+        if (nowId == 1)
             alert(`red1 : ${dice} = ${newPos}`);
-        else if(nowId==2)
+        else if (nowId == 2)
             alert(`green2 : ${dice} = ${newPos}`);
-        else if(nowId==3)
+        else if (nowId == 3)
             alert(`yellow3 : ${dice} = ${newPos}`);
-        else if(nowId==4)
+        else if (nowId == 4)
             alert(`blue4 : ${dice} = ${newPos}`);
         if (newPos > 100) {
             alert(`Completed The journey`);
             return;
         }
-        if (dice == 1) {
-            // alert(`Start Journey (Updating)`);
-            updateStart(nowId);
-            // alert(`Updated`);
-        } else {
-            // alert(`Cause of dice ${dice}, is not updated`);
-        }
-        let start_T_F = getCheckStart(nowId);
-        // alert(`start_T_F : ${start_T_F}`);
-        if (start_T_F == 1) {
-            // alert(`Acceed 1`);
-            posFix(nowId, newPos);
-            // alert(`Returning After posoFix(${nowId})`);
-            return;
-        } else if (start_T_F == 0) {
-            alert(`Denied 0; Player ${nowId} Is Not Allowed Because Got: ${dice} Not 1`);
-            return;
-        } else {
-            alert(`Nothing`);
-        }
+        posFix(nowId, newPos);
+        return;
     }
+
     function updateDice(nowId, dice) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'updateDice.php', false);
@@ -171,6 +183,7 @@
         };
         xhr.send("nowId=" + nowId + "&dice=" + dice);
     }
+
     function showDice(nowId) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'showDice.php', false);
@@ -186,6 +199,7 @@
         }
         xhr.send("nowId=" + nowId);
     }
+
     function showMode(mode) {
         const showMode = document.querySelector('.show-mode');
         const modeName = document.querySelector('.show-mode h2 span');
@@ -233,6 +247,7 @@
         }
         xhr.send(`bcg_Color=` + bcg_Color);
     }
+
     let bcgDb = null;
     function choosedBcg() {
         const xhr = new XMLHttpRequest();
@@ -246,6 +261,7 @@
         xhr.send();
     }
     //Bcg Section} 
+
     function fetchPos(i) {
         let store_pos;
         const xhr = new XMLHttpRequest();
@@ -262,6 +278,7 @@
         xhr.send('idForGetPos=' + i);
         return parseInt(store_pos, 10);  // Return the position as an integer (base 10)
     }
+
     function show(i, store_pos) {
         let wholeGrid = document.getElementById(`grid_${store_pos}`);
         let playerDiv = wholeGrid.querySelector(`.p${i}`);
@@ -286,33 +303,6 @@
         }
     }
 
-    // function getCheckStart(nowId) {
-    //     const xhr = new XMLHttpRequest();
-    //     xhr.open('POST', 'getCheckStart.php', false);
-    //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    //     alert("before onload() getCheckStart;");
-    //     xhr.onload = function () {
-    //         alert("inside onload() getCheckStart;");
-    //         if (xhr.status === 200) {
-    //             const response = parseInt(xhr.responseText);
-    //             if (response === 1) {
-    //                 alert(`Got response ${response} returning 1 from getCheckStart() of type: ${typeof response}`);
-    //                 return "1";
-    //             } else if (response === 0) {
-    //                 alert(`Got response ${response} returning 0 from getCheckStart() of type: ${typeof response}`);
-    //                 return 0;
-    //             } else {
-    //                 alert(`Unexpected response from getCheckStart(): ${response} of type: ${typeof response}`);
-    //                 return 11;
-    //             }
-    //         } else {
-    //             alert('Error fetching start check');
-    //             return 00;
-    //         }
-    //     };
-    //     alert("after onload() getCheckStart;");
-    //     xhr.send("nowId=" + nowId);
-    // }
     function getCheckStart(nowId) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'getCheckStart.php', false); // Synchronous request
@@ -327,6 +317,7 @@
             return null; // Return null or handle error
         }
     }
+
     function updateStart(nowId) {
         const xhr = new XMLHttpRequest();
         xhr.open(`POST`, `updateStart.php`, true);
@@ -340,6 +331,7 @@
         }
         xhr.send("nowId=" + nowId);
     }
+
     let nowId = startFrom();
     function updateTurn(nowId) {
         const xhr = new XMLHttpRequest();
@@ -354,8 +346,9 @@
         }
         xhr.send("now_turn=" + nowId);
     }
+
     function posFix(nowId, pos_prev_now) {
-        alert(`posFix(${nowId})`);
+        // alert(`posFix(${nowId})`);
         //have to add previous position and now dice value to set a new positon so older position have to fetch and add with dice;
         const xhr = new XMLHttpRequest();
         xhr.open(`POST`, `updatePosition.php`, true);
@@ -371,6 +364,7 @@
         }
         xhr.send('nowId=' + nowId + '&pos=' + pos_prev_now);
     }
+
     function openDialogueBox(nowId) {
         // alert(`Sent ${nowId}`);
         let winnerContainer = document.querySelector('.winner-container');
@@ -399,7 +393,11 @@
         formData.append('nowId', nowId);
         xhr.send(formData);
         getWinnerData(nowId);
+        let button = document.querySelector(".butt0n");
+        button.style.cursor = "not-allowed";
+        button.disabled = true;
     }
+
     function getWinnerData(nowId) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'winnerData.php', true);
@@ -420,10 +418,12 @@
         };
         xhr.send(`nowId=` + nowId);//Changing Id
     }
+
     function closeWinnerSection() {
         let winnerContainer = document.querySelector('.winner-container');
         winnerContainer.style.display = "none";
     }
+
     function truncateTable() {
         // alert(`inside Truncate`);
         const xhr = new XMLHttpRequest();
