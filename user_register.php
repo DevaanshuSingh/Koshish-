@@ -118,7 +118,7 @@
                 const xhr = new XMLHttpRequest();
                 xhr.open("GET", "checkToShowModeSection.php", true);
                 xhr.onload = function () {
-                    alert(`ids = ${xhr.response}`);
+                    // alert(`ids = ${xhr.response}`);
                     let forFirst = xhr.response;
                     if (0 == (forFirst < 1)) {
                         modes = document.querySelector('.modes-form');

@@ -58,6 +58,7 @@
     }
 
     function getId(nowId) {
+        alert("getId()");
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'changeId.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -65,7 +66,7 @@
             if (xhr.status == 200) {
                 nowId = xhr.responseText;
                 parseInt(nowId);
-                alert(`--> diceValue(id:${nowId})`);
+                alert("calling diceVal()");
                 diceValue(nowId);
                 updateTurn(xhr.responseText);
             }
@@ -75,64 +76,99 @@
         xhr.send(`nowId=` + nowId);//Changing Id
     }
 
+    // function diceValue(nowId) {
+    //     var dice = Math.floor(Math.random() * 6) + 1;
+    //     document.getElementById('showValue').value = dice;
+    //     let currentPos = fetchPos(nowId);
+    //     let newPos = dice + currentPos;
+    //     if (newPos) {
+    //         // if (nowId == 1)
+    //         //     alert(`Red : ${newPos} With ${dice}`);
+    //         // if (nowId == 2)
+    //         //     alert(`Green : ${newPos} With ${dice}`);
+    //         // if (nowId == 3)
+    //         //     alert(`Yellow : ${newPos} With ${dice}`);
+    //         // if (nowId == 4)
+    //         //     alert(`Blue : ${newPos} With ${dice}`);
+    //     }
+    //     updateDice(nowId, dice);//first check this; ok;
+    //     alert(`Dice Is ${dice}`);
+    //     if (newPos > 100) {
+    //         alert(`Completed The journey`);
+    //         return;
+    //     }
+    //     if (dice == 1) {
+    //         alert(`Start Journey (Updating)`);
+    //         updateStart(nowId);//second check this; ok;
+    //         alert(`Updated`);
+    //     }
+    //     else {
+    //         alert(`Cause of dice ${dice}, is not updated`);
+    //     }
+
+    //     let start_T_F = getCheckStart(nowId);
+    //     alert(`start_T_F : ${start_T_F}`);
+    //     if (start_T_F == 1 || start_T_F) {
+    //         alert(`Acceed 1`);
+    //         posFix(nowId, newPos);// fourth check this
+    //     } else if (start_T_F == 0) {
+    //         alert(`Denied 0; Player ${nowId} Is Not Allowed Because Got: ${dice} Not 1`);
+    //         return;
+    //     }
+    //     else
+    //         alert(`Nothing`);
+    // }
     function diceValue(nowId) {
+        alert("diceVal()");
         var dice = Math.floor(Math.random() * 6) + 1;
         document.getElementById('showValue').value = dice;
         let currentPos = fetchPos(nowId);
         let newPos = dice + currentPos;
-        if (newPos) {
-            // if (nowId == 1)
-            //     alert(`Red : ${newPos} With ${dice}`);
-            // if (nowId == 2)
-            //     alert(`Green : ${newPos} With ${dice}`);
-            // if (nowId == 3)
-            //     alert(`Yellow : ${newPos} With ${dice}`);
-            // if (nowId == 4)
-            //     alert(`Blue : ${newPos} With ${dice}`);
-        }
-        updateDice(nowId, dice);//first check this
-        alert(`Dice Is ${dice}`);
+        updateDice(nowId, dice);
+        if(nowId==1)
+            alert(`red1 : ${dice} = ${newPos}`);
+        else if(nowId==2)
+            alert(`green2 : ${dice} = ${newPos}`);
+        else if(nowId==3)
+            alert(`yellow3 : ${dice} = ${newPos}`);
+        else if(nowId==4)
+            alert(`blue4 : ${dice} = ${newPos}`);
         if (newPos > 100) {
             alert(`Completed The journey`);
             return;
         }
         if (dice == 1) {
-            alert(`Start Journey (Updating)`);
-            updateStart(nowId);//second check this
-            alert(`Updated`);
+            // alert(`Start Journey (Updating)`);
+            updateStart(nowId);
+            // alert(`Updated`);
+        } else {
+            // alert(`Cause of dice ${dice}, is not updated`);
         }
-            // else {
-            //     alert(`Cause of dice ${dice}, is not updated`);
-            // }
-
         let start_T_F = getCheckStart(nowId);
-        alert(`start_T_F : ${start_T_F}`);
-        if (start_T_F == 1 || start_T_F) {
-            alert(`Acceed 1`);
-            posFix(nowId, newPos);// fourth check this
-        } else if(start_T_F==0){
-            alert(`Denied 0`);
-            alert(`Player ${nowId} Is Not Allowed Because Got: ${dice} Not 1`);
+        // alert(`start_T_F : ${start_T_F}`);
+        if (start_T_F == 1) {
+            // alert(`Acceed 1`);
+            posFix(nowId, newPos);
+            // alert(`Returning After posoFix(${nowId})`);
             return;
-        }
-        else
+        } else if (start_T_F == 0) {
+            alert(`Denied 0; Player ${nowId} Is Not Allowed Because Got: ${dice} Not 1`);
+            return;
+        } else {
             alert(`Nothing`);
+        }
     }
-
     function updateDice(nowId, dice) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'updateDice.php', false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
-            // alert(`inside onload updatedice(): ${dice}`);
-            // alert(`XHR status: ${xhr.status}`);
             if (xhr.status === 200) {
-                alert(`While updating dice: ${xhr.response}`); 
+                // alert(`While updating dice: ${xhr.response}`);
             } else {
                 alert('Have not updated dice');
             }
         };
-        // alert(`Sending data: nowId=${nowId}, dice=${dice}`);
         xhr.send("nowId=" + nowId + "&dice=" + dice);
     }
     function showDice(nowId) {
@@ -250,48 +286,60 @@
         }
     }
 
+    // function getCheckStart(nowId) {
+    //     const xhr = new XMLHttpRequest();
+    //     xhr.open('POST', 'getCheckStart.php', false);
+    //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    //     alert("before onload() getCheckStart;");
+    //     xhr.onload = function () {
+    //         alert("inside onload() getCheckStart;");
+    //         if (xhr.status === 200) {
+    //             const response = parseInt(xhr.responseText);
+    //             if (response === 1) {
+    //                 alert(`Got response ${response} returning 1 from getCheckStart() of type: ${typeof response}`);
+    //                 return "1";
+    //             } else if (response === 0) {
+    //                 alert(`Got response ${response} returning 0 from getCheckStart() of type: ${typeof response}`);
+    //                 return 0;
+    //             } else {
+    //                 alert(`Unexpected response from getCheckStart(): ${response} of type: ${typeof response}`);
+    //                 return 11;
+    //             }
+    //         } else {
+    //             alert('Error fetching start check');
+    //             return 00;
+    //         }
+    //     };
+    //     alert("after onload() getCheckStart;");
+    //     xhr.send("nowId=" + nowId);
+    // }
     function getCheckStart(nowId) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'checkStart.php', false);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function () {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'getCheckStart.php', false); // Synchronous request
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.send("nowId=" + nowId);  // Send request with nowId
+
         if (xhr.status === 200) {
-            // Process the response and convert it to a boolean
-            const response = parseInt(xhr.responseText).trim().toLowerCase();
-            if (response === "true") {
-                alert(`Got response ${response} returning true from getCheckStart() to type: ${typeof response}`);
-                return 1;
-            } else if (response === "false") {
-                alert(`Got response ${response} returning false from getCheckStart() to type: ${typeof response}`);
-                return 0;
-            } else {
-                alert('Unexpected response: ' + response);
-                return false;
-            }
+            return parseInt(xhr.responseText);  // Return the server response as an integer
         } else {
             alert('Error fetching start check');
-            return false;
+            return null; // Return null or handle error
         }
-    };
-    alert("after onload() getCheckStart;");
-    xhr.send("nowId=" + nowId);
-}
-
+    }
     function updateStart(nowId) {
         const xhr = new XMLHttpRequest();
         xhr.open(`POST`, `updateStart.php`, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             if (xhr.status == 200) {
-                // alert(`updateStart() Ok`);
-                return xhr.response;
+                alert(`updateStart response: ${xhr.responseText}`);
             }
             else
                 alert(`updateStart() Error`);
         }
         xhr.send("nowId=" + nowId);
     }
-
     let nowId = startFrom();
     function updateTurn(nowId) {
         const xhr = new XMLHttpRequest();
@@ -306,8 +354,8 @@
         }
         xhr.send("now_turn=" + nowId);
     }
-
     function posFix(nowId, pos_prev_now) {
+        alert(`posFix(${nowId})`);
         //have to add previous position and now dice value to set a new positon so older position have to fetch and add with dice;
         const xhr = new XMLHttpRequest();
         xhr.open(`POST`, `updatePosition.php`, true);
@@ -323,7 +371,6 @@
         }
         xhr.send('nowId=' + nowId + '&pos=' + pos_prev_now);
     }
-
     function openDialogueBox(nowId) {
         // alert(`Sent ${nowId}`);
         let winnerContainer = document.querySelector('.winner-container');
@@ -353,7 +400,6 @@
         xhr.send(formData);
         getWinnerData(nowId);
     }
-
     function getWinnerData(nowId) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'winnerData.php', true);
@@ -374,12 +420,10 @@
         };
         xhr.send(`nowId=` + nowId);//Changing Id
     }
-
     function closeWinnerSection() {
         let winnerContainer = document.querySelector('.winner-container');
         winnerContainer.style.display = "none";
     }
-
     function truncateTable() {
         // alert(`inside Truncate`);
         const xhr = new XMLHttpRequest();
@@ -394,6 +438,7 @@
             // alert(`Loaded`);
         }
         xhr.send();
+        localStorage.clear();
     }
 
 </script>

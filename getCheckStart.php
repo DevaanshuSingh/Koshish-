@@ -34,18 +34,12 @@
 // gpt
 require 'connection_db.php';
 try {
-    // Use $_POST as it's a POST request
     $nowId = $_POST['nowId'];
-
     $stmt = $pdo->prepare('SELECT start FROM performance WHERE id = ?');
     $stmt->execute([$nowId]);
-
-    $start = $stmt->fetchColumn(); // fetching boolean
-
-    // Return the boolean result as a string
-    echo $start ? 'true' : 'false'; // return the answer
+    $start = $stmt->fetchColumn();
+    echo $start;
 } catch (PDOException $e) {
     echo 'Database error: ' . $e->getMessage();
 }
-
 ?>

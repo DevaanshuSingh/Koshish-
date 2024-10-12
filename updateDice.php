@@ -18,8 +18,7 @@ try {
     $dice = $_POST['dice'];
     // Prepare and execute the update statement
     $stmt = $pdo->prepare("UPDATE performance SET dice = ? WHERE id = ?");
-    $stmt->execute([$dice, $nowId]);
-    if ($startIs = $stmt->fetchColumn())
+    if ($stmt->execute([$dice, $nowId]))
         echo "ok";
     else
         echo "!ok";
