@@ -39,7 +39,11 @@
                 diceSection.style.height = "100vh";
                 timer.style.display = "flex";
                 numbers.style.bottom = "-5vh";
-                startTimer();
+
+                setTimeout(function () {
+                    startTimer();
+                }, 1);
+
             } else {
                 alert(`xhr.responseText of mode is: ${mode}`);
             }
@@ -47,14 +51,34 @@
         xhr.send();
     }
 
-    function startTimer(){
-        alert("ok");
+    function startTimer() {
+        let min = 0;
+        let sec = 1;
+        let timerInterval;
+        timerInterval = setInterval(function () {
+            if (min == 2) {
+                clearInterval(timerInterval);
+                alert(`Time Up`);
+                secElem.innerHTML = 00;
+                return;
+            }
+            if (sec == 2) {
+                sec = 0;
+                min++;
+            }
 
+            let minElem = document.querySelector(".min");
+            let secElem = document.querySelector(".sec");
+            minElem.innerHTML = min;
+            secElem.innerHTML = sec++;
+
+        }, 1000);
     }
+
     window.onload = function () {
         // wait until all players have come on the screen
         timer();
-        // wait until all players have come on the screen
+
         id = startFrom();
         // alert(`now_turn: ${id}`);
         showDice(id);
@@ -64,8 +88,6 @@
             welcome();
             localStorage.setItem('hasWelcomed', 'true'); // Store in local storage
         }
-
-        // Other functions...
         let total = 4;
         for (let i = 1; i <= total; i++) {
             fetchPos(i);
