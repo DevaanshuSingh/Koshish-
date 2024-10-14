@@ -1865,8 +1865,9 @@ session_start();
                         <div class="timer">
                                 <span class="min">0</span> : <span class="sec">0</span>
                         </div>
-                        <footer>Have To Complete Game Within Limit.</footer>
+                        <footer class="footerText">Have To Complete Game Within Limit.</footer>
                 </div>
+                
                 <div class="numbers">
                         <input id="showValue" type="text" readonly>
                 </div>

@@ -125,7 +125,6 @@
                         container = document.querySelector('.container');
                         playBtn = document.querySelector('.play-btn');
                         let footer = document.querySelector('.ftr');
-
                         footer.style.display = "flex";
                         footer.style.justifyContent = "center";
                         footer.style.alignItems = "center";

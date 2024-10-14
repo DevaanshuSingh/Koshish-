@@ -29,17 +29,16 @@
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "getSelectedMode.php", true);
         xhr.onload = function () {
-            let mode = xhr.response.toUpperCase();
-            if (mode == "HARD") {
-                let timer = document.querySelector(".timer");
+            let mode = xhr.response;
+            if (mode == "hard") {
+                let timer = document.querySelector(".timer-section");
+                timer.style.display = "flex";
                 let numbers = document.querySelector(".numbers");
                 let button = document.querySelector(".butt0n");
                 let diceSection = document.querySelector(".dice-section");
                 diceSection.style.top = "0";
                 diceSection.style.height = "100vh";
-                timer.style.display = "flex";
                 numbers.style.bottom = "-5vh";
-
                 setTimeout(function () {
                     startTimer();
                 }, 1);
@@ -51,34 +50,66 @@
         xhr.send();
     }
 
+    function timeUp() {
+        // alert("timeUp");
+        let timer = document.querySelector(".timer");
+        let timerSection = document.querySelector(".timer-section");
+        let footer = document.querySelector(".footerText");
+        timer.style.transition = "3s ease";
+        footer.style.transition = "3s ease";
+        timerSection.style.border = "none";
+        timer.style.backgroundColor = "rgb(255,255,255,.6)";
+        timer.style.height = "100vh";
+        timer.innerHTML = "";//to unShow time
+        timer.style.width = "100%";
+        timer.style.borderRadius = "0";
+        timer.style.position = "absolute";
+        timer.style.left = "0vw";
+        timer.style.display = "flex";
+        timer.style.justifyContent = "center";
+        timer.style.alignItems = "center";
+        footer.innerHTML = "<strong>TIME UP!!<br>Please Try Again</strong>";
+        footer.style.fontFamily = " Georgia, 'Times New Roman', Times, serif";
+        footer.style.height = "100vh";
+        footer.style.color = "black";
+        footer.style.borderRadius = "0";
+        footer.style.position = "absolute";
+        footer.style.top = "0";
+        footer.display = "flex";
+        footer.style.justifyContent = "center";
+        footer.style.alignItems = "center";
+        footer.style.fontSize = "3rem";
+    }
+
     function startTimer() {
         let min = 0;
         let sec = 1;
         let timerInterval;
         timerInterval = setInterval(function () {
-            if (min == 2) {
+            if (min == 1) {
                 clearInterval(timerInterval);
-                alert(`Time Up`);
-                secElem.innerHTML = 00;
-                return;
+                // alert(`Time Up`);
+                // secElem.innerHTML = 0;
+                return timeUp();
             }
-            if (sec == 2) {
+            if (sec == 1) {
                 sec = 0;
                 min++;
             }
-
             let minElem = document.querySelector(".min");
             let secElem = document.querySelector(".sec");
             minElem.innerHTML = min;
             secElem.innerHTML = sec++;
-
         }, 1000);
     }
 
     window.onload = function () {
         // wait until all players have come on the screen
-        timer();
-
+        let playerCount = getPlayerscount();
+        alert(`onload pc = ${playerCount}`);
+        if (playerCount == 4)
+            timer();
+        
         id = startFrom();
         // alert(`now_turn: ${id}`);
         showDice(id);
@@ -93,6 +124,18 @@
             fetchPos(i);
         }
     };
+
+    function getPlayerscount(){
+        let playerCount;
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET","checkToShowModeSection.php",false);
+        xhr.onload = function(){
+            playerCount = parseInt(xhr.responseText);
+            alert(`Total Player: ${xhr.responseText}`);
+        }
+        xhr.send();
+        return playerCount;
+    }
 
     function startFrom() {
         let startId;
