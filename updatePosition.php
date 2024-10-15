@@ -1,3 +1,4 @@
+<!-- Called From posFix(); -->
 <?php
 require "connection_db.php";
 try {

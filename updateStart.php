@@ -1,5 +1,5 @@
 <?php
-//called from function updateStart(nowId);
+//Called From updateStart();
     // startFrom.php
     require 'connection_db.php';
     try {

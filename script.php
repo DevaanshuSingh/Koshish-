@@ -68,7 +68,8 @@
         timer.style.display = "flex";
         timer.style.justifyContent = "center";
         timer.style.alignItems = "center";
-        footer.innerHTML = "<strong>TIME UP!!<br>Please Try Again</strong>";
+        // footer.innerHTML = "<strong>TIME UP!!<br>Please Try Again</strong>";
+        footer.innerHTML = "<strong>TIME UP!!<br>Please Try Again <a href='user_register.php'>Here</a> </strong>";
         footer.style.fontFamily = " Georgia, 'Times New Roman', Times, serif";
         footer.style.height = "100vh";
         footer.style.color = "black";

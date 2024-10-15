@@ -1,3 +1,4 @@
+<!-- Called From updateDice(); -->
 <?php
 //Now Instead Of Storing And Fetching onload The Dice Value Try For Store In Session And Use From Session Again Have To Update Overall !Db Use Sessions Global Array Of PHP (CHANGES IN 2 FILES updateDice.php AND showDice.php);
 

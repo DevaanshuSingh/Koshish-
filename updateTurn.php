@@ -1,3 +1,4 @@
+<!-- called from updateTurn(); -->
 <?php
 require 'connection_db.php';
 try {
@@ -24,7 +25,7 @@ try {
         $stmt = $pdo->prepare("UPDATE performance SET now_turn = ? WHERE id = ?");
         $stmt->execute([$nowId, $i]);
     }
-    $starting = $stmt->fetchColumn();  // Fetch the now_turn value from the database
+    $starting = $stmt->fetchColumn();
     echo $starting;
 } catch (PDOException $e) {
     echo 'Database error: ' . $e->getMessage();

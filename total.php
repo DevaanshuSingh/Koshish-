@@ -1,3 +1,4 @@
+<!-- Called From total.php -->
 <?php
 require 'connection_db.php';
 try {

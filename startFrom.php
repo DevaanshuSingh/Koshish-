@@ -1,5 +1,5 @@
+<!-- Called From startFrom() -->
 <?php
-// startFrom.php
 require 'connection_db.php';
 try {
     $id=4;

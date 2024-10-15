@@ -1,3 +1,4 @@
+<!-- Called From getCheckStart(); -->
 <?php
 // first
 // require 'connection_db.php';
