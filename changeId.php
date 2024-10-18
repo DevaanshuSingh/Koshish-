@@ -1,4 +1,3 @@
-<!-- Called From getId() -->
 <?php
 session_start();
 if (isset($_POST['nowId'])) {
@@ -26,7 +25,7 @@ if (isset($_POST['nowId'])) {
 } else {
     ?>
     <script>
-        alert(`Not Received`);
+        alert(`Not Received Id In changeId.php;`);
     </script>
     <?php
 }

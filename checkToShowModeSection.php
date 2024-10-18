@@ -1,4 +1,3 @@
-<!-- Called From getPlayerscount() -->
 <?php
 require 'connection_db.php';
 

@@ -1,5 +1,3 @@
-<!-- Called From welcome(); -->
-<!-- Called From timer(); -->
 <?php
 require "connection_db.php";
 try {

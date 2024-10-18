@@ -1,4 +1,3 @@
-<!-- Called From choosedBcg(); -->
 <?php
 require 'connection_db.php';
 

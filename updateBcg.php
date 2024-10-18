@@ -1,4 +1,3 @@
-<!-- Called From updateBcg(); -->
 <?php
 require "connection_db.php";
 $idIs = null;

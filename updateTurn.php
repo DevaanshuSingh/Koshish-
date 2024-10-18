@@ -1,4 +1,3 @@
-<!-- called from updateTurn(); -->
 <?php
 require 'connection_db.php';
 try {

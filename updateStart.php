@@ -1,5 +1,4 @@
 <?php
-//Called From updateStart();
     // startFrom.php
     require 'connection_db.php';
     try {

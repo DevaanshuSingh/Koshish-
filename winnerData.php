@@ -1,4 +1,3 @@
-<!--Called From getWinnerData(); -->
 <?php
 // startFrom.php
 require 'connection_db.php';

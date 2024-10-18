@@ -8,9 +8,7 @@
 }
 
 *::selection {
-    color: skyblue;
-    background-color: black;
-    border-radius:50%;
+    color: GOLD;
 }
 
 body::-webkit-scrollbar {

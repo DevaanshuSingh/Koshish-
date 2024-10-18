@@ -107,7 +107,7 @@
     window.onload = function () {
         // wait until all players have come on the screen
         let playerCount = getPlayerscount();
-        alert(`onload pc = ${playerCount}`);
+        // alert(`onload pc = ${playerCount}`);
         if (playerCount == 4)
             timer();
         
@@ -132,7 +132,7 @@
         xhr.open("GET","checkToShowModeSection.php",false);
         xhr.onload = function(){
             playerCount = parseInt(xhr.responseText);
-            alert(`Total Player: ${xhr.responseText}`);
+            // alert(`Total Player: ${xhr.responseText}`);
         }
         xhr.send();
         return playerCount;

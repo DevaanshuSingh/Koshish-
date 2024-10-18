@@ -1,4 +1,3 @@
-<!-- Called From openDialogueBox(); -->
 <?php
 // startFrom.php
 require 'connection_db.php';

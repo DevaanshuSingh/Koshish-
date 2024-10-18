@@ -1,4 +1,3 @@
-<!-- Called From truncateTable(); -->
 <?php
 require 'connection_db.php';
 try {
