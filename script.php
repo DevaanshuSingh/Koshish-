@@ -44,7 +44,7 @@
                 }, 1);
 
             } else {
-                alert(`xhr.responseText of mode is: ${mode}`);
+                // alert(`xhr.responseText of mode is: ${mode}`);
             }
         }
         xhr.send();
@@ -69,7 +69,7 @@
         timer.style.justifyContent = "center";
         timer.style.alignItems = "center";
         // footer.innerHTML = "<strong>TIME UP!!<br>Please Try Again</strong>";
-        footer.innerHTML = "<strong>TIME UP!!<br>Please Try Again <a href='user_register.php'>Here</a> </strong>";
+        footer.innerHTML = "<strong>TIME UP!!<br>Please Try Again <a onclick='truncateTable()' href='user_register.php'>Here</a> </strong>";
         footer.style.fontFamily = " Georgia, 'Times New Roman', Times, serif";
         footer.style.height = "100vh";
         footer.style.color = "black";
@@ -87,7 +87,7 @@
         let sec = 1;
         let timerInterval;
         timerInterval = setInterval(function () {
-            if (min == 1) {
+            if (min == 7) {
                 clearInterval(timerInterval);
                 // alert(`Time Up`);
                 // secElem.innerHTML = 0;
@@ -110,7 +110,7 @@
         // alert(`onload pc = ${playerCount}`);
         if (playerCount == 4)
             timer();
-        
+
         id = startFrom();
         // alert(`now_turn: ${id}`);
         showDice(id);
@@ -124,13 +124,14 @@
         for (let i = 1; i <= total; i++) {
             fetchPos(i);
         }
+        // alert(`1)\tin hard mode on each click timer starts from 0 cause it is in CLINT SITE It Should Be SERVER SIDE; that update time in database and fetch from there each second,\n2)\t!!TIME UP PLEASE TRY AGAIN HERE onclick here player goes to register page with truncating table but when first have clicked then tables has truncated and in db 1st registers then second come in register page by clicking HERE link which again truncate the table Cause the 1st have registerd again that data will also truncate, so there have to set a condition according that only form first click table will truncate and show the register page but for another threes only register page will be shown,`);
     };
 
-    function getPlayerscount(){
+    function getPlayerscount() {
         let playerCount;
         const xhr = new XMLHttpRequest();
-        xhr.open("GET","checkToShowModeSection.php",false);
-        xhr.onload = function(){
+        xhr.open("GET", "checkToShowModeSection.php", false);
+        xhr.onload = function () {
             playerCount = parseInt(xhr.responseText);
             // alert(`Total Player: ${xhr.responseText}`);
         }
