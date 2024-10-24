@@ -18,4 +18,4 @@ CREATE TABLE `user_information` (
   `background_color` varchar(9) DEFAULT NULL,
   `mode` varchar(8) DEFAULT NULL,
   PRIMARY KEY (`id`)
-);
+);f

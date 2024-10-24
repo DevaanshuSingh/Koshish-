@@ -2,7 +2,7 @@
 require 'connection_db.php';
 
 try {
-    $stmt = $pdo->prepare("SELECT count(id) FROM user_information;");
+    $stmt = $pdo->prepare(query: "SELECT count(id) FROM user_information;");
     $stmt->execute();
     $thisMuch = $stmt->fetchColumn();
     echo $thisMuch;

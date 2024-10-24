@@ -93,14 +93,24 @@
                 // secElem.innerHTML = 0;
                 return timeUp();
             }
-            if (sec == 1) {
+            if (sec == 5) {
                 sec = 0;
                 min++;
             }
+            console.log(min+" and "+ sec)
+
+            //Updating Time In DB
+            // updateTime(min, sec);
+
+            //Fetching Time From DB To Show
             let minElem = document.querySelector(".min");
             let secElem = document.querySelector(".sec");
+            // let getMin = getMin();
+            // let getSec = getSec();
             minElem.innerHTML = min;
             secElem.innerHTML = sec++;
+            // minElem.innerHTML = getMin;
+            // secElem.innerHTML = getSec++;
         }, 1000);
     }
 
@@ -126,6 +136,67 @@
         }
         // alert(`1)\tin hard mode on each click timer starts from 0 cause it is in CLINT SITE It Should Be SERVER SIDE; that update time in database and fetch from there each second,\n2)\t!!TIME UP PLEASE TRY AGAIN HERE onclick here player goes to register page with truncating table but when first have clicked then tables has truncated and in db 1st registers then second come in register page by clicking HERE link which again truncate the table Cause the 1st have registerd again that data will also truncate, so there have to set a condition according that only form first click table will truncate and show the register page but for another threes only register page will be shown,`);
     };
+
+    function getMin() {
+        alert("Inside getMin()");
+
+        const xhr = XMLHttpRequest();
+        xhr.open("GET", "getMin.php", false);
+        xhr.onload = function () {
+            let min = xhr.response;
+            if (xhr.status == 200) {
+                // alert(`Got Min ${xhr.response}`);
+                console.log (`Got Min ${xhr.response}`);
+
+            }
+            else
+                // alert(`Did't Got Min: ${xhr.response}`);
+                console.log (`Did't Got Min: ${xhr.response}`);
+
+        }
+        xhr.send();
+        return min;
+    }
+
+    function getSec() {
+        alert("Inside getSec()");
+
+        const xhr = XMLHttpRequest();
+        xhr.open("GET", "getSec.php", false);
+        xhr.onload = function () {
+            let sec = xhr.response;
+            if (xhr.status == 200) {
+                // alert(`Got Sec ${xhr.response}`);
+                console.log (`Got Sec ${xhr.response}`);
+
+            }
+            else
+                // alert(`Did't Got Sec: ${xhr.response}`);
+                console.log (`Did't Got Sec: ${xhr.response}`);
+
+        }
+        xhr.send();
+        return sec;
+    }
+
+    function updateTime(min, sec) {
+        // alert("Inside UpdateTime()");
+        const xhr = XMLHttpRequest();
+        xhr.open("POST", "updateTime.php", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                // alert("Updated Time");
+                console.log ("Updated Time");
+
+            }
+            else
+                // alert(`Not Updated Time: ${xhr.response}`);
+                console.log (`Not Updated Time: ${xhr.response}`);
+
+        }
+        xhr.send("min=" + min + "&sec=" + sec);
+    }
 
     function getPlayerscount() {
         let playerCount;
@@ -171,49 +242,6 @@
         xhr.send(`nowId=` + nowId);//Changing Id
     }
 
-    // function diceValue(nowId) {
-    //     var dice = Math.floor(Math.random() * 6) + 1;
-    //     document.getElementById('showValue').value = dice;
-    //     let currentPos = fetchPos(nowId);
-    //     let newPos = dice + currentPos;
-    //     if (newPos) {
-    //         // if (nowId == 1)
-    //         //     alert(`Red : ${newPos} With ${dice}`);
-    //         // if (nowId == 2)
-    //         //     alert(`Green : ${newPos} With ${dice}`);
-    //         // if (nowId == 3)
-    //         //     alert(`Yellow : ${newPos} With ${dice}`);
-    //         // if (nowId == 4)
-    //         //     alert(`Blue : ${newPos} With ${dice}`);
-    //     }
-    //     updateDice(nowId, dice);//first check this; ok;
-    //     alert(`Dice Is ${dice}`);
-    //     if (newPos > 100) {
-    //         alert(`Completed The journey`);
-    //         return;
-    //     }
-    //     if (dice == 1) {
-    //         alert(`Start Journey (Updating)`);
-    //         updateStart(nowId);//second check this; ok;
-    //         alert(`Updated`);
-    //     }
-    //     else {
-    //         alert(`Cause of dice ${dice}, is not updated`);
-    //     }
-
-    //     let start_T_F = getCheckStart(nowId);
-    //     alert(`start_T_F : ${start_T_F}`);
-    //     if (start_T_F == 1 || start_T_F) {
-    //         alert(`Acceed 1`);
-    //         posFix(nowId, newPos);// fourth check this
-    //     } else if (start_T_F == 0) {
-    //         alert(`Denied 0; Player ${nowId} Is Not Allowed Because Got: ${dice} Not 1`);
-    //         return;
-    //     }
-    //     else
-    //         alert(`Nothing`);
-    // }
-
     function diceValue(nowId) {
         // alert("diceVal()");
         var dice = Math.floor(Math.random() * 6) + 1;
@@ -233,6 +261,7 @@
             alert(`Completed The journey`);
             return;
         }
+        getCheckStart(nowId);
         posFix(nowId, newPos);
         return;
     }
