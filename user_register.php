@@ -132,7 +132,7 @@
                         footer.style.position = "fixed";
                         footer.style.bottom = "0";
                         footer.style.width = "100%";
-                        alert(`Not First`);
+                        // alert(`Not First`);
                         // modes.style.display = "none";
                         modes.innerHTML = "<strong id='notFirst'>!! Someone Has Choosed The Game Mode As A First Player.<br>Please Next Time Be First To Choose The Game Mode For All Fours !!</strong>";
                         modes.style.justifyContent = "center";

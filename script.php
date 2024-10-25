@@ -39,15 +39,80 @@
                 diceSection.style.top = "0";
                 diceSection.style.height = "100vh";
                 numbers.style.bottom = "-5vh";
-                setTimeout(function () {
-                    startTimer();
-                }, 1);
-
             } else {
                 // alert(`xhr.responseText of mode is: ${mode}`);
             }
         }
         xhr.send();
+    }
+
+    function startTimer() {
+        let min = 0;
+        let sec = 1;
+        let timerInterval;
+        timerInterval = setInterval(function () {
+            if (min == 7) {
+                clearInterval(timerInterval);
+                // alert(`Time Up`);
+                // secElem.innerHTML = 0;
+                return timeUp();
+            }
+            if (sec == 5) {
+                sec = 0;
+                min++;
+            }
+            console.log(min + " and " + sec)
+            updateTime(min, sec);
+            let minElem = document.querySelector(".min");
+            let secElem = document.querySelector(".sec");
+
+            let minIs = getMin();
+            let secIs = getSec();
+            minElem.innerHTML = minIs;
+            secElem.innerHTML = secIs++;
+            alert("Completed");
+            // minElem.innerHTML = min;
+            // secElem.innerHTML = sec++;
+        }, 1000);
+    }
+
+    function updateTime(min, sec) {
+        alert(`updateTime(${min} ${sec})`);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "updateTime.php", false);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200)
+                console.log(`UpdatedTime ${xhr.responseText}`);
+            else
+                alert(`Not UpdatedTime ${xhr.responseText}`);
+        }
+        xhr.send("min=" + min + "&sec=" + sec);
+    }
+
+    function getMin() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "getMin.php", false);
+        xhr.onload = function () {
+            if (xhr.status == 200)
+                console.log(`GotMin ${xhr.responseText}`);
+            else
+                console.log(`Not GotMin ${xhr.responseText}`);
+        }
+        xhr.send();
+        return xhr.responseText;
+    }
+    function getSec() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "getSec.php", false);
+        xhr.onload = function () {
+            if (xhr.status == 200)
+                console.log(`GotSec ${xhr.responseText}`);
+            else
+                console.log(`Not GotSec ${xhr.responseText}`);
+        }
+        xhr.send();
+        return xhr.responseText;
     }
 
     function timeUp() {
@@ -82,47 +147,18 @@
         footer.style.fontSize = "3rem";
     }
 
-    function startTimer() {
-        let min = 0;
-        let sec = 1;
-        let timerInterval;
-        timerInterval = setInterval(function () {
-            if (min == 7) {
-                clearInterval(timerInterval);
-                // alert(`Time Up`);
-                // secElem.innerHTML = 0;
-                return timeUp();
-            }
-            if (sec == 5) {
-                sec = 0;
-                min++;
-            }
-            console.log(min+" and "+ sec)
-
-            //Updating Time In DB
-            // updateTime(min, sec);
-
-            //Fetching Time From DB To Show
-            let minElem = document.querySelector(".min");
-            let secElem = document.querySelector(".sec");
-            // let getMin = getMin();
-            // let getSec = getSec();
-            minElem.innerHTML = min;
-            secElem.innerHTML = sec++;
-            // minElem.innerHTML = getMin;
-            // secElem.innerHTML = getSec++;
-        }, 1000);
-    }
-
     window.onload = function () {
         // wait until all players have come on the screen
         let playerCount = getPlayerscount();
         // alert(`onload pc = ${playerCount}`);
-        if (playerCount == 4)
-            timer();
+        timer();
+        if (playerCount == 4) {
+            setTimeout(function () {
+                startTimer();
+            }, 1);
+        }
 
         id = startFrom();
-        // alert(`now_turn: ${id}`);
         showDice(id);
         choosedBcg();
         // Check local storage to see if welcome has been called
@@ -136,67 +172,6 @@
         }
         // alert(`1)\tin hard mode on each click timer starts from 0 cause it is in CLINT SITE It Should Be SERVER SIDE; that update time in database and fetch from there each second,\n2)\t!!TIME UP PLEASE TRY AGAIN HERE onclick here player goes to register page with truncating table but when first have clicked then tables has truncated and in db 1st registers then second come in register page by clicking HERE link which again truncate the table Cause the 1st have registerd again that data will also truncate, so there have to set a condition according that only form first click table will truncate and show the register page but for another threes only register page will be shown,`);
     };
-
-    function getMin() {
-        alert("Inside getMin()");
-
-        const xhr = XMLHttpRequest();
-        xhr.open("GET", "getMin.php", false);
-        xhr.onload = function () {
-            let min = xhr.response;
-            if (xhr.status == 200) {
-                // alert(`Got Min ${xhr.response}`);
-                console.log (`Got Min ${xhr.response}`);
-
-            }
-            else
-                // alert(`Did't Got Min: ${xhr.response}`);
-                console.log (`Did't Got Min: ${xhr.response}`);
-
-        }
-        xhr.send();
-        return min;
-    }
-
-    function getSec() {
-        alert("Inside getSec()");
-
-        const xhr = XMLHttpRequest();
-        xhr.open("GET", "getSec.php", false);
-        xhr.onload = function () {
-            let sec = xhr.response;
-            if (xhr.status == 200) {
-                // alert(`Got Sec ${xhr.response}`);
-                console.log (`Got Sec ${xhr.response}`);
-
-            }
-            else
-                // alert(`Did't Got Sec: ${xhr.response}`);
-                console.log (`Did't Got Sec: ${xhr.response}`);
-
-        }
-        xhr.send();
-        return sec;
-    }
-
-    function updateTime(min, sec) {
-        // alert("Inside UpdateTime()");
-        const xhr = XMLHttpRequest();
-        xhr.open("POST", "updateTime.php", true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status == 200) {
-                // alert("Updated Time");
-                console.log ("Updated Time");
-
-            }
-            else
-                // alert(`Not Updated Time: ${xhr.response}`);
-                console.log (`Not Updated Time: ${xhr.response}`);
-
-        }
-        xhr.send("min=" + min + "&sec=" + sec);
-    }
 
     function getPlayerscount() {
         let playerCount;

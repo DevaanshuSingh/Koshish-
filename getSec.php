@@ -1,14 +1,12 @@
 <?php
 require 'connection_db.php';
 
-try{
+try {
     $stmt = $pdo->prepare(query: "SELECT seconds FROM performance WHERE id = 1;");
     $stmt->execute();
-    $getSec = $stmt->fetchColumn();
-    echo $getSec;
-
+    $gotSec = $stmt->fetchColumn();
+    echo $gotSec;
 } catch (PDOException $e) {
     echo 'Database error: ' . $e->getMessage();
 }
-
 ?>
