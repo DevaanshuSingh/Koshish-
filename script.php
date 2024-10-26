@@ -25,25 +25,11 @@
         xhr.send();
     }
 
-    function timer() {
+    function getMode() {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "getSelectedMode.php", true);
-        xhr.onload = function () {
-            let mode = xhr.response;
-            if (mode == "hard") {
-                let timer = document.querySelector(".timer-section");
-                timer.style.display = "flex";
-                let numbers = document.querySelector(".numbers");
-                let button = document.querySelector(".butt0n");
-                let diceSection = document.querySelector(".dice-section");
-                diceSection.style.top = "0";
-                diceSection.style.height = "100vh";
-                numbers.style.bottom = "-5vh";
-            } else {
-                // alert(`xhr.responseText of mode is: ${mode}`);
-            }
-        }
+        xhr.open("GET", "getSelectedMode.php", false);
         xhr.send();
+        return xhr.response;
     }
 
     function startTimer() {
@@ -62,22 +48,22 @@
                 min++;
             }
             console.log(min + " and " + sec)
+            //Updating In DB
             updateTime(min, sec);
             let minElem = document.querySelector(".min");
             let secElem = document.querySelector(".sec");
 
-            let minIs = getMin();
-            let secIs = getSec();
-            minElem.innerHTML = minIs;
-            secElem.innerHTML = secIs++;
-            alert("Completed");
-            // minElem.innerHTML = min;
-            // secElem.innerHTML = sec++;
+            // Getting From DB
+            min = getMin();
+            sec = getSec();
+            // alert("Completed");
+            // alert(`minIs: ${min} secIs: ${sec}`);
+            minElem.innerHTML = min;
+            secElem.innerHTML = sec++;
         }, 1000);
     }
 
     function updateTime(min, sec) {
-        alert(`updateTime(${min} ${sec})`);
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "updateTime.php", false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -151,12 +137,29 @@
         // wait until all players have come on the screen
         let playerCount = getPlayerscount();
         // alert(`onload pc = ${playerCount}`);
-        timer();
+        let mode = getMode();
+        alert(`mode = ${mode}`);
+        if (mode == "hard") {
+            let timer = document.querySelector(".timer-section");
+            timer.style.display = "flex";
+            let numbers = document.querySelector(".numbers");
+            let button = document.querySelector(".butt0n");
+            let diceSection = document.querySelector(".dice-section");
+            diceSection.style.top = "0";
+            diceSection.style.height = "100vh";
+            numbers.style.bottom = "-5vh";
+
+            
         if (playerCount == 4) {
             setTimeout(function () {
                 startTimer();
             }, 1);
         }
+
+        } else {
+            // alert(`xhr.responseText of mode is: ${mode}`);
+        }
+
 
         id = startFrom();
         showDice(id);
@@ -304,6 +307,7 @@
             showMode.style.visibility = 'hidden';
         }, 13000);
     }
+
     //{Bcg Section
     function updateBcg(bcg_Color) {
         const xhr = new XMLHttpRequest();
