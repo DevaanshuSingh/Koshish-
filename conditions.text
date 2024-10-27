@@ -1,0 +1,13 @@
+Ajax: {Ok};
+
+{
+    Work also for single Player (first Player And Second AI) have to make it versatile 
+}
+
+{
+in hard mode on each click timer starts from 0 cause it is in CLINT SITE It Should Be SERVER SIDE; that update time in database and fetch from there each second AND !!TIME UP PLEASE TRY AGAIN HERE onclick here player goes to register page with truncating table but when first have clicked then tables has truncated and in db 1st registers then second come in register page by clicking HERE link which again truncate the table Cause the 1st have registerd again that data will also truncate, so there have to set a condition according that only form first click table will truncate and show the register page but for another threes only register page will be shown,
+}
+
+2things
+*timer should work in backed means it should be updated and fetch/show from database each second
+*only that player is allowed to Start Journey Who Got 1 Once;

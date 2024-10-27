@@ -1867,7 +1867,7 @@ session_start();
                         </div>
                         <footer class="footerText">Have To Complete Game Within Limit.</footer>
                 </div>
-                
+
                 <div class="numbers">
                         <input id="showValue" type="text" readonly>
                 </div>
@@ -1884,11 +1884,17 @@ session_start();
                         $stmt = $pdo->prepare("SELECT ip_address FROM user_information WHERE id = ?");
                         $stmt->execute([$nowId]);
                         $nowIp = $stmt->fetchColumn(0);
-                        if ($nowIp) {
-                                echo "<h1>IP ($nowId): \"$nowIp\"</h1>";
-                        } else {
-                                echo "<h1>No IP ID ($nowId)</h1>";
-                        }
+                        ?>
+                        <div class="showIp">
+                                <?php
+                                if ($nowIp) {
+                                        echo "<h1>IP ($nowId): \"$nowIp\"</h1>";
+                                } else {
+                                        echo "<h1>No IP ID ($nowId)</h1>";
+                                }
+                                ?>
+                        </div>
+                        <?php
                 } catch (PDOException $e) {
                         echo 'Database error: ' . $e->getMessage();
                 }

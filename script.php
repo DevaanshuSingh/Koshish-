@@ -1,5 +1,13 @@
 <script>
 
+    document.addEventListener("keydown", function (event) {
+        if (event.ctrlKey && event.key == "i") {
+            document.querySelector('.showIp').style.display = "flex"
+        } else if (event.key === "r") {
+            window.location.href = "user_register.php"; // Redirect to Contact page
+        }
+    });
+    
     function getTotal() {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'total.php', false);
@@ -138,7 +146,7 @@
         let playerCount = getPlayerscount();
         // alert(`onload pc = ${playerCount}`);
         let mode = getMode();
-        alert(`mode = ${mode}`);
+        // alert(`mode = ${mode}`);
         if (mode == "hard") {
             let timer = document.querySelector(".timer-section");
             timer.style.display = "flex";
@@ -149,13 +157,11 @@
             diceSection.style.height = "100vh";
             numbers.style.bottom = "-5vh";
 
-            
-        if (playerCount == 4) {
-            setTimeout(function () {
-                startTimer();
-            }, 1);
-        }
-
+            if (playerCount == 4) {
+                setTimeout(function () {
+                    startTimer();
+                }, 1);
+            }
         } else {
             // alert(`xhr.responseText of mode is: ${mode}`);
         }
@@ -226,6 +232,40 @@
         document.getElementById('showValue').value = dice;
         let currentPos = fetchPos(nowId);
         let newPos = dice + currentPos;
+        if (dice != 1) {
+            if (getCheckStart(nowId)) {
+                updateDice(nowId, dice);
+                if (nowId == 1)
+                    alert(`red1 : ${dice} = ${newPos}`);
+                else if (nowId == 2)
+                    alert(`green2 : ${dice} = ${newPos}`);
+                else if (nowId == 3)
+                    alert(`yellow3 : ${dice} = ${newPos}`);
+                else if (nowId == 4)
+                    alert(`blue4 : ${dice} = ${newPos}`);
+                if (newPos > 100) {
+                    alert(`Completed The journey`);
+                    // return;
+                }
+                posFix(nowId, newPos);
+                return;
+            }
+            else
+                alert(`Not 1 value of getCheckStart(nowId) is ${getCheckStart(nowId)}`);
+
+            if (nowId == 1)
+                alert(`red Please Get 1 To Start`);
+            else if (nowId == 2)
+                alert(`green Please Get 1 To Start`);
+            else if (nowId == 3)
+                alert(`yellow Please Get 1 To Start`);
+            else if (nowId == 4)
+                alert(`blue Please Get 1 To Start`);
+            return;
+        }
+        else {
+            updateStart(nowId);
+        }
         updateDice(nowId, dice);
         if (nowId == 1)
             alert(`red1 : ${dice} = ${newPos}`);
@@ -239,7 +279,6 @@
             alert(`Completed The journey`);
             return;
         }
-        getCheckStart(nowId);
         posFix(nowId, newPos);
         return;
     }
@@ -378,24 +417,33 @@
         }
     }
 
+    //yaha
     function getCheckStart(nowId) {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'getCheckStart.php', false); // Synchronous request
+        xhr.open('POST', 'getCheckStart.php', false); // Asynchronous request
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-        xhr.send("nowId=" + nowId);  // Send request with nowId
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const start = parseInt(xhr.responseText);
+                alert("Start value:", start);
+            } else {
+                alert('Error fetching start check');
+            }
+        };
 
-        if (xhr.status === 200) {
-            return parseInt(xhr.responseText);  // Return the server response as an integer
-        } else {
-            alert('Error fetching start check');
-            return null; // Return null or handle error
-        }
+        xhr.onerror = function () {
+            alert('Request error On getCheckStart()');
+        };
+
+        xhr.send("nowId=" + nowId); // Send request with nowId
+        return parseInt(xhr.responseText);
     }
+
 
     function updateStart(nowId) {
         const xhr = new XMLHttpRequest();
-        xhr.open(`POST`, `updateStart.php`, true);
+        xhr.open('POST', 'updateStart.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             if (xhr.status == 200) {
