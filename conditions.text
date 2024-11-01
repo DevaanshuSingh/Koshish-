@@ -9,5 +9,10 @@ in hard mode on each click timer starts from 0 cause it is in CLINT SITE It Shou
 }
 
 2things
-*timer should work in backed means it should be updated and fetch/show from database each second
-*only that player is allowed to Start Journey Who Got 1 Once;
+*timer should work in backend means it should be updated and fetch/show from database each second
+*only that player is allowed to Start Journey Who Got 1 Once;->{
+    here again stucking mean SUDDEN THAT IS NOT CHANGING POSITION like:
+    Clicked-> red got 5 in position 10 that's position should be changed into 15
+    again Clicked-> red Got 2 in position 10 and that position becomes 12;
+    here single player is using twice the chances wheather next chance should be of next player;
+}

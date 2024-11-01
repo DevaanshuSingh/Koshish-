@@ -383,3 +383,14 @@ label {
     color: red !important;
     background-color: red !important;
 }
+
+/*Snake Design*/
+.head{
+    background-color: rgb(206, 24, 24) !important;
+}
+.snake{
+    background-color: rgb(34, 128, 76);
+    border-radius: 20%;
+    height: 5vmin;
+    width: 5vmin;
+}

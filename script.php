@@ -7,7 +7,7 @@
             window.location.href = "user_register.php"; // Redirect to Contact page
         }
     });
-    
+
     function getTotal() {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'total.php', false);
@@ -426,7 +426,7 @@
         xhr.onload = function () {
             if (xhr.status === 200) {
                 const start = parseInt(xhr.responseText);
-                alert("Start value:", start);
+                alert("Start value:"+ start);
             } else {
                 alert('Error fetching start check');
             }
