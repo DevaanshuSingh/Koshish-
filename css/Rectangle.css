@@ -219,6 +219,7 @@ body {
     justify-content: center;
     align-items: center;
     border-radius: 4px;
+    /* background-color: rgba(0, 0, 0, 0.247); */
 }
 
 .timer-section {
@@ -369,6 +370,10 @@ label {
 
 #colorInput {
     visibility: hidden;
+
+}
+#colorInput:hover{
+    cursor: pointer;
 }
 
 #change {
@@ -390,7 +395,8 @@ label {
 }
 .snake{
     background-color: rgb(34, 128, 76);
-    border-radius: 20%;
-    height: 5vmin;
-    width: 5vmin;
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+    /* display: none; */
 }

@@ -1937,7 +1937,7 @@ session_start();
                         <label for="colorInput">
                                 <span id="change"><strong>CHOOSE COLOR</strong></span>
                         </label>
-                        <input type="color" id="colorInput"><br>
+                        <input type="color" id="colorInput" style="cursor: pointer;"><br>
                 </div>
         </div>
         <div id="show">
