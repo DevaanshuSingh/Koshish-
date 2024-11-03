@@ -10,4 +10,3 @@ try {
     echo 'Database error: ' . $e->getMessage();
 }
 echo $bcg;
-?>

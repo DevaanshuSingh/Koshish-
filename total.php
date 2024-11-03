@@ -9,4 +9,3 @@ try {
     $totalPlayers=0;
 }
 echo $totalPlayers;
-?>

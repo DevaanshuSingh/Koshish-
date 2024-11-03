@@ -4,7 +4,7 @@
         if (event.ctrlKey && event.key == "i") {
             document.querySelector('.showIp').style.display = "flex"
         } else if (event.key === "r") {
-            window.location.href = "user_register.php"; // Redirect to Contact page
+            window.location.href = "user_register.php";
         }
     });
 
@@ -398,14 +398,20 @@
         let playerDiv = wholeGrid.querySelector(`.p${i}`);
         if (playerDiv) {
             // playerDiv.style.transition = 'background-color .1s ease';
-            if (i == 1)
-                playerDiv.style.backgroundColor = 'red';
-            if (i == 2)
+            if (i == 1) {
+                // playerDiv.style.backgroundColor = 'red';
+                let imageUrl = getImage(nowId);
+                playerDiv.style.backgroundImage = imageUrl;
+            }
+            if (i == 2) {
                 playerDiv.style.backgroundColor = 'green';
-            if (i == 3)
+            }
+            if (i == 3) {
                 playerDiv.style.backgroundColor = 'yellow';
-            if (i == 4)
+            }
+            if (i == 4) {
                 playerDiv.style.backgroundColor = 'blue';
+            }
         }
 
         else
@@ -417,6 +423,21 @@
         }
     }
 
+    function getImage(nowId) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "getWinnerImage.php", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                alert(`Image Got Of ${nowId} As Player`);
+                return xhr.response
+            }
+            else
+                alert(`Not Got Image Of ${nowId}`);
+        }
+        xhr.send("nowId=" + nowId);
+    }
+
     //yaha
     function getCheckStart(nowId) {
         const xhr = new XMLHttpRequest();
@@ -426,7 +447,7 @@
         xhr.onload = function () {
             if (xhr.status === 200) {
                 const start = parseInt(xhr.responseText);
-                alert("Start value:"+ start);
+                alert("Start value:" + start);
             } else {
                 alert('Error fetching start check');
             }

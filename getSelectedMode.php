@@ -8,4 +8,3 @@ try {
 } catch (PDOException $e) {
     echo 'Database error: ' . $e->getMessage();
 }
-?>
