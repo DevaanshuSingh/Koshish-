@@ -401,16 +401,27 @@
             if (i == 1) {
                 // playerDiv.style.backgroundColor = 'red';
                 let imageUrl = getImage(nowId);
-                playerDiv.style.backgroundImage = imageUrl;
+                alert(`got ${imageUrl}`);
+                playerDiv.style.backgroundImage = `url(${imageUrl})`;
+                playerDiv.style.backgroundSize = 'cover';  // Ensures the image covers the element
             }
             if (i == 2) {
                 playerDiv.style.backgroundColor = 'green';
+                // let imageUrl = getImage(nowId);
+                // alert(`got ${imageUrl}`);
+                // playerDiv.style.backgroundImage = `url(${imageUrl})`;
             }
             if (i == 3) {
                 playerDiv.style.backgroundColor = 'yellow';
+                // let imageUrl = getImage(nowId);
+                // alert(`got ${imageUrl}`);
+                // playerDiv.style.backgroundImage = `url(${imageUrl})`;
             }
             if (i == 4) {
                 playerDiv.style.backgroundColor = 'blue';
+                // let imageUrl = getImage(nowId);
+                // alert(`got ${imageUrl}`);
+                // playerDiv.style.backgroundImage = `url(${imageUrl})`;
             }
         }
 
@@ -425,17 +436,18 @@
 
     function getImage(nowId) {
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "getWinnerImage.php", true);
+        xhr.open("POST", "getWinnerImage.php", false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             if (xhr.status == 200) {
-                alert(`Image Got Of ${nowId} As Player`);
-                return xhr.response
+                alert(`Image Got Of ${nowId} As user is "${xhr.response}"`);
+                return xhr.response;
             }
             else
                 alert(`Not Got Image Of ${nowId}`);
         }
         xhr.send("nowId=" + nowId);
+        return xhr.response;
     }
 
     //yaha
