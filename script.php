@@ -1,5 +1,11 @@
 <script>
 
+//chesta
+    // setInterval(() => {
+    //     location.reload();
+    //     // alert(`Ok`);
+    // }, 5000);
+
     document.addEventListener("keydown", function (event) {
         if (event.ctrlKey && event.key == "i") {
             document.querySelector('.showIp').style.display = "flex"
@@ -45,7 +51,7 @@
         let sec = 1;
         let timerInterval;
         timerInterval = setInterval(function () {
-            if (min == 7) {
+            if (min == 25) {
                 clearInterval(timerInterval);
                 // alert(`Time Up`);
                 // secElem.innerHTML = 0;
@@ -166,14 +172,13 @@
             // alert(`xhr.responseText of mode is: ${mode}`);
         }
 
-
         id = startFrom();
         showDice(id);
         choosedBcg();
         // Check local storage to see if welcome has been called
-        if (!localStorage.getItem('hasWelcomed')) {
+        if (!localStorage.getItem('swaagat')) {
             welcome();
-            localStorage.setItem('hasWelcomed', 'true'); // Store in local storage
+            localStorage.setItem('swaagat', 'true'); // Store in local storage
         }
         let total = 4;
         for (let i = 1; i <= total; i++) {
@@ -399,11 +404,11 @@
         if (playerDiv) {
             // playerDiv.style.transition = 'background-color .1s ease';
             if (i == 1) {
-                // playerDiv.style.backgroundColor = 'red';
-                let imageUrl = getImage(nowId);
-                alert(`got ${imageUrl}`);
-                playerDiv.style.backgroundImage = `url(${imageUrl})`;
-                playerDiv.style.backgroundSize = 'cover';  // Ensures the image covers the element
+                playerDiv.style.backgroundColor = 'red';
+                // let imageUrl = getImage(nowId);
+                // alert(`got ${imageUrl}`);
+                // playerDiv.style.backgroundImage = `url(${imageUrl})`;
+                // playerDiv.style.backgroundSize = 'cover';  // Ensures the image covers the element
             }
             if (i == 2) {
                 playerDiv.style.backgroundColor = 'green';
