@@ -1,6 +1,12 @@
 /* Dont Change */
 @import url('https://fonts.googleapis.com/css2?family=Sofadi+One&display=swap');
-
+/*FOR AUTO_CHANGE BCG COLOR ACCORDING TO DEVICE*/
+/* @media(prefers-color-scheme: dark) {
+    body{
+    background-color: black;
+    color: black;
+    }
+} */
 * {
     margin: 0;
     padding: 0;
@@ -25,7 +31,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: whitesmoke;
+    /* background-color: whitesmoke; */
     position: relative;
 }
 
