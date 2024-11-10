@@ -6,13 +6,13 @@
     //     // alert(`Ok`);
     // }, 5000);
 
-    document.addEventListener("keydown", function (event) {
-        if (event.ctrlKey && event.key == "i") {
-            document.querySelector('.showIp').style.display = "flex"
-        } else if (event.key === "r") {
-            window.location.href = "user_register.php";
-        }
-    });
+    // document.addEventListener("keydown", function (event) {
+    //     if (event.ctrlKey && event.key == "i") {
+    //         document.querySelector('.showIp').style.display = "flex"
+    //     } else if (event.key === "r"||"R") {
+    //         window.location.href = "user_register.php";
+    //     }
+    // });
 
     function getTotal() {
         const xhr = new XMLHttpRequest();
@@ -464,7 +464,7 @@
         xhr.onload = function () {
             if (xhr.status === 200) {
                 const start = parseInt(xhr.responseText);
-                alert("Start value:" + start);
+                // alert("Start value:" + start);
             } else {
                 alert('Error fetching start check');
             }
@@ -550,9 +550,7 @@
         xhr.onerror = function () {
             alert('An error occurred while fetching the image.');
         };
-        const formData = new FormData();
-        formData.append('nowId', nowId);
-        xhr.send(formData);
+        xhr.send("nowId="+nowId);
         getWinnerData(nowId);
         let button = document.querySelector(".butt0n");
         button.style.cursor = "not-allowed";
