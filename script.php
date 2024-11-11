@@ -240,14 +240,14 @@
         if (dice != 1) {
             if (getCheckStart(nowId)) {
                 updateDice(nowId, dice);
-                if (nowId == 1)
-                    alert(`red1 : ${dice} = ${newPos}`);
-                else if (nowId == 2)
-                    alert(`green2 : ${dice} = ${newPos}`);
-                else if (nowId == 3)
-                    alert(`yellow3 : ${dice} = ${newPos}`);
-                else if (nowId == 4)
-                    alert(`blue4 : ${dice} = ${newPos}`);
+                // if (nowId == 1)
+                //     alert(`red1 : ${dice} = ${newPos}`);
+                // else if (nowId == 2)
+                //     alert(`green2 : ${dice} = ${newPos}`);
+                // else if (nowId == 3)
+                //     alert(`yellow3 : ${dice} = ${newPos}`);
+                // else if (nowId == 4)
+                //     alert(`blue4 : ${dice} = ${newPos}`);
                 if (newPos > 100) {
                     alert(`Completed The journey`);
                     // return;
@@ -255,35 +255,35 @@
                 posFix(nowId, newPos);
                 return;
             }
-            else
-                alert(`Not 1 value of getCheckStart(nowId) is ${getCheckStart(nowId)}`);
+            // else
+            //     alert(`Not 1 value of getCheckStart(nowId) is ${getCheckStart(nowId)}`);
 
-            if (nowId == 1)
-                alert(`red Please Get 1 To Start`);
-            else if (nowId == 2)
-                alert(`green Please Get 1 To Start`);
-            else if (nowId == 3)
-                alert(`yellow Please Get 1 To Start`);
-            else if (nowId == 4)
-                alert(`blue Please Get 1 To Start`);
+            // if (nowId == 1)
+            //     alert(`red Please Get 1 To Start`);
+            // else if (nowId == 2)
+            //     alert(`green Please Get 1 To Start`);
+            // else if (nowId == 3)
+            //     alert(`yellow Please Get 1 To Start`);
+            // else if (nowId == 4)
+            //     alert(`blue Please Get 1 To Start`);
             return;
         }
         else {
             updateStart(nowId);
         }
         updateDice(nowId, dice);
-        if (nowId == 1)
-            alert(`red1 : ${dice} = ${newPos}`);
-        else if (nowId == 2)
-            alert(`green2 : ${dice} = ${newPos}`);
-        else if (nowId == 3)
-            alert(`yellow3 : ${dice} = ${newPos}`);
-        else if (nowId == 4)
-            alert(`blue4 : ${dice} = ${newPos}`);
-        if (newPos > 100) {
-            alert(`Completed The journey`);
-            return;
-        }
+        // if (nowId == 1)
+        //     alert(`red1 : ${dice} = ${newPos}`);
+        // else if (nowId == 2)
+        //     alert(`green2 : ${dice} = ${newPos}`);
+        // else if (nowId == 3)
+        //     alert(`yellow3 : ${dice} = ${newPos}`);
+        // else if (nowId == 4)
+        //     alert(`blue4 : ${dice} = ${newPos}`);
+        // if (newPos > 100) {
+        //     alert(`Completed The journey`);
+        //     return;
+        // }
         posFix(nowId, newPos);
         return;
     }
@@ -432,8 +432,7 @@
 
         else
             alert(`.p1 - ${nxtPos} not found in grid_${nxtPos}`);
-        if (store_pos == 100) {
-            // alert(`Player ${i}Has Won The Game`);
+        if (store_pos >= 100) {
             openDialogueBox(i);
             localStorage.clear();
         }
@@ -534,8 +533,10 @@
         winnerContainer.style.display = "flex";
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "getWinnerImage.php", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             if (xhr.status == 200) {
+                alert(`While fetching Winner's Image: ${xhr.responseText}`);
                 let imageUrl = xhr.responseText;
                 img.src = imageUrl;
                 // alert(`Got Winner's Image Successfully`);
