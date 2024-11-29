@@ -311,7 +311,7 @@ session_start();
                                         <div class="p2 player"></div>
                                 </div>
                         </div>
-                        <div class="snake head"></div>
+                        <!-- <div class="snake head"></div> -->
                         <div class="d-flex-col right-col">
                                 <div class="right-top p3">
                                         <div class="p3 player"></div>
@@ -511,7 +511,7 @@ session_start();
                                         <div class="p2 player"></div>
                                 </div>
                         </div>
-                        <div class="snake"></div>
+                        <!-- <div class="snake"></div> -->
                         <div class="d-flex-col right-col">
                                 <div class="right-top p3">
                                         <div class="p3 player"></div>
@@ -711,7 +711,7 @@ session_start();
                                         <div class="p2 player"></div>
                                 </div>
                         </div>
-                        <div class="snake"></div>
+                        <!-- <div class="snake"></div> -->
                         <div class="d-flex-col right-col">
                                 <div class="right-top p3">
                                         <div class="p3 player"></div>
@@ -893,7 +893,7 @@ session_start();
                                         <div class="p2 player"></div>
                                 </div>
                         </div>
-                        <div class="snake"></div>
+                        <!-- <div class="snake"></div> -->
                         <div class="d-flex-col right-col">
                                 <div class="right-top p3">
                                         <div class="p3 player"></div>
@@ -1057,7 +1057,7 @@ session_start();
                                         <div class="p2 player"></div>
                                 </div>
                         </div>
-                        <div class="snake"></div>
+                        <!-- <div class="snake"></div> -->
                         <div class="d-flex-col right-col">
                                 <div class="right-top p3">
                                         <div class="p3 player"></div>
@@ -1221,7 +1221,7 @@ session_start();
                                         <div class="p2 player"></div>
                                 </div>
                         </div>
-                        <div class="snake"></div>
+                        <!-- <div class="snake"></div> -->
                         <div class="d-flex-col right-col">
                                 <div class="right-top p3">
                                         <div class="p3 player"></div>
@@ -1421,7 +1421,7 @@ session_start();
                                         <div class="p2 player"></div>
                                 </div>
                         </div>
-                        <div class="snake"></div>
+                        <!-- <div class="snake"></div> -->
                         <div class="d-flex-col right-col">
                                 <div class="right-top p3">
                                         <div class="p3 player"></div>
@@ -1621,7 +1621,7 @@ session_start();
                                         <div class="p2 player"></div>
                                 </div>
                         </div>
-                        <div class="snake"></div>
+                        <!-- <div class="snake"></div> -->
                         <div class="d-flex-col right-col">
                                 <div class="right-top p3">
                                         <div class="p3 player"></div>
@@ -1822,7 +1822,7 @@ session_start();
                                         <div class="p2 player"></div>
                                 </div>
                         </div>
-                        <div class="snake"></div>
+                        <!-- <div class="snake"></div> -->
                         <div class="d-flex-col right-col">
                                 <div class="right-top p3">
                                         <div class="p3 player"></div>

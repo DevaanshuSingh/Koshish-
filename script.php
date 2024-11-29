@@ -1,6 +1,6 @@
 <script>
 
-//chesta
+    //chesta
     // setInterval(() => {
     //     location.reload();
     //     // alert(`Ok`);
@@ -12,7 +12,26 @@
     //     } else if (event.key === "r"||"R") {
     //         window.location.href = "user_register.php";
     //     }
-    // });
+    // });   
+    
+    function getId(nowId) {
+        // alert("getId()");
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'changeId.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                nowId = xhr.responseText;
+                parseInt(nowId);
+                // alert("calling diceVal()");
+                diceValue(nowId);
+                updateTurn(xhr.responseText);
+            }
+            else
+                alert(`Response From Server While Changing Id :`.xhr.response);
+        };
+        xhr.send(`nowId=` + nowId);//Changing Id
+    }
 
     function getTotal() {
         const xhr = new XMLHttpRequest();
@@ -28,30 +47,73 @@
         xhr.send(); // Send the request
     }
 
-    let modeIs;
-    function welcome() {
+    window.onload = function () {
+        // wait until all players have come on the screen
+        let playerCount = getPlayerscount();
+        // alert(`onload pc = ${playerCount}`);
+        let mode = getMode();
+        // alert(`mode = ${mode}`);
+        if (mode == "hard") {
+            let timer = document.querySelector(".timer-section");
+            timer.style.display = "flex";
+            let numbers = document.querySelector(".numbers");
+            let button = document.querySelector(".butt0n");
+            let diceSection = document.querySelector(".dice-section");
+            diceSection.style.top = "0";
+            diceSection.style.height = "100vh";
+            numbers.style.bottom = "-5vh";
+
+            if (playerCount == 4) {
+                setTimeout(function () {
+                    startTimer();
+                }, 1);
+            }
+        } else {
+            // alert(`xhr.responseText of mode is: ${mode}`);
+        }
+
+        id = startFrom();
+        showDice(id);
+        choosedBcg();
+        // if (window.location.pathname == "/index.php") {
+        // Check local storage to see if welcome has been called
+        if (!localStorage.getItem('swaagat')) {
+            welcome();
+            localStorage.setItem('swaagat', 'true'); // Store in local storage
+        }
+        // }
+        let total = 4;
+        for (let i = 1; i <= total; i++) {
+            fetchPos(i);
+        }
+        // alert(`1)\tin hard mode on each click timer starts from 0 cause it is in CLINT SITE It Should Be SERVER SIDE; that update time in database and fetch from there each second,\n2)\t!!TIME UP PLEASE TRY AGAIN HERE onclick here player goes to register page with truncating table but when first have clicked then tables has truncated and in db 1st registers then second come in register page by clicking HERE link which again truncate the table Cause the 1st have registerd again that data will also truncate, so there have to set a condition according that only form first click table will truncate and show the register page but for another threes only register page will be shown,`);
+    };
+    
+    function getPlayerscount() {
+        let playerCount;
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "getSelectedMode.php", true);
+        xhr.open("GET", "checkToShowModeSection.php", false);
         xhr.onload = function () {
-            let mode = xhr.response.toUpperCase();
-            showMode(mode);
+            playerCount = parseInt(xhr.responseText);
+            // alert(`Total Player: ${xhr.responseText}`);
         }
         xhr.send();
+        return playerCount;
     }
-
+     
     function getMode() {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "getSelectedMode.php", false);
         xhr.send();
         return xhr.response;
     }
-
+    
     function startTimer() {
         let min = 0;
         let sec = 1;
         let timerInterval;
         timerInterval = setInterval(function () {
-            if (min == 25) {
+            if (min == 2) {
                 clearInterval(timerInterval);
                 // alert(`Time Up`);
                 // secElem.innerHTML = 0;
@@ -76,14 +138,152 @@
             secElem.innerHTML = sec++;
         }, 1000);
     }
+   
+    function startFrom() {
+        let startId;
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'startFrom.php', false);
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                startId = parseInt(xhr.responseText);
+            }
+        }
+        xhr.send();
+        return parseInt(startId, 10);  // Return the position as an integer (base 10);
+    }
 
+    function showDice(nowId) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'showDice.php', false);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // alert(`showDice's nowId Is ${nowId}`);
+        xhr.onload = function () {
+            // alert(`${xhr.response} is dice of ${nowId}`);
+            if (xhr.status == 200) {
+                document.getElementById('showValue').value = xhr.response;
+            }
+            else
+                alert(`Did't Got dice`);
+        }
+        xhr.send("nowId=" + nowId);
+    }
+    
+    //{Bcg Section
+    function updateBcg(bcg_Color) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(`POST`, `updateBcg.php`, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                // alert(`updated Bcg Successfully and RESPONSE is: ${xhr.responseText}`);
+            }
+            else
+                alert(`Not Updated BCG`);
+        }
+        xhr.send(`bcg_Color=` + bcg_Color);
+    }
+
+    let bcgDb = null;
+    function choosedBcg() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'fetch_bcg.php', true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                bcgDb = xhr.responseText;
+                document.body.style.backgroundColor = bcgDb;
+            }
+        }
+        xhr.send();
+    }
+    //Bcg Section} 
+
+    let modeIs;
+    function welcome() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "getSelectedMode.php", true);
+        xhr.onload = function () {
+            let mode = xhr.response.toUpperCase();
+            showMode(mode);
+        }
+        xhr.send();
+    }
+    
+    function fetchPos(i) {
+        let store_pos;
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'fetch_Position.php', false);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                store_pos = xhr.responseText;
+                show(i, store_pos);
+            } else {
+                alert(`Not Fetched Data`);
+            }
+        };
+        xhr.send('idForGetPos=' + i);
+        return parseInt(store_pos, 10);  // Return the position as an integer (base 10)
+    }
+
+    function showMode(mode) {
+        const showMode = document.querySelector('.show-mode');
+        const modeName = document.querySelector('.show-mode h2 span');
+        showMode.style.transition = "opacity 3s ease";
+        modeName.innerHTML = mode;
+
+        switch (mode) {
+            case 'EASY':
+                modeName.style.color = "BLUE";
+                break;
+            case 'HARD':
+                modeName.style.color = "RED";
+                break;
+            case 'SURPRISE':
+                modeName.style.color = "GREEN";
+                break;
+        }
+        showMode.style.opacity = 0;
+        showMode.style.visibility = 'visible';
+        showMode.style.display = "flex";
+
+        setTimeout(function () {
+            showMode.style.opacity = 1;
+        }, 10);
+
+        setTimeout(function () {
+            showMode.style.opacity = 0;
+        }, 10000);
+
+        setTimeout(function () {
+            showMode.style.visibility = 'hidden';
+        }, 13000);
+    }
+
+    let nowId = startFrom();
+    function updateTurn(nowId) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(`POST`, `updateTurn.php`, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                alert(`Updated nowTurn`);
+            }
+            else
+                alert(`Have Not Updated nowTurn`);
+        }
+        xhr.send("now_turn=" + nowId);
+    }
+
+ 
+    
+    
     function updateTime(min, sec) {
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "updateTime.php", false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             if (xhr.status == 200)
-                console.log(`UpdatedTime ${xhr.responseText}`);
+                alert(`UpdatedTime ${xhr.responseText}`);
             else
                 alert(`Not UpdatedTime ${xhr.responseText}`);
         }
@@ -134,7 +334,7 @@
         timer.style.justifyContent = "center";
         timer.style.alignItems = "center";
         // footer.innerHTML = "<strong>TIME UP!!<br>Please Try Again</strong>";
-        footer.innerHTML = "<strong>TIME UP!!<br>Please Try Again <a onclick='truncateTable()' href='user_register.php'>Here</a> </strong>";
+        footer.innerHTML = "<strong>TIME UP!!<br>Please Try Again </strong>";
         footer.style.fontFamily = " Georgia, 'Times New Roman', Times, serif";
         footer.style.height = "100vh";
         footer.style.color = "black";
@@ -147,143 +347,59 @@
         footer.style.fontSize = "3rem";
     }
 
-    window.onload = function () {
-        // wait until all players have come on the screen
-        let playerCount = getPlayerscount();
-        // alert(`onload pc = ${playerCount}`);
-        let mode = getMode();
-        // alert(`mode = ${mode}`);
-        if (mode == "hard") {
-            let timer = document.querySelector(".timer-section");
-            timer.style.display = "flex";
-            let numbers = document.querySelector(".numbers");
-            let button = document.querySelector(".butt0n");
-            let diceSection = document.querySelector(".dice-section");
-            diceSection.style.top = "0";
-            diceSection.style.height = "100vh";
-            numbers.style.bottom = "-5vh";
-
-            if (playerCount == 4) {
-                setTimeout(function () {
-                    startTimer();
-                }, 1);
-            }
-        } else {
-            // alert(`xhr.responseText of mode is: ${mode}`);
-        }
-
-        id = startFrom();
-        showDice(id);
-        choosedBcg();
-        // Check local storage to see if welcome has been called
-        if (!localStorage.getItem('swaagat')) {
-            welcome();
-            localStorage.setItem('swaagat', 'true'); // Store in local storage
-        }
-        let total = 4;
-        for (let i = 1; i <= total; i++) {
-            fetchPos(i);
-        }
-        // alert(`1)\tin hard mode on each click timer starts from 0 cause it is in CLINT SITE It Should Be SERVER SIDE; that update time in database and fetch from there each second,\n2)\t!!TIME UP PLEASE TRY AGAIN HERE onclick here player goes to register page with truncating table but when first have clicked then tables has truncated and in db 1st registers then second come in register page by clicking HERE link which again truncate the table Cause the 1st have registerd again that data will also truncate, so there have to set a condition according that only form first click table will truncate and show the register page but for another threes only register page will be shown,`);
-    };
-
-    function getPlayerscount() {
-        let playerCount;
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", "checkToShowModeSection.php", false);
-        xhr.onload = function () {
-            playerCount = parseInt(xhr.responseText);
-            // alert(`Total Player: ${xhr.responseText}`);
-        }
-        xhr.send();
-        return playerCount;
-    }
-
-    function startFrom() {
-        let startId;
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'startFrom.php', false);
-        xhr.onload = function () {
-            if (xhr.status == 200) {
-                startId = parseInt(xhr.responseText);
-            }
-        }
-        xhr.send();
-        return parseInt(startId, 10);  // Return the position as an integer (base 10);
-    }
-
-    function getId(nowId) {
-        // alert("getId()");
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'changeId.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status == 200) {
-                nowId = xhr.responseText;
-                parseInt(nowId);
-                // alert("calling diceVal()");
-                diceValue(nowId);
-                updateTurn(xhr.responseText);
-            }
-            else
-                alert(`Response From Server While Changing Id :`.xhr.response);
-        };
-        xhr.send(`nowId=` + nowId);//Changing Id
-    }
-
     function diceValue(nowId) {
         // alert("diceVal()");
         var dice = Math.floor(Math.random() * 6) + 1;
         document.getElementById('showValue').value = dice;
         let currentPos = fetchPos(nowId);
         let newPos = dice + currentPos;
-        if (dice != 1) {
-            if (getCheckStart(nowId)) {
-                updateDice(nowId, dice);
-                // if (nowId == 1)
-                //     alert(`red1 : ${dice} = ${newPos}`);
-                // else if (nowId == 2)
-                //     alert(`green2 : ${dice} = ${newPos}`);
-                // else if (nowId == 3)
-                //     alert(`yellow3 : ${dice} = ${newPos}`);
-                // else if (nowId == 4)
-                //     alert(`blue4 : ${dice} = ${newPos}`);
-                if (newPos > 100) {
-                    alert(`Completed The journey`);
-                    // return;
-                }
-                posFix(nowId, newPos);
-                return;
-            }
-            // else
-            //     alert(`Not 1 value of getCheckStart(nowId) is ${getCheckStart(nowId)}`);
+        // if (dice != 1) {
+        //     if (getCheckStart(nowId)) {
+        //         updateDice(nowId, dice);
+        //         if (nowId == 1)
+        //             alert(`red : ${dice} = ${newPos}`);
+        //         else if (nowId == 2)
+        //             alert(`green : ${dice} = ${newPos}`);
+        //         else if (nowId == 3)
+        //             alert(`yellow : ${dice} = ${newPos}`);
+        //         else if (nowId == 4)
+        //             alert(`blue : ${dice} = ${newPos}`);
+        //         if (newPos > 100) {
+        //             alert(`Completed The journey`);
+        //             // return;
+        //         }
+        //         posFix(nowId, newPos);
+        //         return;
+        //     }
+        //     else
+        //         alert(`Not 1, value of getCheckStart(nowId) is ${getCheckStart(nowId)}`);
 
-            // if (nowId == 1)
-            //     alert(`red Please Get 1 To Start`);
-            // else if (nowId == 2)
-            //     alert(`green Please Get 1 To Start`);
-            // else if (nowId == 3)
-            //     alert(`yellow Please Get 1 To Start`);
-            // else if (nowId == 4)
-            //     alert(`blue Please Get 1 To Start`);
-            return;
-        }
-        else {
-            updateStart(nowId);
-        }
-        updateDice(nowId, dice);
-        // if (nowId == 1)
-        //     alert(`red1 : ${dice} = ${newPos}`);
-        // else if (nowId == 2)
-        //     alert(`green2 : ${dice} = ${newPos}`);
-        // else if (nowId == 3)
-        //     alert(`yellow3 : ${dice} = ${newPos}`);
-        // else if (nowId == 4)
-        //     alert(`blue4 : ${dice} = ${newPos}`);
-        // if (newPos > 100) {
-        //     alert(`Completed The journey`);
+        //     if (nowId == 1)
+        //         alert(`red Please Get 1 To Start`);
+        //     else if (nowId == 2)
+        //         alert(`green Please Get 1 To Start`);
+        //     else if (nowId == 3)
+        //         alert(`yellow Please Get 1 To Start`);
+        //     else if (nowId == 4)
+        //         alert(`blue Please Get 1 To Start`);
         //     return;
         // }
+        // else {
+        //     updateStart(nowId);
+        // }
+        updateDice(nowId, dice);
+        // if (nowId == 1)
+        //     alert(`red : ${dice} = ${newPos}`);
+        // else if (nowId == 2)
+        //     alert(`green : ${dice} = ${newPos}`);
+        // else if (nowId == 3)
+        //     alert(`yellow : ${dice} = ${newPos}`);
+        // else if (nowId == 4)
+        //     alert(`blue : ${dice} = ${newPos}`);
+        if (newPos >= 100) {
+            alert(`Completed The journey`);
+            return;
+        }
         posFix(nowId, newPos);
         return;
     }
@@ -294,108 +410,12 @@
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             if (xhr.status === 200) {
-                // alert(`While updating dice: ${xhr.response}`);
+                alert(`While updating dice: ${xhr.response} of ${nowId}`);
             } else {
                 alert('Have not updated dice');
             }
         };
         xhr.send("nowId=" + nowId + "&dice=" + dice);
-    }
-
-    function showDice(nowId) {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'showDice.php', false);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        // alert(`showDice's nowId Is ${nowId}`);
-        xhr.onload = function () {
-            // alert(`${xhr.response} is dice of ${nowId}`);
-            if (xhr.status == 200) {
-                document.getElementById('showValue').value = xhr.response;
-            }
-            else
-                alert(`Did't Got dice`);
-        }
-        xhr.send("nowId=" + nowId);
-    }
-
-    function showMode(mode) {
-        const showMode = document.querySelector('.show-mode');
-        const modeName = document.querySelector('.show-mode h2 span');
-        showMode.style.transition = "opacity 3s ease";
-        modeName.innerHTML = mode;
-
-        switch (mode) {
-            case 'EASY':
-                modeName.style.color = "BLUE";
-                break;
-            case 'HARD':
-                modeName.style.color = "RED";
-                break;
-            case 'SURPRISE':
-                modeName.style.color = "GREEN";
-                break;
-        }
-        showMode.style.opacity = 0;
-        showMode.style.visibility = 'visible';
-        showMode.style.display = "flex";
-
-        setTimeout(function () {
-            showMode.style.opacity = 1;
-        }, 10);
-
-        setTimeout(function () {
-            showMode.style.opacity = 0;
-        }, 10000);
-
-        setTimeout(function () {
-            showMode.style.visibility = 'hidden';
-        }, 13000);
-    }
-
-    //{Bcg Section
-    function updateBcg(bcg_Color) {
-        const xhr = new XMLHttpRequest();
-        xhr.open(`POST`, `updateBcg.php`, true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status == 200) {
-                // alert(`updated Bcg Successfully and RESPONSE is: ${xhr.responseText}`);
-            }
-            else
-                alert(`Not Updated BCG`);
-        }
-        xhr.send(`bcg_Color=` + bcg_Color);
-    }
-
-    let bcgDb = null;
-    function choosedBcg() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'fetch_bcg.php', true);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                bcgDb = xhr.responseText;
-                document.body.style.backgroundColor = bcgDb;
-            }
-        }
-        xhr.send();
-    }
-    //Bcg Section} 
-
-    function fetchPos(i) {
-        let store_pos;
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'fetch_Position.php', false);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                store_pos = xhr.responseText;
-                show(i, store_pos);
-            } else {
-                alert(`Not Fetched Data`);
-            }
-        };
-        xhr.send('idForGetPos=' + i);
-        return parseInt(store_pos, 10);  // Return the position as an integer (base 10)
     }
 
     function show(i, store_pos) {
@@ -453,7 +473,7 @@
         xhr.send("nowId=" + nowId);
         return xhr.response;
     }
-
+    
     //yaha
     function getCheckStart(nowId) {
         const xhr = new XMLHttpRequest();
@@ -463,7 +483,7 @@
         xhr.onload = function () {
             if (xhr.status === 200) {
                 const start = parseInt(xhr.responseText);
-                // alert("Start value:" + start);
+                alert("Start value:" + start + " Of " + nowId);
             } else {
                 alert('Error fetching start check');
             }
@@ -476,7 +496,6 @@
         xhr.send("nowId=" + nowId); // Send request with nowId
         return parseInt(xhr.responseText);
     }
-
 
     function updateStart(nowId) {
         const xhr = new XMLHttpRequest();
@@ -491,22 +510,7 @@
         }
         xhr.send("nowId=" + nowId);
     }
-
-    let nowId = startFrom();
-    function updateTurn(nowId) {
-        const xhr = new XMLHttpRequest();
-        xhr.open(`POST`, `updateTurn.php`, true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status == 200) {
-                // alert(`Updated nowTurn`);
-            }
-            else
-                alert(`Have Not Updated nowTurn`);
-        }
-        xhr.send("now_turn=" + nowId);
-    }
-
+    
     function posFix(nowId, pos_prev_now) {
         // alert(`posFix(${nowId})`);
         //have to add previous position and now dice value to set a new positon so older position have to fetch and add with dice;
@@ -551,7 +555,7 @@
         xhr.onerror = function () {
             alert('An error occurred while fetching the image.');
         };
-        xhr.send("nowId="+nowId);
+        xhr.send("nowId=" + nowId);
         getWinnerData(nowId);
         let button = document.querySelector(".butt0n");
         button.style.cursor = "not-allowed";

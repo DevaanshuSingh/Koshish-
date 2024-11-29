@@ -1,5 +1,6 @@
 /* Dont Change */
 @import url('https://fonts.googleapis.com/css2?family=Sofadi+One&display=swap');
+
 /*FOR AUTO_CHANGE BCG COLOR ACCORDING TO DEVICE*/
 /* @media(prefers-color-scheme: dark) {
     body{
@@ -15,6 +16,7 @@
 
 *::selection {
     color: GOLD;
+    text-shadow: 0 0 2px GOLD, 0 0 2px GOLD;
 }
 
 /* body::-webkit-scrollbar {
@@ -66,8 +68,11 @@ body {
     height: 99.7vh;
     width: 72vw;
     /* background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0.568), rgba(255, 166, 0, 0.603), rgba(255, 255, 0, 0.61), rgba(0, 128, 0, 0.527), rgba(0, 0, 255, 0.521), rgba(76, 0, 130, 0.534), rgba(238, 130, 238, 0.548)); */
-    background-color: black;
-    color: white;
+    /* background-color: black;
+    color: white; */
+    background-color: rgba(255, 255, 255, 0.4);
+    color: black;
+
 }
 
 .won {
@@ -161,7 +166,7 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.445);
+    border: 1px solid rgba(0, 0, 0, 0.445);
     position: relative;
 }
 
@@ -228,7 +233,11 @@ body {
     align-items: center;
     /* background-color: rgba(255, 255, 255, 0.247); */
 }
-.p1,.p2,.p3,.p4{
+
+.p1,
+.p2,
+.p3,
+.p4 {
     border-radius: 8%;
     /* border: 2px solid rgba(0, 128, 0, 0); */
 }
@@ -250,7 +259,7 @@ body {
     display: none;
 }
 
-.timer-section >footer {
+.timer-section>footer {
     height: 40%;
     width: 100%;
     font-size: 1rem;
@@ -283,7 +292,7 @@ body {
     /* display: none; */
 }
 
-.showIp{
+.showIp {
     display: none;
 }
 
@@ -383,7 +392,8 @@ label {
     visibility: hidden;
 
 }
-#colorInput:hover{
+
+#colorInput:hover {
     cursor: pointer;
 }
 
@@ -401,10 +411,11 @@ label {
 }
 
 /*Snake Design*/
-.head{
+.head {
     background-color: rgb(206, 24, 24) !important;
 }
-.snake{
+
+.snake {
     background-color: rgb(34, 128, 76);
     border-radius: 50%;
     height: 100%;
