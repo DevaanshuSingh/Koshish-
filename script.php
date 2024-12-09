@@ -13,7 +13,7 @@
     //         window.location.href = "user_register.php";
     //     }
     // });   
-    
+
     function getId(nowId) {
         // alert("getId()");
         const xhr = new XMLHttpRequest();
@@ -88,7 +88,7 @@
         }
         // alert(`1)\tin hard mode on each click timer starts from 0 cause it is in CLINT SITE It Should Be SERVER SIDE; that update time in database and fetch from there each second,\n2)\t!!TIME UP PLEASE TRY AGAIN HERE onclick here player goes to register page with truncating table but when first have clicked then tables has truncated and in db 1st registers then second come in register page by clicking HERE link which again truncate the table Cause the 1st have registerd again that data will also truncate, so there have to set a condition according that only form first click table will truncate and show the register page but for another threes only register page will be shown,`);
     };
-    
+
     function getPlayerscount() {
         let playerCount;
         const xhr = new XMLHttpRequest();
@@ -100,14 +100,14 @@
         xhr.send();
         return playerCount;
     }
-     
+
     function getMode() {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "getSelectedMode.php", false);
         xhr.send();
         return xhr.response;
     }
-    
+
     function startTimer() {
         let min = 0;
         let sec = 1;
@@ -138,7 +138,7 @@
             secElem.innerHTML = sec++;
         }, 1000);
     }
-   
+
     function startFrom() {
         let startId;
         const xhr = new XMLHttpRequest();
@@ -167,7 +167,7 @@
         }
         xhr.send("nowId=" + nowId);
     }
-    
+
     //{Bcg Section
     function updateBcg(bcg_Color) {
         const xhr = new XMLHttpRequest();
@@ -207,7 +207,7 @@
         }
         xhr.send();
     }
-    
+
     function fetchPos(i) {
         let store_pos;
         const xhr = new XMLHttpRequest();
@@ -274,9 +274,9 @@
         xhr.send("now_turn=" + nowId);
     }
 
- 
-    
-    
+
+
+
     function updateTime(min, sec) {
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "updateTime.php", false);
@@ -387,6 +387,13 @@
         // else {
         //     updateStart(nowId);
         // }
+
+        let ladder = getLadderStart(newPos);
+        alert(`Got Output: ${ladder}`);
+        // if (newPos == ladder) {
+        //     updateDice(nowId, ladder);
+        // }
+        // else
         updateDice(nowId, dice);
         // if (nowId == 1)
         //     alert(`red : ${dice} = ${newPos}`);
@@ -404,13 +411,32 @@
         return;
     }
 
+    function getLadderStart(newPos) {
+        alert(`getLadder(${newPos})`);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "getLadderStart.php", false);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                let response = xhr.responseText;
+                alert(`While Getting Ladder Status: ${xhr.status} AND response Is ${JSON.stringify(response)}`);
+                alert(`laddderStart[${response.LadderStart}]`);
+                return response.LadderStart;
+            }
+      0      else {
+                alert(`While Getting Ladder: ${xhr.status}`);
+            }
+        }
+        xhr.send("newPos=" + newPos);
+        return 0;
+    }
     function updateDice(nowId, dice) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'updateDice.php', false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
             if (xhr.status === 200) {
-                alert(`While updating dice: ${xhr.response} of ${nowId}`);
+                // alert(`While updating dice: ${xhr.response} of ${nowId}`);
             } else {
                 alert('Have not updated dice');
             }
@@ -473,7 +499,7 @@
         xhr.send("nowId=" + nowId);
         return xhr.response;
     }
-    
+
     //yaha
     function getCheckStart(nowId) {
         const xhr = new XMLHttpRequest();
@@ -510,7 +536,7 @@
         }
         xhr.send("nowId=" + nowId);
     }
-    
+
     function posFix(nowId, pos_prev_now) {
         // alert(`posFix(${nowId})`);
         //have to add previous position and now dice value to set a new positon so older position have to fetch and add with dice;
@@ -569,7 +595,7 @@
         xhr.onload = function () {
             if (xhr.status == 200) {
                 name = xhr.responseText;
-                // alert('name Is '+name);
+                // alert(`name Is ${name}`);
                 let idSpan = document.getElementById("idSpan");
                 let winnerId = document.getElementById("winnerId");
                 let winnerName = document.getElementById("winnerName");

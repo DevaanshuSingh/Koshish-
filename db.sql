@@ -18,4 +18,11 @@ CREATE TABLE `user_information` (
   `background_color` varchar(9) DEFAULT NULL,
   `mode` varchar(8) DEFAULT NULL,
   PRIMARY KEY (`id`)
-);f
+);
+
+--Third Table
+create table ladders(
+  `id` int PRIMARY KEY auto_increment,
+  `ladderStart` int,
+  `ladderEnd` int
+);
