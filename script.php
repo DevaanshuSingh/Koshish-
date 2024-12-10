@@ -388,13 +388,20 @@
         //     updateStart(nowId);
         // }
 
-        let ladder = getLadderStart(newPos);
-        alert(`Got Output: ${ladder}`);
-        // if (newPos == ladder) {
-        //     updateDice(nowId, ladder);
-        // }
-        // else
-        updateDice(nowId, dice);
+        let ladderStart = getLadderStart(newPos);
+        let ladderEnd = getLadderEnd(newPos);
+
+        alert(`${nowId} Is Laddering From ${ladderStart} Upto ${ladderEnd}`);
+        if (newPos == ladderStart) {
+            alert(`Laddering`);
+            updateDice(nowId, dice);
+            posFix(nowId, ladderEnd);
+        }
+        else {
+            alert(`Not Laddering`)
+            updateDice(nowId, dice);
+            posFix(nowId, newPos);
+        }
         // if (nowId == 1)
         //     alert(`red : ${dice} = ${newPos}`);
         // else if (nowId == 2)
@@ -407,7 +414,7 @@
             alert(`Completed The journey`);
             return;
         }
-        posFix(nowId, newPos);
+        // posFix(nowId, newPos);
         return;
     }
 
@@ -416,20 +423,54 @@
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "getLadderStart.php", false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status == 200) {
-                let response = xhr.responseText;
-                alert(`While Getting Ladder Status: ${xhr.status} AND response Is ${JSON.stringify(response)}`);
-                alert(`laddderStart[${response.LadderStart}]`);
-                return response.LadderStart;
-            }
-      0      else {
-                alert(`While Getting Ladder: ${xhr.status}`);
-            }
-        }
+
         xhr.send("newPos=" + newPos);
-        return 0;
+
+        if (xhr.status === 200) {
+            try {
+                let response = JSON.parse(xhr.responseText); // Parse the JSON response
+                alert(`While Getting Ladder Response Is: ${JSON.stringify(response)}`); // Log the entire response
+                alert(`ladderStart: ${response.ladderStart}`); // Access the 'ladderStart' key
+                // alert(`Response Is: ${xhr.responseText}`);
+                alert(`ladderStart ${response.ladderStart}(LADDER) Is: ${typeof (response.ladderStart)}`);
+                return response.ladderStart; //This Line should Return To The Function(getLadderStart()) Caller, Means On Line: 391, But Instead Of This Returning The Second return Which Is Outside The  xhr.onload(), Is Return 2;
+            } catch (error) {
+                alert(`Error parsing JSON: ${error.message}`);
+            }
+        } else {
+            alert(`Error while getting Ladder: HTTP ${xhr.status}`);
+        }
+
+        alert(`Returning 2`);
+        return 2;
     }
+    function getLadderEnd(newPos) {
+        alert(`getLadder(${newPos})`);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "getLadderStart.php", false);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.send("newPos=" + newPos);
+
+        if (xhr.status === 200) {
+            try {
+                let response = JSON.parse(xhr.responseText); // Parse the JSON response
+                alert(`While Getting Ladder Response Is: ${JSON.stringify(response)}`); // Log the entire response
+                alert(`ladderStart: ${response.ladderStart}`); // Access the 'ladderStart' key
+                // alert(`Response Is: ${xhr.responseText}`);
+                alert(`ladderEnd ${response.ladderEnd} (LADDER) Is: ${typeof (response.ladderStart)}`);
+                return response.ladderEnd; //This Line should Return To The Function(getLadderStart()) Caller, Means On Line: 391, But Instead Of This Returning The Second return Which Is Outside The  xhr.onload(), Is Return 2;
+            } catch (error) {
+                alert(`Error parsing JSON: ${error.message}`);
+            }
+        } else {
+            alert(`Error while getting Ladder: HTTP ${xhr.status}`);
+        }
+
+        alert(`Returning 2`);
+        return 2;
+    }
+
     function updateDice(nowId, dice) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'updateDice.php', false);

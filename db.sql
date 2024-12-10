@@ -26,3 +26,21 @@ create table ladders(
   `ladderStart` int,
   `ladderEnd` int
 );
+
+INSERT INTO ladders(ladderStart, ladderEnd) VALUES
+(1,11),
+(2,22),
+(3,33),
+(4,44),
+(5,55),
+(6,66),
+(7,77),
+(8,88),
+(9,99),
+(10,100),
+(12,23),
+(13,34),
+(14,45),
+(15,56),
+(16,67),
+(17,78);

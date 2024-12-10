@@ -10,13 +10,15 @@ try {
 
     foreach ($ladders as $ladder) {
         if ($newPos == $ladder['ladderStart']) {
-            print_r($ladder);
+            // print_r($ladder);
             echo json_encode($ladder);
             exit;
         } else
             echo `$newPos,`;
     }
-    print_r($ladder);
+    // print_r($ladder);
+    // echo "Not Matched";
+    echo json_encode($ladder);
 } catch (PDOException $e) {
     echo 'Error While Getting Ladder: ' . $e->getMessage();
 }
