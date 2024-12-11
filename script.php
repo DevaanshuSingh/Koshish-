@@ -282,10 +282,10 @@
         xhr.open("POST", "updateTime.php", false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function () {
-            if (xhr.status == 200)
-                alert(`UpdatedTime ${xhr.responseText}`);
-            else
-                alert(`Not UpdatedTime ${xhr.responseText}`);
+            // if (xhr.status == 200)
+            // alert(`UpdatedTime ${xhr.responseText}`);
+            // else
+            // alert(`Not UpdatedTime ${xhr.responseText}`);
         }
         xhr.send("min=" + min + "&sec=" + sec);
     }
@@ -388,17 +388,37 @@
         //     updateStart(nowId);
         // }
 
-        let ladderStart = getLadderStart(newPos);
-        let ladderEnd = getLadderEnd(newPos);
+        let ladder = getLadderStart(newPos);//This Is Returning num+num(Have To Personalize Them);
+        let start = 0, end = 0, startEnd = 0;
+        alert(`ladder: ${ladder}`);
+        for (let i = 0; i <= ladder.length; i++) {//consider Came:2+22 make this like: start = 2; end = 22;
+            if (ladder[i] == "+") {
+                startEnd = 1;
+                alert(`Put In End`);
+            }
 
-        alert(`${nowId} Is Laddering From ${ladderStart} Upto ${ladderEnd}`);
-        if (newPos == ladderStart) {
-            alert(`Laddering`);
+            if (startEnd != 1) {
+                alert(`start: ${ladder[i]}`)
+                start += ladder[i];
+            }
+            else {
+                if (ladder[i] != "+") {
+                    alert(`end: ${ladder[i]}`);
+                    end += ladder[i];
+                }
+            }
+        }
+
+        // alert(`${nowId} Is Laddering From ${ladderStart} Upto ${ladderEnd}`);
+        if (newPos == start) {
+            alert(`start: ${start}, end: ${end}`);
+            alert(`Laddering ${nowId}`);
             updateDice(nowId, dice);
-            posFix(nowId, ladderEnd);
+            posFix(nowId, end);
         }
         else {
-            alert(`Not Laddering`)
+            alert(`start: ${start}, end: ${end}`);
+            alert(`Not Laddering ${nowId}`);
             updateDice(nowId, dice);
             posFix(nowId, newPos);
         }
@@ -419,7 +439,7 @@
     }
 
     function getLadderStart(newPos) {
-        alert(`getLadder(${newPos})`);
+        // alert(`getLadder(${newPos})`);
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "getLadderStart.php", false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -428,38 +448,17 @@
 
         if (xhr.status === 200) {
             try {
-                let response = JSON.parse(xhr.responseText); // Parse the JSON response
-                alert(`While Getting Ladder Response Is: ${JSON.stringify(response)}`); // Log the entire response
-                alert(`ladderStart: ${response.ladderStart}`); // Access the 'ladderStart' key
-                // alert(`Response Is: ${xhr.responseText}`);
-                alert(`ladderStart ${response.ladderStart}(LADDER) Is: ${typeof (response.ladderStart)}`);
-                return response.ladderStart; //This Line should Return To The Function(getLadderStart()) Caller, Means On Line: 391, But Instead Of This Returning The Second return Which Is Outside The  xhr.onload(), Is Return 2;
-            } catch (error) {
-                alert(`Error parsing JSON: ${error.message}`);
-            }
-        } else {
-            alert(`Error while getting Ladder: HTTP ${xhr.status}`);
-        }
-
-        alert(`Returning 2`);
-        return 2;
-    }
-    function getLadderEnd(newPos) {
-        alert(`getLadder(${newPos})`);
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "getLadderStart.php", false);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        xhr.send("newPos=" + newPos);
-
-        if (xhr.status === 200) {
-            try {
-                let response = JSON.parse(xhr.responseText); // Parse the JSON response
-                alert(`While Getting Ladder Response Is: ${JSON.stringify(response)}`); // Log the entire response
-                alert(`ladderStart: ${response.ladderStart}`); // Access the 'ladderStart' key
-                // alert(`Response Is: ${xhr.responseText}`);
-                alert(`ladderEnd ${response.ladderEnd} (LADDER) Is: ${typeof (response.ladderStart)}`);
-                return response.ladderEnd; //This Line should Return To The Function(getLadderStart()) Caller, Means On Line: 391, But Instead Of This Returning The Second return Which Is Outside The  xhr.onload(), Is Return 2;
+                if (xhr.responseText != 0) {
+                    let response = JSON.parse(xhr.responseText); // Parse the JSON response
+                    // alert(`While Getting Ladder Response Is: ${JSON.stringify(response)}`); // Log the entire response
+                    // alert(`ladderStart: ${response.ladderStart}`); // Access the 'ladderStart' key
+                    // alert(`Response Is: ${xhr.responseText}`);
+                    // alert(`ladderStart ${response.ladderStart}(LADDER) Is: ${typeof (response.ladderStart)}`);
+                    let ladderStartEnd = String(response.ladderStart) + "+" + String(response.ladderEnd);
+                    return ladderStartEnd; //This Line should Return To The Function(getLadderStart()) Caller, Means On Line: 391, But Instead Of This Returning The Second return Which Is Outside The  xhr.onload(), Is Return 2;
+                }
+                else
+                    return 0;
             } catch (error) {
                 alert(`Error parsing JSON: ${error.message}`);
             }

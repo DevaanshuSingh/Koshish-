@@ -16,3 +16,9 @@ in hard mode on each click timer starts from 0 cause it is in CLINT SITE It Shou
     again Clicked-> red Got 2 in position 10 and that position becomes 12;
     here single player is using twice the chances wheather next chance should be of next player;
 }
+
+Koshish{
+    *::selection{
+        text-shadow:ussi ke rang ka shadow hoga;
+    }
+}

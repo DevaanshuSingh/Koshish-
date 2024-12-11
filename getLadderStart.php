@@ -16,9 +16,14 @@ try {
         } else
             echo `$newPos,`;
     }
-    // print_r($ladder);
-    // echo "Not Matched";
-    echo json_encode($ladder);
+    // echo json_encode($ladder);//Instead Of Sending The Last Ladder's Info Send 0; That Is The SIgn Of (NO)
+    echo 0;
 } catch (PDOException $e) {
     echo 'Error While Getting Ladder: ' . $e->getMessage();
 }
+
+// $ladderStart = $ladder['ladderStart'];
+// $add= '+';
+// $ladderEnd = $ladder['ladderEnd'];
+// $combine = $ladderStart . $add. $ladderEnd;
+// echo json_encode($combine);//this should be in Json Format
