@@ -17,8 +17,12 @@ in hard mode on each click timer starts from 0 cause it is in CLINT SITE It Shou
     here single player is using twice the chances wheather next chance should be of next player;
 }
 
+(jab sidi chadhe tab sabko alert dikhe)
+
+
 Koshish{
     *::selection{
         text-shadow:ussi ke rang ka shadow hoga;
     }
 }
+
